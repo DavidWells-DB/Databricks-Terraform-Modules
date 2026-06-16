@@ -1,0 +1,4 @@
+databricks_workspace_host = "https://adb-1234567890123456.7.azuredatabricks.net"
+databricks_client_id      = "your-workspace-service-principal-client-id"
+databricks_client_secret  = "your-workspace-service-principal-client-secret"
+allow_list_cidrs          = ["10.0.0.0/8", "203.0.113.0/24"]

@@ -1,0 +1,18 @@
+azure_subscription_id = "00000000-0000-0000-0000-000000000000"
+resource_group_name   = "rg-hub-databricks"
+location              = "eastus"
+
+# Resource ID of the AzureFirewallSubnet in the hub VNet (must be /26 or larger)
+firewall_subnet_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-hub-databricks/providers/Microsoft.Network/virtualNetworks/hub-vnet/subnets/AzureFirewallSubnet"
+
+# List of spoke subnet IDs to force-tunnel through the firewall
+spoke_subnet_ids = [
+  "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-spoke-databricks/providers/Microsoft.Network/virtualNetworks/spoke-vnet/subnets/databricks-host-subnet",
+  "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-spoke-databricks/providers/Microsoft.Network/virtualNetworks/spoke-vnet/subnets/databricks-container-subnet",
+]
+
+# CIDR ranges of the spoke VNet subnets
+allowed_spoke_cidr_ranges = [
+  "10.1.0.0/24",
+  "10.1.1.0/24",
+]

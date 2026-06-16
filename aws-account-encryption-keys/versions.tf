@@ -1,0 +1,16 @@
+terraform {
+  required_version = ">= 1.7.0" # mock_provider in terraform test
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 5.0"
+    }
+    databricks = {
+      # 1.50+: stable databricks_mws_customer_managed_keys behavior and GovCloud account host support
+      source                = "databricks/databricks"
+      version               = ">= 1.50"
+      configuration_aliases = [databricks.account]
+    }
+  }
+}

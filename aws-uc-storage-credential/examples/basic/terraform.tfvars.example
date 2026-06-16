@@ -1,0 +1,6 @@
+aws_account_id           = "123456789012"
+aws_region               = "us-east-1"
+s3_bucket_name           = "my-databricks-uc-bucket"
+databricks_workspace_url = "https://my-workspace.cloud.databricks.com"
+databricks_client_id     = "your-workspace-service-principal-client-id"
+databricks_client_secret = "your-workspace-service-principal-client-secret"

@@ -1,0 +1,4 @@
+databricks_workspace_url  = "https://adb-1234567890123456.7.azuredatabricks.net"
+databricks_client_id      = "your-workspace-service-principal-client-id"
+databricks_client_secret  = "your-workspace-service-principal-client-secret"
+aws_storage_credential_id = "your-existing-storage-credential-id"

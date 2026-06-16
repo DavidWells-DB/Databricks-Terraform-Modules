@@ -1,0 +1,6 @@
+# Checkov configuration for aws-account-network-privatelink-endpoints.
+# CKV_AWS_382: Security group egress 0.0.0.0/0 is intentional for the PrivateLink endpoint
+# security group. VPC endpoint ENIs require unrestricted egress; traffic stays within AWS
+# PrivateLink and does not traverse the public internet.
+skip-check:
+  - CKV_AWS_382

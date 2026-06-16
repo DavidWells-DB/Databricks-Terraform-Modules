@@ -1,0 +1,3 @@
+databricks_account_id    = "00000000-0000-0000-0000-000000000000"
+databricks_client_id     = "your-account-service-principal-client-id"
+databricks_client_secret = "your-account-service-principal-client-secret"

@@ -1,0 +1,14 @@
+subscription_id     = "00000000-0000-0000-0000-000000000000"
+tenant_id           = "00000000-0000-0000-0000-000000000000"
+resource_group_name = "rg-databricks-cmk"
+location            = "eastus"
+key_vault_name      = "dbx-cmk-example"
+
+# Object ID of the AzureDatabricks first-party enterprise application.
+# Find via: az ad sp show --id 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d --query id -o tsv
+databricks_service_principal_object_id = "00000000-0000-0000-0000-000000000000"
+
+# Object ID of your Terraform service principal or user.
+# Find via: az ad signed-in-user show --query id -o tsv  (for user)
+#       or: az ad sp show --id <client-id> --query id -o tsv  (for SP)
+azure_client_object_id = "00000000-0000-0000-0000-000000000000"

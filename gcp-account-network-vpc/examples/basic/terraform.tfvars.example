@@ -1,0 +1,5 @@
+project_id            = "my-gcp-project-id"
+databricks_account_id = "00000000-0000-0000-0000-000000000000"
+region                = "us-central1"
+resource_prefix       = "dbx-basic"
+network_name          = "basic-network"

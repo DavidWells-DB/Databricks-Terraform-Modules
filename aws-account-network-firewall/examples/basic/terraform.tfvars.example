@@ -1,0 +1,17 @@
+aws_region   = "us-east-1"
+vpc_id       = "vpc-0a1b2c3d4e5f67890"
+firewall_name = "databricks-egress-firewall"
+
+# One subnet per AZ for HA — these should be dedicated firewall subnets,
+# separate from the Databricks compute private subnets.
+firewall_subnet_ids = [
+  "subnet-0a1b2c3d4e5f67891",
+  "subnet-0a1b2c3d4e5f67892",
+]
+
+# The private route tables from your Databricks compute subnets.
+# Use the outputs from aws-account-network-vpc.
+private_route_table_ids = [
+  "rtb-0a1b2c3d4e5f67893",
+  "rtb-0a1b2c3d4e5f67894",
+]

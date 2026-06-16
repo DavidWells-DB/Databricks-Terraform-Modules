@@ -1,0 +1,4 @@
+skip-check:
+  - CKV_AWS_109  # KMS key policies require kms:* on "*" for the account root — AWS-recommended pattern for key administration and recovery
+  - CKV_AWS_111  # KMS key policies require kms:* on "*" for the account root — AWS-recommended pattern for key administration and recovery
+  - CKV_AWS_356  # KMS key policies require kms:* on "*" for the account root — AWS-recommended pattern for key administration and recovery

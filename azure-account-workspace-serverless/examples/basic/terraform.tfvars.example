@@ -1,0 +1,4 @@
+azure_subscription_id = "00000000-0000-0000-0000-000000000000"
+resource_group_name   = "rg-databricks-serverless"
+location              = "eastus"
+workspace_name        = "adb-serverless-example"

@@ -1,0 +1,8 @@
+aws_region               = "us-east-1"
+requester_vpc_id         = "vpc-0a1b2c3d4e5f6a7b8"
+accepter_vpc_id          = "vpc-0b2c3d4e5f6a7b8c9"
+requester_vpc_cidr       = "10.0.0.0/16"
+accepter_vpc_cidr        = "10.1.0.0/16"
+requester_route_table_ids = ["rtb-0a1b2c3d4e5f6a7b8", "rtb-0b2c3d4e5f6a7b8c9"]
+accepter_route_table_ids  = ["rtb-0c3d4e5f6a7b8c9d0"]
+accepter_account_id      = "123456789012"

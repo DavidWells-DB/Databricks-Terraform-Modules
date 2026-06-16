@@ -1,0 +1,7 @@
+databricks_account_id    = "00000000-0000-0000-0000-000000000000"
+workspace_name           = "my-gcp-workspace"
+project_id               = "my-gcp-project"
+region                   = "us-central1"
+resource_prefix          = "myws"
+storage_configuration_id = "storage-config-id-from-gcp-account-workspace-storage"
+databricks_network_id    = "network-id-from-gcp-account-network-vpc"

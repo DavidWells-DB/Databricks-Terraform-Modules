@@ -1,0 +1,59 @@
+# Module ownership per the module rules Rule 6.4.
+# Each module path lists the named owner(s) responsible for review and maintenance.
+# Format: <path> <owner>...
+
+# Default owner for the repo
+* 105461186+DavidWells-DB@users.noreply.github.com
+
+# Module-specific owners (override the default)
+/aws-account-encryption-keys/ 105461186+DavidWells-DB@users.noreply.github.com
+/aws-account-log-delivery/ 105461186+DavidWells-DB@users.noreply.github.com
+/aws-account-network-connectivity-config/ 105461186+DavidWells-DB@users.noreply.github.com
+/aws-account-network-egress-internet/ 105461186+DavidWells-DB@users.noreply.github.com
+/aws-account-network-firewall/ 105461186+DavidWells-DB@users.noreply.github.com
+/aws-account-network-privatelink-endpoints/ 105461186+DavidWells-DB@users.noreply.github.com
+/aws-account-network-serverless-privatelink/ 105461186+DavidWells-DB@users.noreply.github.com
+/aws-account-network-transit-gateway/ 105461186+DavidWells-DB@users.noreply.github.com
+/aws-account-network-vpc/ 105461186+DavidWells-DB@users.noreply.github.com
+/aws-account-network-vpc-endpoints/ 105461186+DavidWells-DB@users.noreply.github.com
+/aws-account-network-vpc-peering/ 105461186+DavidWells-DB@users.noreply.github.com
+/aws-account-workspace/ 105461186+DavidWells-DB@users.noreply.github.com
+/aws-account-workspace-credentials/ 105461186+DavidWells-DB@users.noreply.github.com
+/aws-account-workspace-serverless/ 105461186+DavidWells-DB@users.noreply.github.com
+/aws-account-workspace-storage/ 105461186+DavidWells-DB@users.noreply.github.com
+/aws-uc-storage-credential/ 105461186+DavidWells-DB@users.noreply.github.com
+/aws-workspace-restrictive-root-bucket/ 105461186+DavidWells-DB@users.noreply.github.com
+/azure-account-encryption-keys/ 105461186+DavidWells-DB@users.noreply.github.com
+/azure-account-network-connectivity-config/ 105461186+DavidWells-DB@users.noreply.github.com
+/azure-account-network-firewall/ 105461186+DavidWells-DB@users.noreply.github.com
+/azure-account-network-private-endpoints/ 105461186+DavidWells-DB@users.noreply.github.com
+/azure-account-network-vnet/ 105461186+DavidWells-DB@users.noreply.github.com
+/azure-account-network-vnet-peering/ 105461186+DavidWells-DB@users.noreply.github.com
+/azure-account-workspace/ 105461186+DavidWells-DB@users.noreply.github.com
+/azure-account-workspace-serverless/ 105461186+DavidWells-DB@users.noreply.github.com
+/azure-account-workspace-storage/ 105461186+DavidWells-DB@users.noreply.github.com
+/azure-uc-storage-credential/ 105461186+DavidWells-DB@users.noreply.github.com
+/dbx-account-network-policy/ 105461186+DavidWells-DB@users.noreply.github.com
+/dbx-uc-catalog/ 105461186+DavidWells-DB@users.noreply.github.com
+/dbx-uc-external-location/ 105461186+DavidWells-DB@users.noreply.github.com
+/dbx-uc-metastore/ 105461186+DavidWells-DB@users.noreply.github.com
+/dbx-uc-metastore-assignment/ 105461186+DavidWells-DB@users.noreply.github.com
+/dbx-uc-schema/ 105461186+DavidWells-DB@users.noreply.github.com
+/dbx-workspace-cluster-policies/ 105461186+DavidWells-DB@users.noreply.github.com
+/dbx-workspace-compliance-settings/ 105461186+DavidWells-DB@users.noreply.github.com
+/dbx-workspace-identity/ 105461186+DavidWells-DB@users.noreply.github.com
+/dbx-workspace-ip-access-list/ 105461186+DavidWells-DB@users.noreply.github.com
+/dbx-workspace-network-serverless/ 105461186+DavidWells-DB@users.noreply.github.com
+/dbx-workspace-secret-scope/ 105461186+DavidWells-DB@users.noreply.github.com
+/dbx-workspace-sql-warehouse/ 105461186+DavidWells-DB@users.noreply.github.com
+/gcp-account-network-cloud-nat/ 105461186+DavidWells-DB@users.noreply.github.com
+/gcp-account-network-cloud-ngfw/ 105461186+DavidWells-DB@users.noreply.github.com
+/gcp-account-network-psc-endpoints/ 105461186+DavidWells-DB@users.noreply.github.com
+/gcp-account-network-shared-vpc/ 105461186+DavidWells-DB@users.noreply.github.com
+/gcp-account-network-vpc/ 105461186+DavidWells-DB@users.noreply.github.com
+/gcp-account-provisioning-service-account/ 105461186+DavidWells-DB@users.noreply.github.com
+/gcp-account-vpc-service-controls/ 105461186+DavidWells-DB@users.noreply.github.com
+/gcp-account-workspace/ 105461186+DavidWells-DB@users.noreply.github.com
+/gcp-account-workspace-serverless/ 105461186+DavidWells-DB@users.noreply.github.com
+/gcp-account-workspace-storage/ 105461186+DavidWells-DB@users.noreply.github.com
+/gcp-uc-storage-credential/ 105461186+DavidWells-DB@users.noreply.github.com

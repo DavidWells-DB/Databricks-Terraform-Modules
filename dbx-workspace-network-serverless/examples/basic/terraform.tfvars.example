@@ -1,0 +1,6 @@
+databricks_account_id          = "00000000-0000-0000-0000-000000000000"
+databricks_workspace_url       = "https://adb-1234567890123456.7.azuredatabricks.net"
+databricks_client_id           = "your-service-principal-client-id"
+databricks_client_secret       = "your-service-principal-client-secret"
+workspace_id                   = 1234567890123456
+network_connectivity_config_id = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"

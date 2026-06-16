@@ -1,0 +1,4 @@
+databricks_workspace_host = "https://adb-1234567890123456.7.azuredatabricks.net"
+databricks_client_id      = "your-workspace-service-principal-client-id"
+databricks_client_secret  = "your-workspace-service-principal-client-secret"
+metastore_id              = "00000000-0000-0000-0000-000000000000"

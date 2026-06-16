@@ -1,0 +1,34 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# .terraform.lock.hcl is KEPT in examples/ (root compositions per Rule 6.2)
+# but IGNORED at module root (child modules don't commit lockfiles)
+*/.terraform.lock.hcl
+!*/examples/**/.terraform.lock.hcl
+
+# Environment variables
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# TMP
+tmp/

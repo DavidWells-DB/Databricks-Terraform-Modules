@@ -1,0 +1,5 @@
+project_id                       = "my-gcp-project-id"
+region                           = "us-central1"
+databricks_account_id            = "00000000-0000-0000-0000-000000000000"
+resource_prefix                  = "myorg-prod"
+databricks_service_account_email = "databricks-sa@my-gcp-project-id.iam.gserviceaccount.com"

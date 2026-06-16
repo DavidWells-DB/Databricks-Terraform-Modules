@@ -1,0 +1,7 @@
+azure_subscription_id    = "00000000-0000-0000-0000-000000000000"
+resource_group_name      = "my-databricks-rg"
+location                 = "eastus"
+storage_account_id       = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-databricks-rg/providers/Microsoft.Storage/storageAccounts/mystorageaccount"
+databricks_workspace_url = "https://adb-1234567890123456.7.azuredatabricks.net"
+databricks_client_id     = "your-workspace-service-principal-client-id"
+databricks_client_secret = "your-workspace-service-principal-client-secret"
