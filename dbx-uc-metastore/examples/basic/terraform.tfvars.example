@@ -1,0 +1,7 @@
+databricks_account_id    = "00000000-0000-0000-0000-000000000000"
+databricks_client_id     = "your-account-service-principal-client-id"
+databricks_client_secret = "your-account-service-principal-client-secret"
+region                   = "us-east-1"
+storage_root_url         = "s3://your-uc-metastore-bucket/metastore"
+iam_role_arn             = "arn:aws:iam::123456789012:role/your-uc-metastore-role"
+owner_group              = null

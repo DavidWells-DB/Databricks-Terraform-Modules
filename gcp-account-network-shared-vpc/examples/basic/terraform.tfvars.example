@@ -1,0 +1,5 @@
+host_project_id                  = "my-host-project-id"
+service_project_ids              = ["my-databricks-service-project-id"]
+region                           = "us-central1"
+databricks_subnet_name           = "databricks-subnet"
+databricks_service_account_email = "databricks-sa@my-databricks-service-project-id.iam.gserviceaccount.com"

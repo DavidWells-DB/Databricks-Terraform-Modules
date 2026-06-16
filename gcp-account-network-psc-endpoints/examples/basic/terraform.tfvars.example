@@ -1,0 +1,8 @@
+project_id            = "my-gcp-project"
+region                = "us-central1"
+network_self_link     = "projects/my-gcp-project/global/networks/my-vpc"
+psc_subnet_self_link  = "projects/my-gcp-project/regions/us-central1/subnetworks/my-psc-subnet"
+resource_prefix       = "dbx-psc"
+databricks_account_id = "00000000-0000-0000-0000-000000000000"
+databricks_client_id  = "your-account-service-principal-client-id"
+databricks_client_secret = "your-account-service-principal-client-secret"

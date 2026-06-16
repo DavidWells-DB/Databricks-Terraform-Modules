@@ -1,0 +1,6 @@
+subscription_id       = "00000000-0000-0000-0000-000000000000"
+resource_group_name   = "rg-databricks-networking"
+location              = "eastus"
+workspace_resource_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-databricks/providers/Microsoft.Databricks/workspaces/my-workspace"
+pe_subnet_id          = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-databricks-networking/providers/Microsoft.Network/virtualNetworks/spoke-vnet/subnets/pe-subnet"
+vnet_id               = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-databricks-networking/providers/Microsoft.Network/virtualNetworks/spoke-vnet"

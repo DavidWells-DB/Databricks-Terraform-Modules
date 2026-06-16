@@ -1,0 +1,18 @@
+skip-check:
+  # CKV_AZURE_33: Queue service logging is not applicable. This storage account is used
+  # exclusively as an ADLS Gen2 DFS endpoint for Databricks — no queue service is used.
+  - CKV_AZURE_33
+  # CKV2_AZURE_21: Blob read-request logging is not applicable. Databricks accesses
+  # ADLS Gen2 via the Access Connector managed identity over the DFS endpoint, not via
+  # the classic blob service API. Enabling blob service diagnostic settings is a
+  # root-composition concern.
+  - CKV2_AZURE_21
+  # CKV2_AZURE_33: Private endpoint wiring is a root-composition concern. This module
+  # creates the storage account only and exposes storage_account_id so that the root
+  # composition can attach private endpoints. Mandating a PE inside this module would
+  # require VNet/subnet inputs, violating single-responsibility.
+  - CKV2_AZURE_33
+  # CKV_AZURE_206: LRS is the minimum required by Databricks for workspace root storage
+  # and is accepted by Databricks for UC metastore storage. The default is intentionally
+  # LRS; callers requiring higher durability set account_replication_type = "GRS" or "ZRS".
+  - CKV_AZURE_206

@@ -1,0 +1,32 @@
+# Checkov skip configuration for aws-account-workspace-storage.
+#
+# The following checks are intentionally suppressed for the DBFS root S3 bucket:
+#
+# CKV_AWS_21 / CKV2_AWS_... versioning:
+#   Databricks DBFS root storage must NOT have S3 versioning enabled.
+#   Versioning is incompatible with Databricks internal object management.
+#
+# CKV_AWS_18 — access logging:
+#   Access logging for the DBFS root bucket is left to the root composition
+#   to wire (e.g. pointing to a separate access-log bucket). The module does not
+#   prescribe a log destination as that is a caller concern.
+#
+# CKV_AWS_144 — cross-region replication:
+#   CRR is not supported for Databricks DBFS root buckets and is not required
+#   by the Databricks workspace provisioning API.
+#
+# CKV2_AWS_61 — lifecycle configuration:
+#   Lifecycle rules for the DBFS root bucket are a caller concern. Databricks
+#   manages object lifecycle internally; adding S3 lifecycle rules without
+#   Databricks coordination can cause data loss.
+#
+# CKV2_AWS_62 — event notifications:
+#   S3 event notifications for the DBFS root bucket are not required by
+#   Databricks and are left to the root composition if the caller needs them.
+
+skip-check:
+  - CKV_AWS_21
+  - CKV_AWS_18
+  - CKV_AWS_144
+  - CKV2_AWS_61
+  - CKV2_AWS_62

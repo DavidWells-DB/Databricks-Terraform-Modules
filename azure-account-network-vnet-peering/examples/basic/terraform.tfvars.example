@@ -1,0 +1,7 @@
+subscription_id            = "00000000-0000-0000-0000-000000000000"
+local_vnet_name            = "databricks-spoke-vnet"
+remote_vnet_name           = "hub-vnet"
+local_vnet_id              = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/spoke-rg/providers/Microsoft.Network/virtualNetworks/databricks-spoke-vnet"
+remote_vnet_id             = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hub-rg/providers/Microsoft.Network/virtualNetworks/hub-vnet"
+local_resource_group_name  = "spoke-rg"
+remote_resource_group_name = "hub-rg"

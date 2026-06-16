@@ -1,0 +1,11 @@
+# AWS region where the workspace is deployed
+aws_region = "us-east-1"
+
+# Name of the Databricks workspace root storage bucket
+bucket_name = "databricks-workspace-12345678"
+
+# Databricks workspace ID (10-digit numeric string)
+workspace_id = "1234567890"
+
+# Databricks account ID (UUID)
+databricks_account_id = "00000000-0000-0000-0000-000000000000"

@@ -1,0 +1,59 @@
+# Module ownership per TERRAFORM_RULES.md Rule 6.4.
+# Each module path lists the named owner(s) responsible for review and maintenance.
+# Format: <path> <owner>...
+
+# Default owner for the repo
+* david.wells@databricks.com
+
+# Module-specific owners (override the default)
+/aws-account-encryption-keys/ david.wells@databricks.com
+/aws-account-log-delivery/ david.wells@databricks.com
+/aws-account-network-connectivity-config/ david.wells@databricks.com
+/aws-account-network-egress-internet/ david.wells@databricks.com
+/aws-account-network-firewall/ david.wells@databricks.com
+/aws-account-network-privatelink-endpoints/ david.wells@databricks.com
+/aws-account-network-serverless-privatelink/ david.wells@databricks.com
+/aws-account-network-transit-gateway/ david.wells@databricks.com
+/aws-account-network-vpc/ david.wells@databricks.com
+/aws-account-network-vpc-endpoints/ david.wells@databricks.com
+/aws-account-network-vpc-peering/ david.wells@databricks.com
+/aws-account-workspace/ david.wells@databricks.com
+/aws-account-workspace-credentials/ david.wells@databricks.com
+/aws-account-workspace-serverless/ david.wells@databricks.com
+/aws-account-workspace-storage/ david.wells@databricks.com
+/aws-uc-storage-credential/ david.wells@databricks.com
+/aws-workspace-restrictive-root-bucket/ david.wells@databricks.com
+/azure-account-encryption-keys/ david.wells@databricks.com
+/azure-account-network-connectivity-config/ david.wells@databricks.com
+/azure-account-network-firewall/ david.wells@databricks.com
+/azure-account-network-private-endpoints/ david.wells@databricks.com
+/azure-account-network-vnet/ david.wells@databricks.com
+/azure-account-network-vnet-peering/ david.wells@databricks.com
+/azure-account-workspace/ david.wells@databricks.com
+/azure-account-workspace-serverless/ david.wells@databricks.com
+/azure-account-workspace-storage/ david.wells@databricks.com
+/azure-uc-storage-credential/ david.wells@databricks.com
+/dbx-account-network-policy/ david.wells@databricks.com
+/dbx-uc-catalog/ david.wells@databricks.com
+/dbx-uc-external-location/ david.wells@databricks.com
+/dbx-uc-metastore/ david.wells@databricks.com
+/dbx-uc-metastore-assignment/ david.wells@databricks.com
+/dbx-uc-schema/ david.wells@databricks.com
+/dbx-workspace-cluster-policies/ david.wells@databricks.com
+/dbx-workspace-compliance-settings/ david.wells@databricks.com
+/dbx-workspace-identity/ david.wells@databricks.com
+/dbx-workspace-ip-access-list/ david.wells@databricks.com
+/dbx-workspace-network-serverless/ david.wells@databricks.com
+/dbx-workspace-secret-scope/ david.wells@databricks.com
+/dbx-workspace-sql-warehouse/ david.wells@databricks.com
+/gcp-account-network-cloud-nat/ david.wells@databricks.com
+/gcp-account-network-cloud-ngfw/ david.wells@databricks.com
+/gcp-account-network-psc-endpoints/ david.wells@databricks.com
+/gcp-account-network-shared-vpc/ david.wells@databricks.com
+/gcp-account-network-vpc/ david.wells@databricks.com
+/gcp-account-provisioning-service-account/ david.wells@databricks.com
+/gcp-account-vpc-service-controls/ david.wells@databricks.com
+/gcp-account-workspace/ david.wells@databricks.com
+/gcp-account-workspace-serverless/ david.wells@databricks.com
+/gcp-account-workspace-storage/ david.wells@databricks.com
+/gcp-uc-storage-credential/ david.wells@databricks.com

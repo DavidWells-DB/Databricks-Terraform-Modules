@@ -1,0 +1,15 @@
+skip-check:
+  # CKV_AZURE_158: Private link for data plane to control plane communication.
+  # For serverless workspaces, private link wiring (private endpoints, DNS, VNet integration)
+  # is a root-composition concern. This module exposes workspace_resource_id and
+  # workspace_url so that the root composition can attach private endpoints. Mandating
+  # private link inside the module would require VNet/subnet inputs, violating
+  # single-responsibility and the serverless-no-VNet-injection pattern.
+  - CKV_AZURE_158
+  # CKV2_AZURE_48: Customer-managed key for root DBFS encryption.
+  # CMK for root DBFS is optional and supported via root_dbfs_cmk_key_vault_key_id.
+  # Mandating CMK would prevent use in development and lower environments where
+  # Databricks-managed encryption is acceptable. Callers requiring CMK set
+  # root_dbfs_cmk_key_vault_key_id; the azurerm_databricks_workspace_root_dbfs_customer_managed_key
+  # resource is created conditionally.
+  - CKV2_AZURE_48

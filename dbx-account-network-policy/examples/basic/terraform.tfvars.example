@@ -1,0 +1,4 @@
+databricks_account_host   = "https://accounts.cloud.databricks.com"
+databricks_account_id     = "00000000-0000-0000-0000-000000000000"
+databricks_client_id      = "your-client-id"
+databricks_client_secret  = "your-client-secret"
