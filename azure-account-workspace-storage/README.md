@@ -30,6 +30,15 @@ Azure Government (IL5) deployments require CMK encryption. Set `kms_key_id` to t
 
 This module uses only the `azurerm` provider. No Databricks provider is required; the module produces storage-side outputs that a separate module (e.g., an access connector or UC metastore module) wires into Databricks. The `azurerm` provider must be configured with appropriate credentials (service principal or managed identity) at the root composition.
 
+This module sets `shared_access_key_enabled = false` on the storage account. Callers must set `storage_use_azuread = true` in their azurerm provider block so the provider authenticates to the data plane via Azure AD instead of storage account keys:
+
+```hcl
+provider "azurerm" {
+  features {}
+  storage_use_azuread = true
+}
+```
+
 ## Storage account naming
 
 The storage account name is constructed as `${resource_prefix}stor`. Azure storage account names must be globally unique, 3-24 characters, lowercase alphanumeric. The `resource_prefix` is validated to 1-16 lowercase alphanumeric characters; choose a prefix that includes a workspace name or a random suffix to ensure global uniqueness (e.g., `"myorg42"`).

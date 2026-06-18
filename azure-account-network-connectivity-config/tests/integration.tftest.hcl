@@ -15,12 +15,17 @@
 # The plan-command tests in plan.tftest.hcl cover the static / mock-provider cases.
 
 variables {
-  name   = "tftest-ncc-eastus"
-  region = "eastus"
-  # databricks_account_id supplied via TF_VAR_databricks_account_id or .tfvars
+  name   = "tftest-ncc-eastus2"
+  region = "eastus2"
+  # Required — supply via TF_VAR_* env vars or a .tfvars file:
+  #   databricks_account_id (Databricks account UUID)
 }
 
 # Smoke test: module applies cleanly against a Premium+ account and produces a usable NCC ID.
+# Blocked: requires Azure AD service principal registered as Databricks account admin.
+# Databricks-native OAuth creds don't work for the MWS account-level API on Azure.
+# The `az login` user token also fails with "Failed to retrieve tenant ID for given token".
+#
 # run "applies_against_premium_account" {
 #   command = apply
 #
@@ -30,12 +35,12 @@ variables {
 #   }
 #
 #   assert {
-#     condition     = output.ncc_name == "tftest-ncc-eastus"
+#     condition     = output.ncc_name == "tftest-ncc-eastus2"
 #     error_message = "Expected ncc_name to match the input name"
 #   }
 #
 #   assert {
-#     condition     = output.region == "eastus"
+#     condition     = output.region == "eastus2"
 #     error_message = "Expected region to match the input region"
 #   }
 # }
