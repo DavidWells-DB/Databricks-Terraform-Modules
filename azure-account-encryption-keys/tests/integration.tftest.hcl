@@ -22,43 +22,51 @@ variables {
   location                   = "eastus"
   soft_delete_retention_days = 7
   private_endpoint           = null
+  network_acls = {
+    default_action = "Allow"
+    bypass         = "AzureServices"
+    ip_rules       = []
+  }
   tags = {
     Env = "tftest"
   }
-  # The following must be supplied via TF_VAR_* env vars or a .tfvars file:
-  # resource_group_name                    = "<your-rg>"
-  # key_vault_name                         = "<globally-unique-name>"
-  # tenant_id                              = "<your-tenant-id>"
-  # databricks_service_principal_object_id = "<aad-object-id-of-azuredatabricks-sp>"
-  # azure_client_object_id                 = "<aad-object-id-of-terraform-runner>"
+  # Required — supply via TF_VAR_* env vars or a .tfvars file:
+  #   resource_group_name                    (pre-existing resource group)
+  #   key_vault_name                         (globally unique, 3-24 chars)
+  #   tenant_id                              (Azure AD tenant UUID)
+  #   databricks_service_principal_object_id (AzureDatabricks enterprise app object ID)
+  #   azure_client_object_id                 (object ID of the Terraform runner)
+}
+
+provider "azurerm" {
+  features {}
 }
 
 # Smoke test: module applies cleanly against a live Azure subscription and produces
 # a usable Key Vault and key IDs.
-#
-# run "applies_against_azure_subscription" {
-#   command = apply
-#
-#   assert {
-#     condition     = output.key_vault_id != ""
-#     error_message = "Expected non-empty key_vault_id after successful apply"
-#   }
-#
-#   assert {
-#     condition     = output.managed_services_key_id != ""
-#     error_message = "Expected non-empty managed_services_key_id after successful apply"
-#   }
-#
-#   assert {
-#     condition     = output.workspace_storage_key_id != ""
-#     error_message = "Expected non-empty workspace_storage_key_id after successful apply"
-#   }
-#
-#   assert {
-#     condition     = output.managed_disk_key_id != ""
-#     error_message = "Expected non-empty managed_disk_key_id after successful apply"
-#   }
-# }
+run "applies_against_azure_subscription" {
+  command = apply
+
+  assert {
+    condition     = output.key_vault_id != ""
+    error_message = "Expected non-empty key_vault_id after successful apply"
+  }
+
+  assert {
+    condition     = output.managed_services_key_id != ""
+    error_message = "Expected non-empty managed_services_key_id after successful apply"
+  }
+
+  assert {
+    condition     = output.workspace_storage_key_id != ""
+    error_message = "Expected non-empty workspace_storage_key_id after successful apply"
+  }
+
+  assert {
+    condition     = output.managed_disk_key_id != ""
+    error_message = "Expected non-empty managed_disk_key_id after successful apply"
+  }
+}
 
 # Tier-failure note (DATABRICKS_RULES.md Rule 4.1):
 # The minimum tier for CMK is Premium. Because this module only creates Azure Key Vault

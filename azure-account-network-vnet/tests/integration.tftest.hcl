@@ -18,7 +18,6 @@
 # the integration cases that require real Azure credentials.
 
 variables {
-  resource_group_name   = "rg-tftest-databricks-network"
   location              = "eastus"
   vnet_name             = "tftest-databricks-vnet"
   vnet_cidr             = "10.99.0.0/16"
@@ -29,48 +28,53 @@ variables {
   nsg_name              = "tftest-databricks-nsg"
   pe_subnet_name        = null
   pe_subnet_cidr        = null
-  # resource_group_name can be overridden via TF_VAR_resource_group_name
+  # Required — supply via TF_VAR_* env vars or a .tfvars file:
+  #   resource_group_name (pre-existing resource group)
+}
+
+provider "azurerm" {
+  features {}
 }
 
 # Smoke test: module applies cleanly and produces expected VNet and subnet IDs.
-# run "applies_and_creates_vnet" {
-#   command = apply
-#
-#   assert {
-#     condition     = output.vnet_id != ""
-#     error_message = "Expected non-empty vnet_id after successful apply"
-#   }
-#
-#   assert {
-#     condition     = output.host_subnet_id != ""
-#     error_message = "Expected non-empty host_subnet_id after successful apply"
-#   }
-#
-#   assert {
-#     condition     = output.container_subnet_id != ""
-#     error_message = "Expected non-empty container_subnet_id after successful apply"
-#   }
-#
-#   assert {
-#     condition     = output.nsg_id != ""
-#     error_message = "Expected non-empty nsg_id after successful apply"
-#   }
-# }
+run "applies_and_creates_vnet" {
+  command = apply
+
+  assert {
+    condition     = output.vnet_id != ""
+    error_message = "Expected non-empty vnet_id after successful apply"
+  }
+
+  assert {
+    condition     = output.host_subnet_id != ""
+    error_message = "Expected non-empty host_subnet_id after successful apply"
+  }
+
+  assert {
+    condition     = output.container_subnet_id != ""
+    error_message = "Expected non-empty container_subnet_id after successful apply"
+  }
+
+  assert {
+    condition     = output.nsg_id != ""
+    error_message = "Expected non-empty nsg_id after successful apply"
+  }
+}
 
 # PE subnet test: module creates the optional PE subnet when provided.
-# run "applies_with_pe_subnet" {
-#   command = apply
-#
-#   variables {
-#     pe_subnet_name = "tftest-databricks-pe"
-#     pe_subnet_cidr = "10.99.3.0/27"
-#   }
-#
-#   assert {
-#     condition     = output.pe_subnet_id != null
-#     error_message = "Expected non-null pe_subnet_id when pe_subnet_name and pe_subnet_cidr are provided"
-#   }
-# }
+run "applies_with_pe_subnet" {
+  command = apply
+
+  variables {
+    pe_subnet_name = "tftest-databricks-pe"
+    pe_subnet_cidr = "10.99.3.0/27"
+  }
+
+  assert {
+    condition     = output.pe_subnet_id != null
+    error_message = "Expected non-null pe_subnet_id when pe_subnet_name and pe_subnet_cidr are provided"
+  }
+}
 
 # Tier-gated failure test: this module has no Databricks provider dependency, so tier enforcement
 # is exercised in the azure-account-workspace integration tests when a workspace is created using

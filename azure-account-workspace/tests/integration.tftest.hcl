@@ -16,27 +16,34 @@
 #
 # The plan-command tests in plan.tftest.hcl cover the static / mock-provider cases.
 
+provider "azurerm" {
+  features {}
+}
+
+provider "azapi" {}
+
 variables {
   name     = "tftest-azure-workspace"
   location = "eastus"
   sku      = "premium"
-  # resource_group_name supplied via TF_VAR_resource_group_name or .tfvars
+  # Required — supply via TF_VAR_* env vars or a .tfvars file:
+  #   resource_group_name (pre-existing resource group)
 }
 
 # Smoke test: module applies cleanly against a Premium subscription and produces a workspace.
-# run "applies_and_produces_workspace_url" {
-#   command = apply
-#
-#   assert {
-#     condition     = output.workspace_url != ""
-#     error_message = "Expected non-empty workspace_url after successful apply"
-#   }
-#
-#   assert {
-#     condition     = output.workspace_resource_id != ""
-#     error_message = "Expected non-empty workspace_resource_id after successful apply"
-#   }
-# }
+run "applies_and_produces_workspace_url" {
+  command = apply
+
+  assert {
+    condition     = output.workspace_url != ""
+    error_message = "Expected non-empty workspace_url after successful apply"
+  }
+
+  assert {
+    condition     = output.workspace_resource_id != ""
+    error_message = "Expected non-empty workspace_resource_id after successful apply"
+  }
+}
 
 # Tier-gated failure test: enhanced security features require the Enhanced Security and
 # Compliance add-on. Against a workspace without the add-on, apply should fail loudly.

@@ -16,37 +16,44 @@
 # The plan-command tests in plan.tftest.hcl cover static / mock-provider cases. This file covers
 # the integration cases that require real Azure credentials.
 
+provider "azurerm" {
+  features {}
+}
+
 variables {
-  resource_group_name    = "rg-databricks-pe-tftest"
-  location               = "eastus"
+  location               = "eastus2"
   enable_front_end_pe    = false
   enable_browser_auth_pe = false
   hub_vnet_ids           = []
   tags = {
     ManagedBy = "terraform-test"
   }
-  # workspace_resource_id, pe_subnet_id, vnet_id supplied via TF_VAR_* or .tfvars
+  # Required — supply via TF_VAR_* env vars or a .tfvars file:
+  #   resource_group_name   (pre-existing resource group)
+  #   workspace_resource_id (Premium Databricks workspace Azure resource ID)
+  #   pe_subnet_id          (subnet with private endpoint network policies disabled)
+  #   vnet_id               (VNet containing the PE subnet)
 }
 
 # Smoke test: module applies cleanly against a Premium workspace and produces usable outputs.
-# run "applies_against_premium_workspace" {
-#   command = apply
-#
-#   assert {
-#     condition     = output.back_end_pe_id != ""
-#     error_message = "Expected non-empty back_end_pe_id after successful apply"
-#   }
-#
-#   assert {
-#     condition     = output.private_dns_zone_id != ""
-#     error_message = "Expected non-empty private_dns_zone_id after successful apply"
-#   }
-#
-#   assert {
-#     condition     = output.private_dns_zone_name == "privatelink.azuredatabricks.net"
-#     error_message = "DNS zone name must be privatelink.azuredatabricks.net"
-#   }
-# }
+run "applies_against_premium_workspace" {
+  command = apply
+
+  assert {
+    condition     = output.back_end_pe_id != ""
+    error_message = "Expected non-empty back_end_pe_id after successful apply"
+  }
+
+  assert {
+    condition     = output.private_dns_zone_id != ""
+    error_message = "Expected non-empty private_dns_zone_id after successful apply"
+  }
+
+  assert {
+    condition     = output.private_dns_zone_name == "privatelink.azuredatabricks.net"
+    error_message = "DNS zone name must be privatelink.azuredatabricks.net"
+  }
+}
 
 # Tier-gated failure test: against a Standard-tier workspace, private link setup should fail.
 # Per DATABRICKS_RULES.md Rule 2.3 + 4.1: this test is the empirical enforcement of the

@@ -21,7 +21,6 @@
 # (e.g., a UC metastore module that calls databricks_metastore).
 
 variables {
-  resource_group_name      = "rg-databricks-tftest"
   location                 = "eastus"
   resource_prefix          = "tfteststrg"
   account_replication_type = "LRS"
@@ -29,30 +28,36 @@ variables {
     Environment = "test"
     ManagedBy   = "terraform-test"
   }
-  # resource_group_name supplied via TF_VAR_resource_group_name or .tfvars
+  # Required — supply via TF_VAR_* env vars or a .tfvars file:
+  #   resource_group_name (pre-existing resource group)
+}
+
+provider "azurerm" {
+  features {}
+  storage_use_azuread = true
 }
 
 # Smoke test: module applies cleanly and produces valid outputs.
-# run "applies_and_produces_valid_outputs" {
-#   command = apply
-#
-#   assert {
-#     condition     = output.storage_account_name != ""
-#     error_message = "Expected non-empty storage_account_name after successful apply"
-#   }
-#
-#   assert {
-#     condition     = output.storage_account_id != ""
-#     error_message = "Expected non-empty storage_account_id after successful apply"
-#   }
-#
-#   assert {
-#     condition     = output.container_name == "databricks"
-#     error_message = "Expected default container name 'databricks'"
-#   }
-#
-#   assert {
-#     condition     = startswith(output.dfs_endpoint, "https://")
-#     error_message = "Expected dfs_endpoint to start with https://"
-#   }
-# }
+run "applies_and_produces_valid_outputs" {
+  command = apply
+
+  assert {
+    condition     = output.storage_account_name != ""
+    error_message = "Expected non-empty storage_account_name after successful apply"
+  }
+
+  assert {
+    condition     = output.storage_account_id != ""
+    error_message = "Expected non-empty storage_account_id after successful apply"
+  }
+
+  assert {
+    condition     = output.container_name == "databricks"
+    error_message = "Expected default container name 'databricks'"
+  }
+
+  assert {
+    condition     = startswith(output.dfs_endpoint, "https://")
+    error_message = "Expected dfs_endpoint to start with https://"
+  }
+}

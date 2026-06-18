@@ -18,26 +18,31 @@
 # The plan-command tests in plan.tftest.hcl cover the static / mock-provider cases. This file
 # covers the integration cases that require real Azure credentials.
 
+provider "azurerm" {
+  features {}
+}
+
 variables {
-  # resource_group_name and azure_subscription_id supplied via TF_VAR_* or .tfvars
-  location       = "eastus"
-  workspace_name = "tftest-adb-serverless"
+  name     = "tftest-adb-serverless"
+  location = "eastus"
+  # Required — supply via TF_VAR_* env vars or a .tfvars file:
+  #   resource_group_name (pre-existing resource group)
 }
 
 # Smoke test: module applies cleanly and produces a usable workspace_url.
-# run "applies_and_produces_workspace_url" {
-#   command = apply
-#
-#   assert {
-#     condition     = startswith(output.workspace_url, "https://adb-")
-#     error_message = "Expected workspace_url to start with https://adb-"
-#   }
-#
-#   assert {
-#     condition     = output.workspace_resource_id != ""
-#     error_message = "Expected non-empty workspace_resource_id after successful apply"
-#   }
-# }
+run "applies_and_produces_workspace_url" {
+  command = apply
+
+  assert {
+    condition     = startswith(output.workspace_url, "https://adb-")
+    error_message = "Expected workspace_url to start with https://adb-"
+  }
+
+  assert {
+    condition     = output.workspace_resource_id != ""
+    error_message = "Expected non-empty workspace_resource_id after successful apply"
+  }
+}
 
 # Tier-gated failure test: with sku = "standard", serverless compute features will be
 # unavailable. The provider does not reject standard at plan time — failure is silent at

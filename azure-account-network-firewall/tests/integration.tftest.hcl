@@ -16,12 +16,15 @@
 #
 # The plan-command tests in plan.tftest.hcl cover the static / mock-provider cases.
 
+provider "azurerm" {
+  features {}
+}
+
 variables {
-  resource_group_name = "rg-hub-databricks-tftest"
-  location            = "eastus"
-  firewall_name       = "tftest-hub-fw"
-  # firewall_subnet_id, spoke_subnet_ids, allowed_spoke_cidr_ranges supplied via
-  # TF_VAR_* environment variables or a .tfvars file.
+  location                  = "eastus"
+  firewall_name             = "tftest-hub-fw"
+  allowed_spoke_cidr_ranges = ["10.250.1.0/24"]
+  firewall_sku_tier         = "Standard"
   service_tag_rules = [
     {
       name              = "allow-databricks-control-plane"
@@ -40,38 +43,41 @@ variables {
       protocols         = ["TCP"]
     },
   ]
-  firewall_sku_tier = "Premium"
+  # Required — supply via TF_VAR_* env vars or a .tfvars file:
+  #   resource_group_name (pre-existing resource group)
+  #   firewall_subnet_id  (AzureFirewallSubnet resource ID, >= /26)
+  #   spoke_subnet_ids    (list of spoke subnet resource IDs)
 }
 
 # Smoke test: module applies cleanly and produces valid outputs.
-# run "applies_and_produces_valid_outputs" {
-#   command = apply
-#
-#   assert {
-#     condition     = output.firewall_id != ""
-#     error_message = "Expected non-empty firewall_id after successful apply"
-#   }
-#
-#   assert {
-#     condition     = output.firewall_private_ip != ""
-#     error_message = "Expected non-empty firewall_private_ip after successful apply"
-#   }
-#
-#   assert {
-#     condition     = output.firewall_public_ip != ""
-#     error_message = "Expected non-empty firewall_public_ip after successful apply"
-#   }
-#
-#   assert {
-#     condition     = output.firewall_policy_id != ""
-#     error_message = "Expected non-empty firewall_policy_id after successful apply"
-#   }
-#
-#   assert {
-#     condition     = output.route_table_id != ""
-#     error_message = "Expected non-empty route_table_id after successful apply"
-#   }
-# }
+run "applies_and_produces_valid_outputs" {
+  command = apply
+
+  assert {
+    condition     = output.firewall_id != ""
+    error_message = "Expected non-empty firewall_id after successful apply"
+  }
+
+  assert {
+    condition     = output.firewall_private_ip != ""
+    error_message = "Expected non-empty firewall_private_ip after successful apply"
+  }
+
+  assert {
+    condition     = output.firewall_public_ip != ""
+    error_message = "Expected non-empty firewall_public_ip after successful apply"
+  }
+
+  assert {
+    condition     = output.firewall_policy_id != ""
+    error_message = "Expected non-empty firewall_policy_id after successful apply"
+  }
+
+  assert {
+    condition     = output.route_table_id != ""
+    error_message = "Expected non-empty route_table_id after successful apply"
+  }
+}
 
 # Tier-gated failure test: Per DATABRICKS_RULES.md Rule 2.3 + 4.1, the README's
 # "Minimum tier: Premium" claim is empirically enforced by verifying that deploying

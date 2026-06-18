@@ -17,27 +17,34 @@
 # The plan-command tests in plan.tftest.hcl cover the static / mock-provider cases. This file
 # covers the integration cases that require real Azure credentials.
 
+provider "azurerm" {
+  features {}
+}
+
 variables {
   local_vnet_name  = "tftest-spoke-vnet"
   remote_vnet_name = "tftest-hub-vnet"
-  # Remaining required vars supplied via TF_VAR_* environment variables or .tfvars:
-  #   local_vnet_id, remote_vnet_id, local_resource_group_name, remote_resource_group_name
+  # Required — supply via TF_VAR_* env vars or a .tfvars file:
+  #   local_vnet_id              (Azure resource ID of the local VNet)
+  #   remote_vnet_id             (Azure resource ID of the remote VNet)
+  #   local_resource_group_name  (resource group containing local VNet)
+  #   remote_resource_group_name (resource group containing remote VNet)
 }
 
 # Smoke test: module applies cleanly against a live Azure subscription and produces valid IDs.
-# run "applies_against_live_azure_subscription" {
-#   command = apply
-#
-#   assert {
-#     condition     = output.local_peering_id != ""
-#     error_message = "Expected non-empty local_peering_id after successful apply"
-#   }
-#
-#   assert {
-#     condition     = output.remote_peering_id != ""
-#     error_message = "Expected non-empty remote_peering_id after successful apply"
-#   }
-# }
+run "applies_against_live_azure_subscription" {
+  command = apply
+
+  assert {
+    condition     = output.local_peering_id != ""
+    error_message = "Expected non-empty local_peering_id after successful apply"
+  }
+
+  assert {
+    condition     = output.remote_peering_id != ""
+    error_message = "Expected non-empty remote_peering_id after successful apply"
+  }
+}
 
 # Tier-gated failure test: VNet-injected Databricks workspace on Standard tier rejects VNet config.
 # Per DATABRICKS_RULES.md Rule 2.3 + 4.1: this test is the empirical enforcement of the
