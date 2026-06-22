@@ -124,6 +124,11 @@ How modules change over time.
 - MINOR: backward-compatible additions or deprecations.
 - PATCH: backward-compatible fixes.
 
+Modules are the **producer** in the pin relationship — consumers can only pin a version that modules have already tagged. Tagging is therefore a release gate, not a formality. Consequences:
+- Every consumable change is published as an immutable semver tag (e.g. `aws-account-workspace/v1.2.0`).
+- A published tag is never force-moved. If a tag was wrong, cut a new one.
+- `main` is the integration branch, not a consumption target. Root compositions pin a tag, not `?ref=main`.
+
 **5.2 — Each module has its own version.** Tag releases per module (e.g. `<module>/vX.Y.Z`). Each module has its own `CHANGELOG.md` (line 49).
 
 **5.3 — Defaults are not free to change** (line 55). Changing a default is technically backward-compatible to Terraform but can alter live infrastructure on the next apply. Treat default changes as MAJOR unless the new default is provably no-op for existing callers.

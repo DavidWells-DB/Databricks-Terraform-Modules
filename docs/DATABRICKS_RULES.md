@@ -88,6 +88,23 @@ How a Databricks module is laid out — extensions to the general rules.
 
 **2.4 — Cloud credential is an object-typed input, not a scalar.** Modules consuming a cloud credential (UC storage credential, metastore data access, log delivery) accept an `object` input with `optional()` per-cloud fields (e.g., `{ aws_iam_role = optional(object({...})), azure_managed_identity = optional(object({...})), gcp_service_account = optional(object({...})) }`). Only the field relevant to the cloud in use is populated. This avoids stringly-typed cloud toggles and lets the same module work across clouds.
 
+A `validation` block MUST enforce exactly-one-field at plan time:
+
+```hcl
+validation {
+  condition = length([
+    for f in [
+      var.storage_credential.aws_iam_role,
+      var.storage_credential.azure_managed_identity,
+      var.storage_credential.gcp_service_account,
+    ] : f if f != null
+  ]) == 1
+  error_message = "Exactly one cloud credential type must be set."
+}
+```
+
+This catches misconfiguration (zero fields, two fields) at `terraform plan` rather than at apply or runtime.
+
 ---
 
 ## 3. Build
