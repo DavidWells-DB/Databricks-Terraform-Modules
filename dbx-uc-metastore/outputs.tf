@@ -9,6 +9,6 @@ output "metastore_name" {
 }
 
 output "data_access_id" {
-  description = "ID of the databricks_metastore_data_access resource in format <metastore_id>|<name>. Useful for verification and downstream references."
-  value       = databricks_metastore_data_access.this.id
+  description = "ID of the databricks_metastore_data_access resource in format <metastore_id>|<name>, or null for a storageless metastore. Useful for verification and downstream references."
+  value       = try(databricks_metastore_data_access.this[0].id, null)
 }

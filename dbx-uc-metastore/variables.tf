@@ -23,22 +23,24 @@ variable "region" {
 
 variable "storage_root_url" {
   type        = string
-  description = "Cloud storage URL for the metastore root. On AWS: s3://bucket-name/optional-prefix. On Azure: abfss://container@account.dfs.core.windows.net/optional-prefix. On GCP: gs://bucket-name/optional-prefix."
-  nullable    = false
+  description = "Optional cloud storage URL for the metastore root. Leave null/unset for a storageless metastore (recommended; manage storage at the catalog level instead). On AWS: s3://bucket-name/optional-prefix. On Azure: abfss://container@account.dfs.core.windows.net/optional-prefix. On GCP: gs://bucket-name/optional-prefix."
+  default     = null
+  nullable    = true
   validation {
-    # Must start with one of the supported cloud storage schemes.
-    condition     = can(regex("^(s3|abfss|gs)://", var.storage_root_url))
-    error_message = "storage_root_url must begin with s3://, abfss://, or gs://."
+    # When set, must start with one of the supported cloud storage schemes.
+    condition     = var.storage_root_url == null || can(regex("^(s3|abfss|gs)://", var.storage_root_url))
+    error_message = "storage_root_url must be null or begin with s3://, abfss://, or gs://."
   }
 }
 
 variable "data_access_name" {
   type        = string
-  description = "Name for the default data access configuration (databricks_metastore_data_access). Typically matches the storage credential or IAM role name."
-  nullable    = false
+  description = "Name for the default data access configuration (databricks_metastore_data_access). Required when storage_credential is set; leave null for a storageless metastore."
+  default     = null
+  nullable    = true
   validation {
-    condition     = length(trimspace(var.data_access_name)) >= 1 && length(var.data_access_name) <= 255 && var.data_access_name == trimspace(var.data_access_name)
-    error_message = "data_access_name must be 1-255 characters and must not have leading or trailing whitespace."
+    condition     = var.data_access_name == null || (length(trimspace(var.data_access_name)) >= 1 && length(var.data_access_name) <= 255 && var.data_access_name == trimspace(var.data_access_name))
+    error_message = "data_access_name must be null or 1-255 characters with no leading or trailing whitespace."
   }
 }
 
@@ -53,15 +55,16 @@ variable "storage_credential" {
     }))
     databricks_gcp_service_account = optional(object({}))
   })
-  description = "Storage credential for the metastore default data access. Populate exactly one cloud-specific block: aws_iam_role for AWS, azure_managed_identity for Azure, or databricks_gcp_service_account for GCP. Per DATABRICKS_RULES.md Rule 2.4."
-  nullable    = false
+  description = "Optional storage credential for the metastore default data access. Leave null for a storageless metastore. When set, populate exactly one cloud-specific block: aws_iam_role for AWS, azure_managed_identity for Azure, or databricks_gcp_service_account for GCP. Per DATABRICKS_RULES.md Rule 2.4."
+  default     = null
+  nullable    = true
   validation {
-    condition = (
+    condition = var.storage_credential == null || (
       (var.storage_credential.aws_iam_role != null ? 1 : 0) +
       (var.storage_credential.azure_managed_identity != null ? 1 : 0) +
       (var.storage_credential.databricks_gcp_service_account != null ? 1 : 0)
     ) == 1
-    error_message = "Exactly one of storage_credential.aws_iam_role, storage_credential.azure_managed_identity, or storage_credential.databricks_gcp_service_account must be set."
+    error_message = "When set, exactly one of storage_credential.aws_iam_role, storage_credential.azure_managed_identity, or storage_credential.databricks_gcp_service_account must be specified."
   }
 }
 

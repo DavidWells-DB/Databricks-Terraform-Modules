@@ -57,7 +57,7 @@ run "data_access_is_default" {
   command = plan
 
   assert {
-    condition     = databricks_metastore_data_access.this.is_default == true
+    condition     = databricks_metastore_data_access.this[0].is_default == true
     error_message = "data_access is_default should always be true"
   }
 }
@@ -66,7 +66,7 @@ run "data_access_uses_input_name" {
   command = plan
 
   assert {
-    condition     = databricks_metastore_data_access.this.name == "test-data-access"
+    condition     = databricks_metastore_data_access.this[0].name == "test-data-access"
     error_message = "Data access name should match the data_access_name input"
   }
 }
@@ -232,4 +232,35 @@ run "storage_credential_multiple_blocks_rejected" {
   }
 
   expect_failures = [var.storage_credential]
+}
+
+run "storageless_metastore_skips_data_access" {
+  command = plan
+
+  variables {
+    metastore_name     = "test-storageless"
+    region             = "us-east-1"
+    storage_root_url   = null
+    data_access_name   = null
+    storage_credential = null
+  }
+
+  assert {
+    condition     = databricks_metastore.this.storage_root == null
+    error_message = "Storageless metastore should have no storage_root"
+  }
+
+  assert {
+    condition     = length(databricks_metastore_data_access.this) == 0
+    error_message = "Storageless metastore must not create a data access configuration"
+  }
+}
+
+run "storage_credential_set_creates_data_access" {
+  command = plan
+
+  assert {
+    condition     = length(databricks_metastore_data_access.this) == 1
+    error_message = "A metastore with a storage credential must create exactly one data access configuration"
+  }
 }
