@@ -8,10 +8,21 @@ resource "databricks_metastore" "this" {
 }
 
 resource "databricks_metastore_data_access" "this" {
+  # Only created when a storage credential is supplied; a storageless metastore
+  # (no storage_root_url, no storage_credential) skips this entirely.
+  count = var.storage_credential != null ? 1 : 0
+
   provider     = databricks.account
   metastore_id = databricks_metastore.this.id
   name         = var.data_access_name
   is_default   = true
+
+  lifecycle {
+    precondition {
+      condition     = var.data_access_name != null
+      error_message = "data_access_name is required when storage_credential is set."
+    }
+  }
 
   dynamic "aws_iam_role" {
     for_each = var.storage_credential.aws_iam_role != null ? [var.storage_credential.aws_iam_role] : []
