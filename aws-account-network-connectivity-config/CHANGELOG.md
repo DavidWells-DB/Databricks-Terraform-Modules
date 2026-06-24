@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates `databricks_mws_network_connectivity_config` at the Databricks account level.
 - Variable validation on `databricks_gov_shard` (null, civilian, dod), `region` (AWS region format), and `name` (Databricks-documented 3-30 character alphanumeric/hyphen/underscore constraint).

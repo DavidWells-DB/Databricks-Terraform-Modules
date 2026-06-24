@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates AWS VPC, private/public/PrivateLink subnets, route tables, Databricks-required security group, and `databricks_mws_networks` registration.
 - GovCloud parameterization via `databricks_gov_shard` input (commercial, civilian, dod) per DATABRICKS_RULES.md Rule 1.5.

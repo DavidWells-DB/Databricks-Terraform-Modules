@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates Databricks SQL warehouse (endpoint) with `databricks_sql_endpoint` and optional `databricks_permissions`.
 - Variable validation on `cluster_size` (9 allowed values), `warehouse_type` (CLASSIC/PRO), `spot_instance_policy` (3 allowed values), `channel` (CURRENT/PREVIEW), `auto_stop_mins` (>= 0), `min_num_clusters` (>= 1), `max_num_clusters` (>= 1), `permissions` (valid permission levels).

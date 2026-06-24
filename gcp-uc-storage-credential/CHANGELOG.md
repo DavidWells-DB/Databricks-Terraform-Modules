@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates `databricks_storage_credential` with `databricks_gcp_service_account` block and grants `roles/storage.objectAdmin` + `roles/storage.legacyBucketReader` on the target GCS bucket.
 - Variable validation on `credential_name` (1-100 chars, alphanumeric/underscore/hyphen) and `bucket_name` (GCS naming constraints).

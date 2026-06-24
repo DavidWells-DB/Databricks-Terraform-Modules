@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates `aws_ec2_transit_gateway` with configurable ASN, DNS support, VPN ECMP support, and default route table association/propagation settings.
 - `aws_ec2_transit_gateway_vpc_attachment` (one per entry in `vpc_attachments`) with explicit opt-out of the default TGW route table.

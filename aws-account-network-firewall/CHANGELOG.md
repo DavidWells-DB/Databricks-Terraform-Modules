@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates `aws_networkfirewall_firewall` and `aws_networkfirewall_firewall_policy` with no inline rule groups.
 - `aws_route` on each private route table pointing 0.0.0.0/0 to the per-AZ firewall endpoint (modulo-indexed for HA deployments).

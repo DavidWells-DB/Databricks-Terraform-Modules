@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates ADLS Gen2 storage account (`azurerm_storage_account`) and container (`azurerm_storage_container`) for UC metastore storage or workspace root storage.
 - Hierarchical namespace (`is_hns_enabled = true`) enabled by default; required for ADLS Gen2.

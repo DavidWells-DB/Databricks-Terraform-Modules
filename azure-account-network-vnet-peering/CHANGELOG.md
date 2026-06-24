@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates bidirectional `azurerm_virtual_network_peering` (one per direction) between two Azure VNets.
 - Variable validation on `local_vnet_name` and `remote_vnet_name` (Azure VNet name constraints), `local_vnet_id` and `remote_vnet_id` (Azure resource ID format), `local_resource_group_name` and `remote_resource_group_name` (Azure resource group name constraints).

@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: enables IP access list enforcement via `databricks_workspace_conf` and creates a required ALLOW list plus an optional BLOCK list via `databricks_ip_access_list`.
 - Variable validation on `allow_list_cidrs` (non-empty, basic IPv4/CIDR format), `block_list_cidrs` (optional; same format check), and label length bounds.

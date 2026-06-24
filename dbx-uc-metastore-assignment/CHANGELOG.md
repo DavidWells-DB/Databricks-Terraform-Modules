@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: assigns a Unity Catalog metastore to one or more workspaces via `databricks_metastore_assignment` (for_each over `workspace_ids` map).
 - Optional `databricks_default_namespace_setting` for setting the default catalog on the workspace targeted by the `databricks.workspace` provider alias.

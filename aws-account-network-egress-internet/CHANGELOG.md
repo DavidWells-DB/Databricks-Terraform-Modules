@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates `aws_internet_gateway`, `aws_eip` (per NAT), `aws_nat_gateway` (per NAT), and `aws_route` (0.0.0.0/0 → NAT) on each private route table.
 - `nat_gateway_count` input for HA multi-AZ deployments (default 1).

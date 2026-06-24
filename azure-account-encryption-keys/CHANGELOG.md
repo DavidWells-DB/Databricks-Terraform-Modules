@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates Azure Key Vault (Premium SKU, purge protection enabled) with three RSA-2048 CMK keys (managed services, workspace storage, managed disk).
 - `azurerm_key_vault_access_policy` for Terraform operator (full key management) and Databricks first-party service principal (Get, WrapKey, UnwrapKey).

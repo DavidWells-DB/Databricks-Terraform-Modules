@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates `databricks_mws_network_connectivity_config` for Azure serverless private connectivity.
 - Optional `databricks_account_network_policy` created when `allowed_internet_destinations` is set (RESTRICTED_ACCESS mode); omitted otherwise.

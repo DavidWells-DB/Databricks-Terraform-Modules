@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates AWS PrivateLink interface endpoints (workspace REST API + SCC relay + optional service-direct), registers each as `databricks_mws_vpc_endpoint`, and creates `databricks_mws_private_access_settings`.
 - GovCloud parameterization via `databricks_gov_shard` input (commercial, civilian, dod) — drives distinct endpoint service attachment URIs per shard.

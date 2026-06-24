@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: configures a GCP project as a Shared VPC host and attaches service projects via `google_compute_shared_vpc_host_project` and `google_compute_shared_vpc_service_project`.
 - Optional subnet-level IAM grants via `google_compute_subnetwork_iam_member` controlled by the `subnet_iam_grants` input.

@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates Cloud NGFW security profile, security profile group, firewall endpoint, and firewall endpoint association for VPC egress inspection.
 - Variable validation on `organization_id` (numeric string), `project_id` (GCP project ID format), `zone` (GCP zone format), `network_self_link` (compute self-link format), `resource_prefix` (lowercase alphanumeric/hyphen, 1-30 chars), `severity_overrides` (enumerated action/severity), `threat_overrides` (enumerated action).

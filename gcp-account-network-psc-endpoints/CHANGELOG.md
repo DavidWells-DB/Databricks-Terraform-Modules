@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates GCP PSC compute addresses, forwarding rules, private DNS zone (`gcp.databricks.com`), DNS record sets, and registers endpoints via `databricks_mws_vpc_endpoint` (workspace + relay) and `databricks_mws_private_access_settings`.
 - Static locals map of Databricks PSC service attachment URIs for all 15 supported GCP regions (workspace plproxy + SCC relay ngrok); source: https://docs.databricks.com/gcp/en/resources/ip-domain-region#psc.

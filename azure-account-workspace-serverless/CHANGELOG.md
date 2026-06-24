@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates Azure Databricks workspace without VNet injection for serverless compute.
 - `azurerm_databricks_workspace` resource with no `custom_parameters` block (serverless pattern).

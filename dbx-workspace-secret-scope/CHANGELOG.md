@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates Databricks secret scopes via `for_each` over a `scopes` map input.
 - Support for `initial_manage_principal` per scope (null or `"users"`).
