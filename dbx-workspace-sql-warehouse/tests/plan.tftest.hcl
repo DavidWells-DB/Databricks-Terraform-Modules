@@ -296,12 +296,12 @@ run "warehouse_name_set_correctly" {
   }
 }
 
-run "photon_enabled_by_default" {
+run "enable_photon_true_applied" {
   command = plan
 
   assert {
     condition     = databricks_sql_endpoint.this.enable_photon == true
-    error_message = "enable_photon should default to true"
+    error_message = "enable_photon = true should be applied to the warehouse"
   }
 }
 

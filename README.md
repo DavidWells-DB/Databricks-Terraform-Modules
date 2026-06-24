@@ -79,6 +79,8 @@ pre-commit run --all-files
 
 AWS modules support commercial, GovCloud civilian (FedRAMP High), and GovCloud DoD (IL5) via the `databricks_gov_shard` input. All ARNs, endpoint names, and account IDs are computed from this input — no separate module tree for GovCloud.
 
+See [docs/govcloud.md](./docs/govcloud.md) for per-shard account IDs, PrivateLink service attachment URIs, UC role ARNs, which modules are affected, and a usage example.
+
 ## Contributing
 
 1. Follow the naming convention and standard file layout (see any existing module)

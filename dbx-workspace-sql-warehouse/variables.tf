@@ -23,8 +23,8 @@ variable "cluster_size" {
 
 variable "warehouse_type" {
   type        = string
-  description = "Type of the warehouse. Valid values: CLASSIC, PRO."
-  default     = "PRO"
+  description = "Type of the warehouse. Valid values: CLASSIC, PRO. PRO enables Photon and AI/BI features but costs more; CLASSIC is lower cost."
+  nullable    = false
   validation {
     condition     = contains(["CLASSIC", "PRO"], var.warehouse_type)
     error_message = "warehouse_type must be one of: CLASSIC, PRO."
@@ -63,8 +63,8 @@ variable "max_num_clusters" {
 
 variable "spot_instance_policy" {
   type        = string
-  description = "Spot instance policy for cost optimization. Valid values: COST_OPTIMIZED, RELIABILITY_OPTIMIZED, POLICY_UNSPECIFIED."
-  default     = "COST_OPTIMIZED"
+  description = "Spot instance policy. COST_OPTIMIZED uses spot instances (lower cost, preemptible). RELIABILITY_OPTIMIZED uses on-demand instances (higher cost, no preemption). POLICY_UNSPECIFIED defers to account default."
+  nullable    = false
   validation {
     condition     = contains(["COST_OPTIMIZED", "RELIABILITY_OPTIMIZED", "POLICY_UNSPECIFIED"], var.spot_instance_policy)
     error_message = "spot_instance_policy must be one of: COST_OPTIMIZED, RELIABILITY_OPTIMIZED, POLICY_UNSPECIFIED."
@@ -83,8 +83,8 @@ variable "channel" {
 
 variable "enable_photon" {
   type        = bool
-  description = "Enable Photon acceleration. Requires Premium tier or higher."
-  default     = true
+  description = "Enable Photon acceleration. Only valid with warehouse_type = \"PRO\"; ignored or rejected by CLASSIC. Defaults to false (opt-in)."
+  default     = false
 }
 
 variable "enable_serverless_compute" {
