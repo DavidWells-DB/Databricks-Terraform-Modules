@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates GCP service account, custom IAM role, project IAM binding, and registers the account as a Databricks account admin via `databricks_user` + `databricks_user_role`.
 - Custom role with Databricks-documented minimum permissions for GKE workspace provisioning (compute, KMS, GKE, Shared VPC, IAM, serviceusage).

@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates `databricks_cluster_policy` resources via `for_each` and assigns `databricks_permissions` (CAN_USE) per policy.
 - Support for both custom `definition` (Policy Definition Language JSON) and policy-family inheritance (`policy_family_id` + `policy_family_definition_overrides`).

@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates GCP VPC (`google_compute_network`), subnetwork with secondary IP ranges (`google_compute_subnetwork`), Databricks-required ingress firewall rule (`google_compute_firewall`), and registers the network with Databricks via `databricks_mws_networks`.
 - Variable validation on `project_id` (GCP format), `region` (GCP region format), `resource_prefix` (1-20 chars, lowercase), `network_cidr` (valid IPv4 CIDR, /9-/29 bounds), `pod_secondary_range_cidr`, `service_secondary_range_cidr`, `network_name` (conservative bounds), `databricks_account_id` (UUID format).

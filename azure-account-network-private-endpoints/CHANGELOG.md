@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates `azurerm_private_dns_zone` (privatelink.azuredatabricks.net), `azurerm_private_dns_zone_virtual_network_link` (spoke + optional hub VNets), and `azurerm_private_endpoint` resources for Azure Databricks Private Link.
 - Back-end private endpoint (`databricks_ui_api`) always created.

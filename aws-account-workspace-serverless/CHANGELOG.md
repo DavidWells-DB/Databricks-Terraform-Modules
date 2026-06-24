@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates a serverless-only Databricks workspace (`compute_mode = "SERVERLESS"`) with no classic compute plane, no customer VPC, and no IAM credentials required.
 - GovCloud parameterization via `databricks_gov_shard` input (commercial, civilian, dod); drives computed `databricks_account_host` local and output.

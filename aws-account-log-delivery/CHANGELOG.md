@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates AWS S3 bucket (with public access block, versioning, and bucket policy) + AWS IAM role (log delivery trust policy) + `databricks_mws_credentials` + `databricks_mws_storage_configurations` + `databricks_mws_log_delivery`.
 - Support for both `AUDIT_LOGS` and `BILLABLE_USAGE` log types via `log_types` list variable; each type creates one `databricks_mws_log_delivery` configuration via `for_each`.

@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates `google_compute_router` and `google_compute_router_nat` for private-subnet internet egress.
 - Variable validation on `network_self_link` and `subnetwork_self_link` (fully-qualified Compute API self-link format), `resource_prefix` (GCP naming constraints, 50-char cap), `min_ports_per_vm` (power-of-2 enumeration per GCP Cloud NAT requirements), and `log_config_filter` (enumerated GCP values).

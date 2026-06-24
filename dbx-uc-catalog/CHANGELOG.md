@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates `databricks_catalog` resources via `for_each` with optional `databricks_grants` per catalog.
 - `catalogs` input: map of catalog name to configuration object supporting `comment`, `storage_root`, `isolation_mode`, `properties`, and `grants`.

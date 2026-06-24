@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates `databricks_mws_workspaces` on GCP wiring pre-created network and storage configurations.
 - Inputs: `databricks_account_id`, `workspace_name`, `project_id`, `region`, `resource_prefix`, `storage_configuration_id`, `databricks_network_id`, optional `private_access_settings_id`, `managed_services_key_id`, `workspace_storage_key_id`, `custom_tags`.

@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: binds a Network Connectivity Config (NCC) to a workspace via `databricks_mws_ncc_binding`.
 - Private endpoint rules via `databricks_mws_ncc_private_endpoint_rule` with `for_each` over a unified `private_endpoint_rules` list (cloud-agnostic input shape covering both AWS and Azure fields).

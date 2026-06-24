@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates Azure VNet + host subnet + container subnet + NSG + subnet-NSG associations for Databricks VNet injection.
 - Optional private endpoint subnet (created when both `pe_subnet_name` and `pe_subnet_cidr` are provided).

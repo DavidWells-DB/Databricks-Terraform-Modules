@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates `aws_vpc_peering_connection`, `aws_vpc_peering_connection_accepter`, and bidirectional `aws_route` resources in both requester and accepter VPCs.
 - Supports same-account, cross-account, same-region, and inter-region VPC peering.

@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates Databricks account-level network policy for serverless compute egress control.
 - Egress mode parameterization via `egress_mode` input (ALLOW_LIST, UNRESTRICTED).

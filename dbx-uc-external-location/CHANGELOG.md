@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: registers cloud storage paths as Unity Catalog external locations via `databricks_external_location` (for_each).
 - Optional per-location `databricks_grants` with `dynamic` grant blocks; grant resources are only created when a location's grants map is non-empty.

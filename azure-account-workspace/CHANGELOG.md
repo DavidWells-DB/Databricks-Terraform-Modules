@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates Azure Databricks workspace via `azurerm_databricks_workspace`.
 - Optional VNet injection via `virtual_network_id`, `host_subnet_name`, `container_subnet_name`, and NSG association inputs.

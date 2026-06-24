@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: assigns account-level principals to a workspace via `databricks_mws_permission_assignment` with `for_each`.
 - Variable validation on `assignments`: at least one role per entry; roles must be "USER" or "ADMIN".

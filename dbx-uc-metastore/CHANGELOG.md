@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Changed
 - `storage_root_url`, `data_access_name`, and `storage_credential` are now **optional** (default `null`). Omitting them creates a **storageless metastore** (recommended; manage storage at the catalog level). `databricks_metastore_data_access` is created only when `storage_credential` is set, guarded by a precondition that `data_access_name` is supplied. `data_access_id` output returns `null` for storageless metastores. Backward compatible: supplying all three behaves as before.
 

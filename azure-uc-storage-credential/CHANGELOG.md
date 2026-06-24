@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-23
+
 ### Added
 - Initial module: creates Azure Databricks Access Connector (SystemAssigned managed identity) + `azurerm_role_assignment` (Storage Blob Data Contributor) + `databricks_storage_credential` UC registration.
 - `access_connector_name` optional input with auto-derived default (`dbx-access-connector-<credential_name>`).
