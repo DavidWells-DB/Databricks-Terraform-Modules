@@ -25,7 +25,7 @@ provider "aws" {
 }
 
 variables {
-  vpc_id                  = "vpc-00000000000000000"  # Placeholder — test is skipped
+  vpc_id                  = "vpc-00000000000000000" # Placeholder — test is skipped
   firewall_name           = "tftest-network-firewall-integ"
   firewall_subnet_ids     = ["subnet-00000000000000000", "subnet-11111111111111111"]
   private_route_table_ids = ["rtb-00000000000000000", "rtb-11111111111111111"]

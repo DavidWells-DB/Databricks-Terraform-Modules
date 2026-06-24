@@ -28,15 +28,15 @@ run "applies_and_creates_peering" {
   command = apply
 
   variables {
-    requester_vpc_id           = run.setup_vpcs.requester_vpc_id
-    accepter_vpc_id            = run.setup_vpcs.accepter_vpc_id
-    requester_route_table_ids  = run.setup_vpcs.requester_route_table_ids
-    accepter_route_table_ids   = run.setup_vpcs.accepter_route_table_ids
-    requester_vpc_cidr         = "10.1.0.0/16"
-    accepter_vpc_cidr          = "10.2.0.0/16"
-    accepter_account_id        = var.aws_account_id
-    accepter_region            = "us-east-1"
-    peering_name               = "tftest-vpc-peering-integ"
+    requester_vpc_id          = run.setup_vpcs.requester_vpc_id
+    accepter_vpc_id           = run.setup_vpcs.accepter_vpc_id
+    requester_route_table_ids = run.setup_vpcs.requester_route_table_ids
+    accepter_route_table_ids  = run.setup_vpcs.accepter_route_table_ids
+    requester_vpc_cidr        = "10.1.0.0/16"
+    accepter_vpc_cidr         = "10.2.0.0/16"
+    accepter_account_id       = var.aws_account_id
+    accepter_region           = "us-east-1"
+    peering_name              = "tftest-vpc-peering-integ"
     tags = {
       Environment = "integration-test"
       Purpose     = "terraform-test"
