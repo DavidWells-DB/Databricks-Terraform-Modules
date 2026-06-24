@@ -20,13 +20,13 @@ provider "databricks" {
 }
 
 variables {
-  workspace_name               = "tftest-serverless-integ"
-  region                       = "us-east-1"
-  databricks_gov_shard         = null
-  managed_services_key_id      = null
+  workspace_name                 = "tftest-serverless-integ"
+  region                         = "us-east-1"
+  databricks_gov_shard           = null
+  managed_services_key_id        = null
   network_connectivity_config_id = null
-  deployment_name              = null
-  custom_tags                  = {}
+  deployment_name                = null
+  custom_tags                    = {}
 }
 
 variable "databricks_account_id" {
