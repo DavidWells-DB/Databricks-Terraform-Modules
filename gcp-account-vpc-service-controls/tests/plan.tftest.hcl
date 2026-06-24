@@ -5,6 +5,7 @@ variables {
   perimeter_name            = "test_perimeter"
   perimeter_title           = "Test Perimeter"
   protected_project_numbers = ["987654321098"]
+  restricted_services       = ["storage.googleapis.com", "bigquery.googleapis.com"]
 }
 
 run "perimeter_name_matches_input" {
@@ -99,12 +100,12 @@ run "normalized_projects_formats_correctly" {
   }
 }
 
-run "default_restricted_services_applied" {
+run "restricted_services_applied" {
   command = plan
 
   assert {
     condition     = length(output.restricted_services) == 2
-    error_message = "Should have two default restricted services"
+    error_message = "Should have two restricted services"
   }
 
   assert {
@@ -118,7 +119,7 @@ run "default_restricted_services_applied" {
   }
 }
 
-run "custom_restricted_services_override_defaults" {
+run "custom_restricted_services_applied" {
   command = plan
 
   variables {

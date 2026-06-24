@@ -36,9 +36,12 @@ variable "protected_project_numbers" {
 
 variable "restricted_services" {
   type        = list(string)
-  description = "List of GCP services restricted by the perimeter (e.g., \"storage.googleapis.com\", \"bigquery.googleapis.com\")."
-  default     = ["storage.googleapis.com", "bigquery.googleapis.com"]
+  description = "List of GCP services restricted by the perimeter (e.g., [\"storage.googleapis.com\", \"bigquery.googleapis.com\"]). Every service listed will deny access from outside the perimeter — callers must list only services they explicitly intend to restrict."
   nullable    = false
+  validation {
+    condition     = length(var.restricted_services) >= 1
+    error_message = "At least one restricted service must be specified."
+  }
 }
 
 variable "access_levels" {

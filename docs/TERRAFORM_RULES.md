@@ -63,6 +63,7 @@ Optional: `locals.tf`, `data.tf`, `moved.tf` (during refactor), `tests/`.
 - Optional features: `default = null` + `nullable = true`; null means "skip" (line 38).
 - Complex inputs: `object({...})` with `optional()` for additive evolution; provide defaults at every nesting level (line 41).
 - Validation: do not add `validation` blocks for constraints the type system already enforces (e.g., asserting a string is a string — line 37). DO validate genuine input constraints the type system cannot express: length bounds, allowed character sets, enumerated values, mutual exclusivity, format patterns (regex). Validation blocks fail at plan time, which is preferable to apply-time errors.
+- **No opinionated defaults.** A default is only permitted when it is safe for every caller regardless of context — i.e., `null` (skip), `false` (opt-in), `[]`/`{}` (empty). Do NOT provide a default for variables that encode a cost tier, reliability tradeoff, access restriction, or deployment-environment choice. These decisions belong to the caller. Concretely prohibited: defaulting a warehouse type, spot instance policy, service restriction list, or cloud environment identifier. If the wrong default causes silent misbehaviour or unexpected cost, remove the default and make the variable required.
 
 **2.6 — Outputs.**
 - Every output: `description` (line 36).
