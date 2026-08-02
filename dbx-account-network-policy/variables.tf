@@ -12,23 +12,29 @@ variable "policy_name" {
 
 variable "egress_mode" {
   type        = string
-  description = "Egress restriction mode for serverless compute. Use \"ALLOW_LIST\" to restrict egress to allowed destinations; \"UNRESTRICTED\" to allow all internet egress."
-  default     = "ALLOW_LIST"
+  description = "Egress restriction mode for serverless compute, mapped to the provider's `restriction_mode`. \"RESTRICTED_ACCESS\" allows only the listed destinations; \"FULL_ACCESS\" allows all internet egress."
+  default     = "RESTRICTED_ACCESS"
   nullable    = false
   validation {
-    condition     = contains(["ALLOW_LIST", "UNRESTRICTED"], var.egress_mode)
-    error_message = "egress_mode must be \"ALLOW_LIST\" or \"UNRESTRICTED\"."
+    # These are the only values the databricks provider accepts for
+    # egress.network_access.restriction_mode. Passing anything else crashes the provider.
+    condition     = contains(["RESTRICTED_ACCESS", "FULL_ACCESS"], var.egress_mode)
+    error_message = "egress_mode must be \"RESTRICTED_ACCESS\" or \"FULL_ACCESS\"."
   }
 }
 
 variable "allowed_internet_destinations" {
   type = list(object({
     destination               = string
-    internet_destination_type = optional(string)
+    internet_destination_type = optional(string, "DNS_NAME")
   }))
-  description = "Internet destinations (CIDR blocks or FQDNs) allowed when egress_mode is ALLOW_LIST. Each object must have 'destination' (CIDR or FQDN) and optionally 'internet_destination_type' (CIDR or FQDN)."
+  description = "Internet destinations allowed when egress_mode is RESTRICTED_ACCESS. Each entry has a 'destination' (a domain name) and 'internet_destination_type' (only \"DNS_NAME\" is currently supported by the provider; IP_RANGE is planned but not yet available)."
   default     = []
   nullable    = false
+  validation {
+    condition     = alltrue([for d in var.allowed_internet_destinations : contains(["DNS_NAME"], coalesce(d.internet_destination_type, "DNS_NAME"))])
+    error_message = "internet_destination_type must be \"DNS_NAME\" (the only value the provider currently supports)."
+  }
 }
 
 variable "allowed_storage_destinations" {
