@@ -23,8 +23,9 @@ module "network_policy" {
     databricks.account = databricks.account
   }
 
-  policy_name = "example-restricted-policy"
-  egress_mode = "RESTRICTED_ACCESS"
+  databricks_account_id = var.databricks_account_id
+  policy_name           = "example-restricted-policy"
+  egress_mode           = "RESTRICTED_ACCESS"
 
   allowed_internet_destinations = [
     {
