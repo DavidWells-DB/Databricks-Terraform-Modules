@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+- **`databricks_workspace_network_option` used the wrong provider surface.** It was wired to `databricks.workspace`, but it is an account-surface resource ("can only be used with an account-level provider") — binding failed with "Not Found". Now uses `databricks.account`.
+
+### Changed
+- **Removed the now-unused `databricks.workspace` configuration alias.** All resources are account-surface, so the module now declares only `databricks.account`. Breaking: callers must stop passing `databricks.workspace`.
+
 ## [0.1.0] - 2026-06-23
 
 ### Added

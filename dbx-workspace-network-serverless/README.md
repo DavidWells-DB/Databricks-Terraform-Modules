@@ -72,8 +72,7 @@ module "workspace_network_serverless" {
 
 | Name | Version |
 | ---- | ------- |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.81.0 |
-| <a name="provider_databricks.workspace"></a> [databricks.workspace](#provider\_databricks.workspace) | >= 1.81.0 |
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.122.0 |
 
 ## Modules
 
@@ -92,9 +91,9 @@ No modules.
 | Name | Description | Type | Default | Required |
 | ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_network_connectivity_config_id"></a> [network\_connectivity\_config\_id](#input\_network\_connectivity\_config\_id) | Canonical unique identifier of the Network Connectivity Config (NCC) in the Databricks account. The NCC and workspace must be in the same region. | `string` | n/a | yes |
+| <a name="input_workspace_id"></a> [workspace\_id](#input\_workspace\_id) | Databricks workspace ID to bind to the NCC. A workspace can be bound to only one NCC at a time; binding a different NCC overwrites the previous binding. | `number` | n/a | yes |
 | <a name="input_network_policy_id"></a> [network\_policy\_id](#input\_network\_policy\_id) | Network policy ID to assign to the workspace via databricks\_workspace\_network\_option. Controls network access for all serverless compute in the workspace. If null, the workspace\_network\_option resource is not created and the workspace retains its existing policy (or the Databricks default). Pass "default-policy" to explicitly assign the account default. | `string` | `null` | no |
 | <a name="input_private_endpoint_rules"></a> [private\_endpoint\_rules](#input\_private\_endpoint\_rules) | List of private endpoint rules to create on the NCC. Each element maps to one databricks\_mws\_ncc\_private\_endpoint\_rule. The key field must be unique and is used as the Terraform map key. Omit fields that are not applicable to the target cloud. | <pre>list(object({<br/>    # Human-readable key used as the for_each map key; must be unique within the list.<br/>    key = string<br/><br/>    # --- Azure fields ---<br/>    # Azure resource ID of the target resource (e.g. storage account). Required for Azure PE rules.<br/>    resource_id = optional(string)<br/>    # Sub-resource type on Azure: "blob", "dfs", "sqlServer", etc.<br/>    # Mutually exclusive with domain_names on Azure.<br/>    group_id = optional(string)<br/><br/>    # --- AWS fields ---<br/>    # Full AWS VPC endpoint service name (e.g. "com.amazonaws.us-east-1.s3").<br/>    endpoint_service = optional(string)<br/>    # S3 bucket names accessible via the VPC endpoint. Mutually exclusive with domain_names on AWS.<br/>    resource_names = optional(list(string))<br/>    # Activation status for AWS S3 service endpoints. Defaults to true.<br/>    enabled = optional(bool, true)<br/><br/>    # --- Shared (Azure domain-based / AWS FQDN) ---<br/>    # On Azure: domain names for private link service.<br/>    # On AWS: FQDNs accessible via VPC endpoint.<br/>    # On Azure, mutually exclusive with group_id. On AWS, mutually exclusive with resource_names.<br/>    domain_names = optional(list(string))<br/>  }))</pre> | `[]` | no |
-| <a name="input_workspace_id"></a> [workspace\_id](#input\_workspace\_id) | Databricks workspace ID to bind to the NCC. A workspace can be bound to only one NCC at a time; binding a different NCC overwrites the previous binding. | `number` | n/a | yes |
 
 ## Outputs
 
