@@ -51,7 +51,7 @@ See [examples/basic](./examples/basic) for a complete working example.
 
 | Name | Version |
 | ---- | ------- |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.60 |
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.122.0 |
 
 ## Modules
 
@@ -67,6 +67,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 | ---- | ----------- | ---- | ------- | :------: |
+| <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. Set explicitly on the policy so the provider does not treat it as computed (which forces replacement on every plan). | `string` | n/a | yes |
 | <a name="input_policy_name"></a> [policy\_name](#input\_policy\_name) | Name for the network policy. Must be unique within the Databricks account. | `string` | n/a | yes |
 | <a name="input_allowed_internet_destinations"></a> [allowed\_internet\_destinations](#input\_allowed\_internet\_destinations) | Internet destinations allowed when egress\_mode is RESTRICTED\_ACCESS. Each entry has a 'destination' (a domain name) and 'internet\_destination\_type' (only "DNS\_NAME" is currently supported by the provider; IP\_RANGE is planned but not yet available). | <pre>list(object({<br/>    destination               = string<br/>    internet_destination_type = optional(string, "DNS_NAME")<br/>  }))</pre> | `[]` | no |
 | <a name="input_allowed_storage_destinations"></a> [allowed\_storage\_destinations](#input\_allowed\_storage\_destinations) | Storage targets accessible from serverless compute. For AWS, specify 'bucket\_name' and optionally 'region'; for Azure, specify 'azure\_storage\_account' and optionally 'azure\_storage\_service'. Optionally include 'storage\_destination\_type'. | <pre>list(object({<br/>    bucket_name              = optional(string)<br/>    azure_storage_account    = optional(string)<br/>    azure_storage_service    = optional(string)<br/>    region                   = optional(string)<br/>    storage_destination_type = optional(string)<br/>  }))</pre> | `[]` | no |
