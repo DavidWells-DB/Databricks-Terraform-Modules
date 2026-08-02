@@ -149,7 +149,8 @@ resource "databricks_mws_log_delivery" "this" {
   credentials_id           = databricks_mws_credentials.this.credentials_id
   storage_configuration_id = databricks_mws_storage_configurations.this.storage_configuration_id
   log_type                 = each.key
-  output_format            = "JSON"
-  delivery_path_prefix     = local.log_type_config[each.key].delivery_path_prefix
-  config_name              = "${var.resource_prefix}-${local.log_type_config[each.key].config_name}"
+  # AUDIT_LOGS supports JSON; BILLABLE_USAGE supports only CSV (the API rejects JSON for it).
+  output_format        = each.key == "BILLABLE_USAGE" ? "CSV" : "JSON"
+  delivery_path_prefix = local.log_type_config[each.key].delivery_path_prefix
+  config_name          = "${var.resource_prefix}-${local.log_type_config[each.key].config_name}"
 }

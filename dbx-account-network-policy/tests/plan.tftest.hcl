@@ -4,7 +4,7 @@ mock_provider "databricks" {
 
 variables {
   policy_name = "test-policy"
-  egress_mode = "ALLOW_LIST"
+  egress_mode = "RESTRICTED_ACCESS"
 }
 
 run "policy_name_uses_input" {
@@ -20,7 +20,7 @@ run "egress_mode_uses_input" {
   command = plan
 
   assert {
-    condition     = databricks_account_network_policy.this.egress.network_access.restriction_mode == "ALLOW_LIST"
+    condition     = databricks_account_network_policy.this.egress.network_access.restriction_mode == "RESTRICTED_ACCESS"
     error_message = "Egress mode should match the egress_mode input"
   }
 }
@@ -29,12 +29,12 @@ run "unrestricted_mode_accepted" {
   command = plan
 
   variables {
-    egress_mode = "UNRESTRICTED"
+    egress_mode = "FULL_ACCESS"
   }
 
   assert {
-    condition     = databricks_account_network_policy.this.egress.network_access.restriction_mode == "UNRESTRICTED"
-    error_message = "UNRESTRICTED egress mode should be accepted"
+    condition     = databricks_account_network_policy.this.egress.network_access.restriction_mode == "FULL_ACCESS"
+    error_message = "FULL_ACCESS egress mode should be accepted"
   }
 }
 
@@ -112,12 +112,12 @@ run "allowed_internet_destinations_can_be_set" {
   variables {
     allowed_internet_destinations = [
       {
-        destination               = "10.0.0.0/8"
-        internet_destination_type = "CIDR"
+        destination               = "pypi.org"
+        internet_destination_type = "DNS_NAME"
       },
       {
         destination               = "example.com"
-        internet_destination_type = "FQDN"
+        internet_destination_type = "DNS_NAME"
       }
     ]
   }

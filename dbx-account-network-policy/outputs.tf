@@ -9,6 +9,6 @@ output "policy_name" {
 }
 
 output "egress_mode" {
-  description = "Egress restriction mode configured for the policy (ALLOW_LIST or UNRESTRICTED)."
+  description = "Egress restriction mode configured for the policy (RESTRICTED_ACCESS or FULL_ACCESS)."
   value       = databricks_account_network_policy.this.egress.network_access.restriction_mode
 }

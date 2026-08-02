@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+- **`egress_mode` used invalid enum values.** Was `ALLOW_LIST`/`UNRESTRICTED`, but the provider's `restriction_mode` requires `RESTRICTED_ACCESS`/`FULL_ACCESS` — the wrong value crashed the provider at apply. Now `RESTRICTED_ACCESS` (default) / `FULL_ACCESS`, with corrected validation. **Breaking** for any caller that set `egress_mode` explicitly.
+- **`internet_destination_type` used invalid enum values** (`CIDR`/`FQDN`) in docs, defaults, and the example. The provider currently supports only `DNS_NAME`; added a default of `DNS_NAME` and validation. Example updated to DNS-name destinations.
+
 ## [0.1.0] - 2026-06-23
 
 ### Added

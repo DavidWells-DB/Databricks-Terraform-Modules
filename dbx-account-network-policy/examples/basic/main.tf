@@ -24,16 +24,16 @@ module "network_policy" {
   }
 
   policy_name = "example-restricted-policy"
-  egress_mode = "ALLOW_LIST"
+  egress_mode = "RESTRICTED_ACCESS"
 
   allowed_internet_destinations = [
     {
-      destination               = "10.0.0.0/8"
-      internet_destination_type = "CIDR"
+      destination               = "pypi.org"
+      internet_destination_type = "DNS_NAME"
     },
     {
-      destination               = "pypi.org"
-      internet_destination_type = "FQDN"
+      destination               = "files.pythonhosted.org"
+      internet_destination_type = "DNS_NAME"
     }
   ]
 

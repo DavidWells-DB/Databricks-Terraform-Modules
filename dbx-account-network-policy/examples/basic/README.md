@@ -4,7 +4,7 @@ This example demonstrates creating a Databricks account-level network policy tha
 
 ## Features
 
-- Creates a network policy with `ALLOW_LIST` egress mode
+- Creates a network policy with `RESTRICTED_ACCESS` egress mode
 - Allows specific internet destinations (private network ranges and PyPI)
 - Allows access to specific S3 bucket for data operations
 
@@ -31,4 +31,4 @@ This example demonstrates creating a Databricks account-level network policy tha
 
 - `network_policy_id`: Policy ID to reference in workspace or serverless configurations
 - `policy_name`: Name of the created policy
-- `egress_mode`: Configured egress mode (ALLOW_LIST)
+- `egress_mode`: Configured egress mode (RESTRICTED_ACCESS)
