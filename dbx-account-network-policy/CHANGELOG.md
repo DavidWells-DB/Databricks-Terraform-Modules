@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+- **Perpetual in-place diff on `policy_enforcement`.** The API defaults `enforcement_mode` to `ENFORCED` and returns it, but the module did not set `policy_enforcement`, so every plan tried to remove it. Now set explicitly via a new `enforcement_mode` input (default `ENFORCED`).
+
 ## [0.2.1] - 2026-08-01
 
 ### Fixed

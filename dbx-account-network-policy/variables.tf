@@ -8,6 +8,17 @@ variable "databricks_account_id" {
   }
 }
 
+variable "enforcement_mode" {
+  type        = string
+  description = "Policy enforcement mode. \"ENFORCED\" blocks traffic that violates the policy; \"DRY_RUN\" only logs violations. Set explicitly to match the API default and avoid a perpetual plan diff."
+  default     = "ENFORCED"
+  nullable    = false
+  validation {
+    condition     = contains(["ENFORCED", "DRY_RUN"], var.enforcement_mode)
+    error_message = "enforcement_mode must be \"ENFORCED\" or \"DRY_RUN\"."
+  }
+}
+
 variable "policy_name" {
   type        = string
   description = "Name for the network policy. Must be unique within the Databricks account."

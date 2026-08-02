@@ -11,6 +11,12 @@ resource "databricks_account_network_policy" "this" {
     network_access = {
       restriction_mode = var.egress_mode
 
+      # Set explicitly to match the API's server-side default. If omitted, the API returns
+      # enforcement_mode = "ENFORCED" but state has it unset, producing a perpetual in-place diff.
+      policy_enforcement = {
+        enforcement_mode = var.enforcement_mode
+      }
+
       allowed_internet_destinations = [
         for dest in var.allowed_internet_destinations : {
           destination               = dest.destination
