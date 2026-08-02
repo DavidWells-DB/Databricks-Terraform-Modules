@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-08-01
+
 ### Fixed
 - **Perpetual replacement / idempotency bug.** The resource did not set `account_id`, so the provider treated it as computed (known-after-apply) and forced replacement on every plan — a re-apply with no changes would destroy and recreate the policy. Now set from a new **required** `databricks_account_id` input. *Breaking:* callers must supply `databricks_account_id`. Verified fixed by apply testing (a second plan now shows no changes).
 
