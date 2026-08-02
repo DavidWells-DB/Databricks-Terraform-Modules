@@ -1,6 +1,10 @@
 resource "databricks_account_network_policy" "this" {
   provider = databricks.account
 
+  # Set account_id explicitly. If omitted, the provider treats it as computed
+  # (known-after-apply), which forces resource replacement on every plan — a
+  # perpetual-diff idempotency bug.
+  account_id        = var.databricks_account_id
   network_policy_id = var.policy_name
 
   egress = {

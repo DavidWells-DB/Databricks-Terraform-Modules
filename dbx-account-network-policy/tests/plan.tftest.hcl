@@ -3,8 +3,9 @@ mock_provider "databricks" {
 }
 
 variables {
-  policy_name = "test-policy"
-  egress_mode = "RESTRICTED_ACCESS"
+  databricks_account_id = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+  policy_name           = "test-policy"
+  egress_mode           = "RESTRICTED_ACCESS"
 }
 
 run "policy_name_uses_input" {
@@ -153,5 +154,16 @@ run "allowed_storage_destinations_can_be_set" {
   assert {
     condition     = length(databricks_account_network_policy.this.egress.network_access.allowed_storage_destinations) == 2
     error_message = "Should allow multiple storage destinations"
+  }
+}
+
+# Regression: account_id must be set from input so the provider does not force
+# replacement on every plan (idempotency bug fixed in v0.2.1).
+run "account_id_set_from_input" {
+  command = plan
+
+  assert {
+    condition     = databricks_account_network_policy.this.account_id == "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+    error_message = "account_id should be set from databricks_account_id input, not computed."
   }
 }

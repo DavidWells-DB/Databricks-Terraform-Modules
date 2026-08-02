@@ -1,3 +1,13 @@
+variable "databricks_account_id" {
+  type        = string
+  description = "Databricks account ID. Set explicitly on the policy so the provider does not treat it as computed (which forces replacement on every plan)."
+  nullable    = false
+  validation {
+    condition     = can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", var.databricks_account_id))
+    error_message = "databricks_account_id must be a UUID."
+  }
+}
+
 variable "policy_name" {
   type        = string
   description = "Name for the network policy. Must be unique within the Databricks account."
