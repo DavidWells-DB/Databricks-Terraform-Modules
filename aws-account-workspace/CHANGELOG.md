@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-08-03
+
+### Added
+- `workspace_status` and `workspace_status_message` outputs (parity with `aws-account-workspace-serverless`). Enables the blueprint Stable Output Contract to expose provisioning status (RUNNING/PROVISIONING/FAILED) and the acceptance harness to assert on it. Found while deploy-testing `aws/classic/poc`: the output was missing so the harness's RUNNING assertion had nothing to read.
+
 ## [0.1.0] - 2026-06-23
 
 ### Added
