@@ -1,0 +1,6 @@
+databricks_account_id    = "00000000-0000-0000-0000-000000000000"
+databricks_client_id     = "your-service-principal-application-id"
+databricks_client_secret = "your-service-principal-secret"
+
+workspace_id      = 1234567890123456
+network_policy_id = "np-abc123"
