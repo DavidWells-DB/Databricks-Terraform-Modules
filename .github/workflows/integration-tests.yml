@@ -1,0 +1,97 @@
+name: Integration tests (apply / idempotency)
+
+# Credential-gated apply-level tests — the gate that would have caught E6/E7/E11/E13,
+# all of which passed plan-only testing and only failed at apply time (E11 was a
+# perpetual-replacement idempotency bug invisible to plan tests).
+#
+# Runs the apply-command cases in tests/integration.tftest.hcl for each module, against
+# a real Databricks account + cloud. Because `terraform test` (1.15) has no native
+# "assert no changes", the idempotency check is enforced by the harness: apply the
+# module's example, then re-plan with -detailed-exitcode; exit code 2 (drift) fails.
+#
+# NOT run on every PR (it provisions real infrastructure and costs money/time). Triggers:
+#   - nightly schedule
+#   - manual dispatch
+#   - PRs labelled "integration" (opt-in per PR)
+
+on:
+  schedule:
+    - cron: "0 7 * * *" # 07:00 UTC nightly
+  workflow_dispatch:
+    inputs:
+      modules:
+        description: "Space-separated module dirs to test (default: only modules with active integration runs)"
+        required: false
+        default: ""
+  pull_request:
+    types: [labeled, synchronize]
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  # Serialize: these tests share a real account and can collide on named resources.
+  group: integration-tests
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    name: Should run
+    runs-on: ubuntu-latest
+    # Skip the PR path unless the PR carries the "integration" label.
+    if: >
+      github.event_name != 'pull_request' ||
+      contains(github.event.pull_request.labels.*.name, 'integration')
+    outputs:
+      modules: ${{ steps.pick.outputs.modules }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pick modules with active integration runs
+        id: pick
+        # A module is "integration-active" when its integration.tftest.hcl has at least
+        # one uncommented `run "..."` block. Manual dispatch can override the list.
+        run: |
+          if [ -n "${{ github.event.inputs.modules }}" ]; then
+            modules=$(echo "${{ github.event.inputs.modules }}" | tr ' ' '\n' | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          else
+            modules=$(for f in $(find . -name integration.tftest.hcl -not -path './.git/*'); do
+              if grep -qE '^run "' "$f"; then dirname "$(dirname "$f")" | sed 's|^\./||'; fi
+            done | sort | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          fi
+          echo "modules=${modules}" >> "$GITHUB_OUTPUT"
+          echo "Integration-active modules:"; echo "${modules}" | jq -r '.[]'
+
+  integration:
+    name: ${{ matrix.module }}
+    needs: gate
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 1 # shared account — avoid resource-name collisions
+      matrix:
+        module: ${{ fromJson(needs.gate.outputs.modules) }}
+    env:
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_ACCOUNT_HOST }}
+      DATABRICKS_ACCOUNT_ID: ${{ secrets.DATABRICKS_ACCOUNT_ID }}
+      DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+      TF_VAR_databricks_account_id: ${{ secrets.DATABRICKS_ACCOUNT_ID }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.15.8"
+          terraform_wrapper: false
+
+      - name: Integration test (apply)
+        working-directory: ${{ matrix.module }}
+        run: terraform test -filter=tests/integration.tftest.hcl
+
+      - name: Idempotency gate (apply example, re-plan = no changes)
+        working-directory: ${{ matrix.module }}
+        run: bash "${GITHUB_WORKSPACE}/scripts/idempotency-check.sh" .
