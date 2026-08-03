@@ -18,6 +18,16 @@ output "deployment_name" {
   value       = databricks_mws_workspaces.this.deployment_name
 }
 
+output "workspace_status" {
+  description = "Current provisioning status of the workspace (e.g. RUNNING, PROVISIONING, FAILED). Useful for debugging and downstream conditional logic."
+  value       = databricks_mws_workspaces.this.workspace_status
+}
+
+output "workspace_status_message" {
+  description = "Human-readable message accompanying workspace_status. Populated on error to aid diagnosis."
+  value       = databricks_mws_workspaces.this.workspace_status_message
+}
+
 output "dns_propagation_complete" {
   description = "Opaque value that becomes available only after the DNS propagation sleep completes. Use this output as an implicit depends_on trigger in root compositions that configure workspace-scoped providers."
   value       = time_sleep.dns_propagation.id
