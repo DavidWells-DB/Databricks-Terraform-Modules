@@ -43,6 +43,7 @@
 /dbx-workspace-compliance-settings/ david.wells@databricks.com
 /dbx-workspace-identity/ david.wells@databricks.com
 /dbx-workspace-ip-access-list/ david.wells@databricks.com
+/dbx-workspace-network-policy-binding/ david.wells@databricks.com
 /dbx-workspace-network-serverless/ david.wells@databricks.com
 /dbx-workspace-secret-scope/ david.wells@databricks.com
 /dbx-workspace-sql-warehouse/ david.wells@databricks.com
