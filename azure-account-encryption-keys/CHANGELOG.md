@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+- **Pin `azurerm < 5.0`.** azurerm 5.x removed `private_dns_zone_name` from `azurerm_private_dns_zone_virtual_network_link`; the module targets the 3.x/4.x API. The unbounded `>= 3.75` constraint let CI resolve 5.x and fail. (Found by the new unit-test CI, E10.)
+
 ## [0.1.0] - 2026-06-23
 
 ### Added

@@ -64,8 +64,24 @@ Run unit tests:
 ```bash
 cd <module-name>
 terraform init -backend=false
-terraform test
+terraform test -filter=tests/plan.tftest.hcl
 ```
+
+> **Note:** `terraform validate` at a module root fails with "provider configuration not
+> present" because modules declare `configuration_aliases` and carry no provider block of
+> their own. Validate through `examples/basic/` (which supplies a concrete provider) — the
+> example is the fixture (Rule 4.4).
+
+### CI
+
+- **`unit-tests.yml`** — runs on every push/PR, no credentials. For each module: `fmt -check`,
+  `validate` (via `examples/basic`), and the `plan.tftest.hcl` plan-tests. Modules are
+  discovered dynamically.
+- **`integration-tests.yml`** — credential-gated apply-level tests (nightly, manual dispatch,
+  or PRs labelled `integration`). Runs each module's `integration.tftest.hcl` apply cases,
+  then an **idempotency gate** (`scripts/idempotency-check.sh`): apply the example, re-plan
+  with `-detailed-exitcode`, fail on drift. This is the gate that catches the E6/E7/E11/E13
+  class of defects — all of which passed plan-only testing and only failed at apply/re-plan.
 
 ## Pre-commit
 

@@ -1,0 +1,99 @@
+name: Unit tests (fmt / validate / plan-test)
+
+# Credential-free gate that runs on every push and PR. Enforces the cheap half of
+# TERRAFORM_RULES Rule 4.x for every module:
+#   - terraform fmt -check   (formatted)
+#   - terraform validate     (config is internally consistent)
+#   - terraform test         (tests/plan.tftest.hcl — mock_provider, command = plan)
+#
+# IMPORTANT: modules declare `configuration_aliases` and have no provider block of their
+# own, so `terraform validate` at the module ROOT fails ("provider configuration not
+# present"). Validation runs through examples/basic, which supplies a concrete provider
+# block — the example IS the fixture (Rule 4.4). fmt and plan-tests run at the module root.
+#
+# The apply-command integration tests (tests/integration.tftest.hcl) need real
+# credentials and run separately in integration-tests.yml.
+#
+# Module directories are discovered dynamically, so new modules are covered the moment
+# they land — no workflow edit required. Test fixtures under tests/ are excluded.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: unit-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  discover:
+    name: Discover modules
+    runs-on: ubuntu-latest
+    outputs:
+      modules: ${{ steps.find.outputs.modules }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Find module directories
+        id: find
+        # A module dir is any directory with a versions.tf that is NOT under examples/ or
+        # tests/ (the latter excludes test fixtures like aws-uc-storage-credential's
+        # tests/fixtures/s3-bucket). Emitted as a JSON array for the matrix.
+        run: |
+          modules=$(find . -name versions.tf \
+              -not -path '*/examples/*' \
+              -not -path '*/tests/*' \
+              -not -path './.git/*' \
+            | sed 's|/versions.tf$||' | sed 's|^\./||' | sort \
+            | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "modules=${modules}" >> "$GITHUB_OUTPUT"
+          echo "Discovered modules:"
+          echo "${modules}" | jq -r '.[]'
+
+  unit:
+    name: ${{ matrix.module }}
+    needs: discover
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module: ${{ fromJson(needs.discover.outputs.modules) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.15.8"
+          terraform_wrapper: false
+
+      - name: fmt -check
+        working-directory: ${{ matrix.module }}
+        run: terraform fmt -check -recursive
+
+      - name: validate (via examples/basic)
+        working-directory: ${{ matrix.module }}
+        # Module roots use configuration_aliases and have no provider block, so validate
+        # must run where a concrete provider exists: examples/basic.
+        run: |
+          if [ -d examples/basic ]; then
+            cd examples/basic
+            terraform init -backend=false
+            terraform validate
+          else
+            echo "No examples/basic — skipping validate (every module is expected to ship one, Rule 4.4)."
+          fi
+
+      - name: plan-tests
+        working-directory: ${{ matrix.module }}
+        # Plan tests use mock_provider and run at the module root (no credentials).
+        run: |
+          terraform init -backend=false
+          if [ -f tests/plan.tftest.hcl ]; then
+            terraform test -filter=tests/plan.tftest.hcl
+          else
+            echo "No tests/plan.tftest.hcl — skipping (plan tests are expected per Rule 4.3)."
+          fi
