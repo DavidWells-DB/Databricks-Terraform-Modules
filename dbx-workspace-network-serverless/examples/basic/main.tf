@@ -17,21 +17,11 @@ provider "databricks" {
   client_secret = var.databricks_client_secret
 }
 
-provider "databricks" {
-  alias      = "workspace"
-  host       = var.databricks_workspace_url
-  account_id = var.databricks_account_id
-
-  client_id     = var.databricks_client_id
-  client_secret = var.databricks_client_secret
-}
-
 module "workspace_network_serverless" {
   source = "../.."
 
   providers = {
-    databricks.account   = databricks.account
-    databricks.workspace = databricks.workspace
+    databricks.account = databricks.account
   }
 
   workspace_id                   = var.workspace_id
@@ -50,11 +40,6 @@ variable "databricks_account_host" {
 variable "databricks_account_id" {
   type        = string
   description = "Databricks account ID."
-}
-
-variable "databricks_workspace_url" {
-  type        = string
-  description = "Databricks workspace URL (e.g. https://<workspace-id>.cloud.databricks.com)."
 }
 
 variable "databricks_client_id" {
