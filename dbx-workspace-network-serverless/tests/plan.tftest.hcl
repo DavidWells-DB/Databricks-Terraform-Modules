@@ -2,10 +2,6 @@ mock_provider "databricks" {
   alias = "account"
 }
 
-mock_provider "databricks" {
-  alias = "workspace"
-}
-
 variables {
   workspace_id                   = 1234567890123456
   network_connectivity_config_id = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
