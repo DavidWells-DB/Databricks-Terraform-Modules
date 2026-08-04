@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-08-03
+
+### Fixed
+- **`databricks_mws_vpc_endpoint` creation failed with a misleading `400 Unable to load OAuth Config`.** Root cause (diagnosed by isolated repro + `TF_LOG=DEBUG`): the request was going to `POST /api/2.0/accounts//vpc-endpoints` — **empty account id in the path**. Despite resource-level `account_id` being documented as deprecated (provider >= 1.60), provider **1.122.0 does not propagate the provider-level `account_id` into this resource's request path**. The API's 400 for the malformed URL surfaces as an OAuth message, which makes it look like an auth/credential problem — it is not (the same provider instance created `databricks_mws_private_access_settings` successfully seconds earlier, and the account API accepted the same SP token directly). **Fix:** new required `databricks_account_id` input, set explicitly on all three `databricks_mws_vpc_endpoint` resources. Verified: with `account_id` set, the error becomes a genuine API validation instead of the OAuth message.
+
+### Added
+- `databricks_account_id` (required, UUID-validated) — see above.
+
 ## [0.1.0] - 2026-06-23
 
 ### Added

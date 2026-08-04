@@ -5,6 +5,7 @@ mock_provider "databricks" {
 }
 
 variables {
+  databricks_account_id              = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
   databricks_gov_shard               = null
   vpc_id                             = "vpc-0123456789abcdef0"
   privatelink_subnet_ids             = ["subnet-0123456789abcdef0"]
