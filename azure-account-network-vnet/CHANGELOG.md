@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-08-04
+
+### Added
+- **`host_subnet_nsg_association_id` + `container_subnet_nsg_association_id` outputs.** The module already created both `azurerm_subnet_network_security_group_association` resources but never exposed their IDs, while `azure-account-workspace` **requires** them (`public_subnet_network_security_group_association_id` / `private_subnet_network_security_group_association_id`) whenever `virtual_network_id` is set — they are the dependency that stops the workspace being created before the NSGs are associated. Without these outputs a VNet-injected Azure workspace could not be composed from this module. Found while building the Azure classic config.
+
 ## [0.1.0] - 2026-06-23
 
 ### Added

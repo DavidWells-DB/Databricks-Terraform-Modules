@@ -42,3 +42,13 @@ output "nsg_name" {
   description = "Name of the Network Security Group associated with the Databricks subnets."
   value       = azurerm_network_security_group.this.name
 }
+
+output "host_subnet_nsg_association_id" {
+  description = "Resource ID of the NSG association for the host (public) subnet. Required by azure-account-workspace as public_subnet_network_security_group_association_id when VNet injection is used — the workspace must not be created before the associations exist."
+  value       = azurerm_subnet_network_security_group_association.host.id
+}
+
+output "container_subnet_nsg_association_id" {
+  description = "Resource ID of the NSG association for the container (private) subnet. Required by azure-account-workspace as private_subnet_network_security_group_association_id when VNet injection is used."
+  value       = azurerm_subnet_network_security_group_association.container.id
+}
