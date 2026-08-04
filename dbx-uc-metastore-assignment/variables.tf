@@ -1,11 +1,12 @@
 variable "metastore_id" {
   type        = string
-  description = "ID of the Unity Catalog metastore to assign. Obtain from the databricks_metastore resource or a data source."
-  nullable    = false
+  description = "ID of the Unity Catalog metastore to assign. OPTIONAL: leave null to create no assignment at all — Databricks auto-assigns the region's DEFAULT metastore to a new workspace, so an explicit assignment is only needed to override that (e.g. multiple metastores in the region with no default). When null, pass workspace_ids = {} as well; the default_catalog_name resource still works independently."
+  default     = null
+  nullable    = true
   validation {
     # Metastore IDs are UUIDs. Enforce format to catch copy-paste errors early.
-    condition     = can(regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", var.metastore_id))
-    error_message = "metastore_id must be a valid UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)."
+    condition     = var.metastore_id == null || can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", var.metastore_id))
+    error_message = "metastore_id, when set, must be a valid metastore UUID."
   }
 }
 
@@ -23,16 +24,22 @@ variable "workspace_ids" {
   EOT
   nullable    = false
 
-  validation {
-    condition     = length(var.workspace_ids) >= 1
-    error_message = "workspace_ids must contain at least one entry."
-  }
+  # NOTE: an EMPTY map is now valid — it is the "rely on the region's default metastore"
+  # case (metastore_id = null, no explicit assignment). The coherence validation below
+  # enforces that metastore_id and workspace_ids are set together, which replaces the old
+  # blanket "must contain at least one entry" rule.
 
   validation {
     condition = alltrue([
       for k, v in var.workspace_ids : can(regex("^[0-9]+$", v))
     ])
     error_message = "Each value in workspace_ids must be a numeric string (Databricks numeric workspace ID)."
+  }
+  validation {
+    # Coherence: assigning requires both a metastore and at least one workspace. Passing a
+    # metastore with no workspaces (or workspaces with no metastore) silently does nothing.
+    condition     = (var.metastore_id == null) == (length(var.workspace_ids) == 0)
+    error_message = "metastore_id and workspace_ids must be set together: supply both to create assignments, or neither (workspace_ids = {}) to rely on the region's default metastore."
   }
 }
 

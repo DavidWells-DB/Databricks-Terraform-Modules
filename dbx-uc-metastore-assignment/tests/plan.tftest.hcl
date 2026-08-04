@@ -136,3 +136,38 @@ run "output_default_catalog_name_null_when_unset" {
     error_message = "output.default_catalog_name should be null when default_catalog_name is not set"
   }
 }
+
+# --- Default-metastore path: no explicit assignment ---------------------------
+# Databricks auto-assigns the region's DEFAULT metastore to a new workspace, so the normal
+# case needs NO assignment. metastore_id = null + workspace_ids = {} must create zero
+# assignments while leaving the default-catalog setting usable.
+run "null_metastore_creates_no_assignment" {
+  command = plan
+
+  variables {
+    metastore_id         = null
+    workspace_ids        = {}
+    default_catalog_name = "main"
+  }
+
+  assert {
+    condition     = length(databricks_metastore_assignment.this) == 0
+    error_message = "null metastore_id must create no metastore assignment (rely on the region default)"
+  }
+  assert {
+    condition     = length(databricks_default_namespace_setting.this) == 1
+    error_message = "default_catalog_name must still apply independently of the metastore assignment"
+  }
+}
+
+# --- Coherence guard: metastore without workspaces is a silent no-op ---------
+run "metastore_without_workspaces_rejected" {
+  command = plan
+
+  variables {
+    metastore_id  = "11111111-2222-3333-4444-555555555555"
+    workspace_ids = {}
+  }
+
+  expect_failures = [var.workspace_ids]
+}
