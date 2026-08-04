@@ -125,4 +125,16 @@ resource "databricks_mws_networks" "this" {
       rest_api        = vpc_endpoints.value.rest_api_id != null ? [vpc_endpoints.value.rest_api_id] : []
     }
   }
+
+  lifecycle {
+    # REQUIRED for in-place back-end PrivateLink adoption on a LIVE workspace.
+    # Adding PrivateLink does not change the VPC — it adds interface endpoints to the
+    # existing VPC and re-registers this (metadata-only) network object with their IDs.
+    # The vpc_endpoints block is ForceNew, so without create_before_destroy Terraform
+    # tries delete-then-create and the delete fails: "cannot delete mws networks:
+    # INVALID_STATE: Network is being used by active workspace". Creating the replacement
+    # first lets the workspace re-point network_id (it is in the mws_workspaces
+    # running-update allowlist) before the old registration is removed.
+    create_before_destroy = true
+  }
 }
