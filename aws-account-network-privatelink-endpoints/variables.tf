@@ -1,3 +1,13 @@
+variable "databricks_account_id" {
+  type        = string
+  description = "Databricks account ID. REQUIRED on databricks_mws_vpc_endpoint: as of provider 1.122.0 the provider-level account_id is NOT propagated into this resource's request path, producing POST /api/2.0/accounts//vpc-endpoints (empty id) and a misleading `400 Unable to load OAuth Config`. Setting it explicitly is the fix (verified by isolated repro)."
+  nullable    = false
+  validation {
+    condition     = can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", var.databricks_account_id))
+    error_message = "databricks_account_id must be a valid UUID."
+  }
+}
+
 variable "databricks_gov_shard" {
   type        = string
   description = "Databricks GovCloud shard. null for commercial; \"civilian\" for AWS GovCloud civilian (FedRAMP High); \"dod\" for IL5/DoD. Drives the endpoint service attachment URIs and account host URL."

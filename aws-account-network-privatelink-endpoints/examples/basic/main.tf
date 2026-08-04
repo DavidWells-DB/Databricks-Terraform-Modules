@@ -31,7 +31,8 @@ module "privatelink_endpoints" {
     databricks.account = databricks.account
   }
 
-  databricks_gov_shard = null # commercial; set to "civilian" or "dod" for GovCloud
+  databricks_account_id = var.databricks_account_id
+  databricks_gov_shard  = null # commercial; set to "civilian" or "dod" for GovCloud
 
   vpc_id                 = var.vpc_id
   privatelink_subnet_ids = var.privatelink_subnet_ids

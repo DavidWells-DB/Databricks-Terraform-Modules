@@ -107,8 +107,16 @@ resource "aws_vpc_endpoint" "service_direct" {
 resource "databricks_mws_vpc_endpoint" "workspace" {
   provider = databricks.account
 
-  # account_id is set in the provider block (databricks.account); specifying it
-  # at resource level is deprecated in provider >= 1.60.
+  # account_id MUST be set explicitly here. Although resource-level account_id is
+  # documented as deprecated (provider >= 1.60), as of provider 1.122.0 the
+  # provider-level account_id is NOT propagated into this resource's request path:
+  # the call goes to POST /api/2.0/accounts//vpc-endpoints (empty account id) and the
+  # API returns 400 with the misleading message "Unable to load OAuth Config" — which
+  # looks like an auth failure but is a malformed URL. Verified by isolated repro:
+  # adding account_id changes the error to a real API validation. Sibling
+  # databricks_mws_private_access_settings does resolve it from the provider, so the
+  # behaviour is per-resource, not provider-wide.
+  account_id          = var.databricks_account_id
   vpc_endpoint_name   = var.workspace_vpc_endpoint_name
   aws_vpc_endpoint_id = aws_vpc_endpoint.workspace.id
   region              = var.region
@@ -117,6 +125,7 @@ resource "databricks_mws_vpc_endpoint" "workspace" {
 resource "databricks_mws_vpc_endpoint" "relay" {
   provider = databricks.account
 
+  account_id          = var.databricks_account_id
   vpc_endpoint_name   = var.relay_vpc_endpoint_name
   aws_vpc_endpoint_id = aws_vpc_endpoint.relay.id
   region              = var.region
@@ -126,6 +135,7 @@ resource "databricks_mws_vpc_endpoint" "service_direct" {
   count    = var.enable_service_direct ? 1 : 0
   provider = databricks.account
 
+  account_id          = var.databricks_account_id
   vpc_endpoint_name   = var.service_direct_vpc_endpoint_name
   aws_vpc_endpoint_id = aws_vpc_endpoint.service_direct[0].id
   region              = var.region
