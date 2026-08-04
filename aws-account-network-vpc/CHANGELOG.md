@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-08-03
+
+### Fixed
+- **`create_before_destroy` on `databricks_mws_networks` — enables in-place back-end PrivateLink adoption on a LIVE workspace.** The `vpc_endpoints` block is ForceNew, so adopting PrivateLink replaces the network *registration*; without `create_before_destroy` Terraform tried delete-then-create and the delete failed with `cannot delete mws networks: INVALID_STATE: Network is being used by active workspace`. Creating the replacement first lets the workspace re-point `network_id` (which is in the `mws_workspaces` running-update allowlist) before the old registration is removed. **The VPC does not change** — PrivateLink adds interface endpoints to the existing VPC; only this metadata-only registration is re-created. Found by a live evolution-journey apply; the pattern existed in the prior-art stack and was dropped in this module. Callers must also vary `network_name` when PrivateLink is toggled so the create-before-destroy replacement doesn't collide (see `networking/aws/basic` v0.3.2).
+
 ## [0.1.0] - 2026-06-23
 
 ### Added
