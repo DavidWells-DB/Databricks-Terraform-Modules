@@ -17,6 +17,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Migration
 - A `moved` block migrates existing state (`databricks_mws_networks.this` → `databricks_mws_networks.this["base"]`) with no destroy/create. Verify a plan against an existing deployment shows the move, not a replacement, before applying.
 
+### Added
+- New input **`enable_privatelink`** (bool, default false): the plan-time-known switch that decides whether the `privatelink` registration is created. This is deliberately separate from `vpc_endpoint_ids`, whose values are typically known only after apply — `for_each` keys must be known at plan time, so keying off the IDs raises `Invalid for_each argument` in real compositions (caller endpoints created in the same run). Callers set `enable_privatelink = true` and pass `vpc_endpoint_ids` for the block's values. Verified live 2026-09-29: back-end PrivateLink added to a RUNNING workspace in a single apply, workspace ID stable, base config retained, no delete-while-attached error.
+
 ### Notes
 - After a PrivateLink cutover, one detached `base` network config lingers (≤1 per workspace). It is harmless; the new `network_ids` output surfaces both IDs so it can be deleted deliberately later (safe once no workspace references it).
 - New output `network_ids` (map of role → network ID); `databricks_network_id` now resolves to the active config (PrivateLink when enabled, else base).

@@ -34,13 +34,6 @@ locals {
     }
   }
 
-  # Build the vpc_endpoint_ids block only when both IDs are provided.
-  # databricks_mws_networks accepts the nested block only when at least one ID is set.
-  has_vpc_endpoints = (
-    var.vpc_endpoint_ids != null &&
-    (var.vpc_endpoint_ids.rest_api_id != null || var.vpc_endpoint_ids.relay_id != null)
-  )
-
   # Network config registrations, keyed by role. databricks_mws_networks is REPLACE-ONLY for
   # vpc_endpoints (immutable per Databricks docs; the provider Update fn is a no-op). Adding
   # back-end PrivateLink to a RUNNING workspace is therefore Databricks' documented two-step
@@ -55,11 +48,14 @@ locals {
   # cutover the detached "base" config lingers (≤1 per workspace) — harmless; delete it
   # deliberately later if desired (safe once no workspace references it). map(string) keeps the
   # for_each type homogeneous (key => network_name); the endpoints block is gated on the key.
+  # KEY SET is driven by var.enable_privatelink (a plan-time-known bool), NOT by
+  # var.vpc_endpoint_ids — those IDs are usually known only after apply (they come from
+  # endpoints created in the same run), and for_each keys must be known at plan time.
   network_configs = merge(
     { base = var.network_name },
-    local.has_vpc_endpoints ? { privatelink = "${var.network_name}-privatelink" } : {}
+    var.enable_privatelink ? { privatelink = "${var.network_name}-privatelink" } : {}
   )
 
-  # The config the workspace must point at: the PrivateLink one when endpoints are set, else base.
-  active_network = local.has_vpc_endpoints ? "privatelink" : "base"
+  # The config the workspace must point at: the PrivateLink one when enabled, else base.
+  active_network = var.enable_privatelink ? "privatelink" : "base"
 }

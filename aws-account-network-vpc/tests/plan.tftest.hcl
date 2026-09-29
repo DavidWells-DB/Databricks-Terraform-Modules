@@ -272,24 +272,25 @@ run "private_route_tables_match_subnet_count" {
 
 # ── PrivateLink conditional logic + retain-old-config model ───────────────────
 
-run "only_base_config_when_no_endpoints" {
+run "only_base_config_when_privatelink_disabled" {
   command = plan
 
-  # vpc_endpoint_ids defaults to null — a single "base" registration, no vpc_endpoints block.
+  # enable_privatelink defaults false — a single "base" registration, no vpc_endpoints block.
   assert {
     condition     = length(databricks_mws_networks.this) == 1
-    error_message = "Only the 'base' network config should exist when vpc_endpoint_ids is null"
+    error_message = "Only the 'base' network config should exist when enable_privatelink is false"
   }
   assert {
     condition     = length(databricks_mws_networks.this["base"].vpc_endpoints) == 0
-    error_message = "vpc_endpoints block should be absent on the base config when vpc_endpoint_ids is null"
+    error_message = "vpc_endpoints block should be absent on the base config when PrivateLink is off"
   }
 }
 
-run "privatelink_config_added_and_base_retained_when_provided" {
+run "privatelink_config_added_and_base_retained_when_enabled" {
   command = plan
 
   variables {
+    enable_privatelink = true
     vpc_endpoint_ids = {
       rest_api_id = "vpce-0123456789abcdef0"
       relay_id    = "vpce-0123456789abcdef1"
@@ -313,5 +314,28 @@ run "privatelink_config_added_and_base_retained_when_provided" {
   assert {
     condition     = databricks_mws_networks.this["privatelink"].network_name == "test-network-privatelink"
     error_message = "The PrivateLink config name must be derived as <network_name>-privatelink"
+  }
+}
+
+run "privatelink_key_is_driven_by_bool_not_endpoint_values" {
+  command = plan
+
+  # The for_each KEY SET must come from enable_privatelink (plan-time known), NOT from
+  # vpc_endpoint_ids (whose values are typically known only after apply). Here PrivateLink is
+  # enabled but no endpoint IDs are supplied: the "privatelink" config must still be planned
+  # (proving the key does not depend on the IDs), just without a vpc_endpoints block. This is
+  # the exact case that fails with "Invalid for_each argument" if keys are derived from the IDs.
+  variables {
+    enable_privatelink = true
+    vpc_endpoint_ids   = null
+  }
+
+  assert {
+    condition     = length(databricks_mws_networks.this) == 2
+    error_message = "The 'privatelink' config must be planned from enable_privatelink alone, even without endpoint IDs"
+  }
+  assert {
+    condition     = length(databricks_mws_networks.this["privatelink"].vpc_endpoints) == 0
+    error_message = "Without vpc_endpoint_ids the PrivateLink config must omit the vpc_endpoints block"
   }
 }

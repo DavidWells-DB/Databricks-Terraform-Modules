@@ -85,12 +85,19 @@ variable "azs" {
   }
 }
 
+variable "enable_privatelink" {
+  type        = bool
+  description = "Whether to register the additional back-end PrivateLink network config (named \"<network_name>-privatelink\") alongside the retained base config. This is the PLAN-TIME-KNOWN switch that decides the set of network registrations; keep it separate from vpc_endpoint_ids, whose values are typically known only after apply (they come from endpoints created in the same run). Setting it true without vpc_endpoint_ids registers the PrivateLink config without the vpc_endpoints block."
+  default     = false
+  nullable    = false
+}
+
 variable "vpc_endpoint_ids" {
   type = object({
     rest_api_id = optional(string)
     relay_id    = optional(string)
   })
-  description = "Optional PrivateLink VPC endpoint IDs from aws-account-network-privatelink-endpoints. When provided, wired into the databricks_mws_networks registration to enable PrivateLink connectivity. Set to null to skip PrivateLink wiring."
+  description = "Optional PrivateLink VPC endpoint IDs from aws-account-network-privatelink-endpoints. Supplies the vpc_endpoints block ON the PrivateLink registration (see enable_privatelink). Values may be known only after apply; that is fine because enable_privatelink — not this — determines the resource key set. Set to null to omit the vpc_endpoints block."
   default     = null
 }
 
