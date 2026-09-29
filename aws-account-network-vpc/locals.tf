@@ -40,4 +40,26 @@ locals {
     var.vpc_endpoint_ids != null &&
     (var.vpc_endpoint_ids.rest_api_id != null || var.vpc_endpoint_ids.relay_id != null)
   )
+
+  # Network config registrations, keyed by role. databricks_mws_networks is REPLACE-ONLY for
+  # vpc_endpoints (immutable per Databricks docs; the provider Update fn is a no-op). Adding
+  # back-end PrivateLink to a RUNNING workspace is therefore Databricks' documented two-step
+  # procedure ("Update a running workspace"): register a NEW network config, then repoint the
+  # workspace to it. Databricks does NOT require deleting the old config, imposes no documented
+  # limit on network configs, and an unattached config is metadata-only and free.
+  #
+  # So we RETAIN the pre-PrivateLink "base" config instead of force-replacing (deleting) it:
+  # "base" is always present; enabling PrivateLink ADDS a "privatelink" key and the caller
+  # repoints the workspace to it in place. Nothing is deleted while attached, so the
+  # "cannot delete a network while it is attached to a workspace" failure cannot occur. After a
+  # cutover the detached "base" config lingers (≤1 per workspace) — harmless; delete it
+  # deliberately later if desired (safe once no workspace references it). map(string) keeps the
+  # for_each type homogeneous (key => network_name); the endpoints block is gated on the key.
+  network_configs = merge(
+    { base = var.network_name },
+    local.has_vpc_endpoints ? { privatelink = "${var.network_name}-privatelink" } : {}
+  )
+
+  # The config the workspace must point at: the PrivateLink one when endpoints are set, else base.
+  active_network = local.has_vpc_endpoints ? "privatelink" : "base"
 }
