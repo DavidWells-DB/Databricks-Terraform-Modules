@@ -127,8 +127,9 @@ resource "databricks_mws_networks" "this" {
   vpc_id             = aws_vpc.this.id
 
   dynamic "vpc_endpoints" {
-    # PrivateLink endpoint IDs belong only to the "privatelink" registration.
-    for_each = each.key == "privatelink" ? [var.vpc_endpoint_ids] : []
+    # PrivateLink endpoint IDs belong only to the "privatelink" registration (and only when
+    # supplied; enable_privatelink may be set a plan before the endpoint IDs are known).
+    for_each = each.key == "privatelink" && var.vpc_endpoint_ids != null ? [var.vpc_endpoint_ids] : []
 
     content {
       dataplane_relay = vpc_endpoints.value.relay_id != null ? [vpc_endpoints.value.relay_id] : []
