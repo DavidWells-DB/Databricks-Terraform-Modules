@@ -106,35 +106,39 @@ resource "aws_security_group" "this" {
   #checkov:skip=CKV2_AWS_5: This SG is attached to Databricks-managed EC2 instances; attachment is outside Terraform's scope here.
 }
 
-# Register the VPC configuration with the Databricks account API.
+# Register the VPC configuration(s) with the Databricks account API.
 # Pairs the cloud-side VPC with its Databricks-side registration per DATABRICKS_RULES.md Rule 1.4.
+#
+# Keyed by role (see locals.network_configs): always a "base" config; a separate "privatelink"
+# config is ADDED when vpc_endpoint_ids are supplied. Adding PrivateLink to a running workspace
+# therefore creates the new "privatelink" registration and RETAINS "base" (the caller repoints
+# the workspace's network_id in place). No create_before_destroy and no replacement: nothing is
+# deleted while attached, so the delete-while-attached failure cannot occur. Both configs may
+# reference the same subnets — Databricks explicitly allows multiple network config objects on
+# the same VPC/subnets (docs: customer-managed VPC, "share one subnet across multiple workspaces").
 resource "databricks_mws_networks" "this" {
+  for_each = local.network_configs
+
   provider           = databricks.account
   account_id         = var.databricks_account_id
-  network_name       = var.network_name
+  network_name       = each.value
   security_group_ids = [aws_security_group.this.id]
   subnet_ids         = [for k, s in aws_subnet.private : s.id]
   vpc_id             = aws_vpc.this.id
 
   dynamic "vpc_endpoints" {
-    # Only include the vpc_endpoints block when PrivateLink endpoint IDs are provided.
-    for_each = local.has_vpc_endpoints ? [var.vpc_endpoint_ids] : []
+    # PrivateLink endpoint IDs belong only to the "privatelink" registration.
+    for_each = each.key == "privatelink" ? [var.vpc_endpoint_ids] : []
 
     content {
       dataplane_relay = vpc_endpoints.value.relay_id != null ? [vpc_endpoints.value.relay_id] : []
       rest_api        = vpc_endpoints.value.rest_api_id != null ? [vpc_endpoints.value.rest_api_id] : []
     }
   }
+}
 
-  lifecycle {
-    # REQUIRED for in-place back-end PrivateLink adoption on a LIVE workspace.
-    # Adding PrivateLink does not change the VPC — it adds interface endpoints to the
-    # existing VPC and re-registers this (metadata-only) network object with their IDs.
-    # The vpc_endpoints block is ForceNew, so without create_before_destroy Terraform
-    # tries delete-then-create and the delete fails: "cannot delete mws networks:
-    # INVALID_STATE: Network is being used by active workspace". Creating the replacement
-    # first lets the workspace re-point network_id (it is in the mws_workspaces
-    # running-update allowlist) before the old registration is removed.
-    create_before_destroy = true
-  }
+# Migrate pre-v0.3.0 state (single unkeyed registration) to the "base" key with no destroy/create.
+moved {
+  from = databricks_mws_networks.this
+  to   = databricks_mws_networks.this["base"]
 }

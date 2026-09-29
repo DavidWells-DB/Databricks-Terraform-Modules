@@ -42,7 +42,7 @@ The module declares `configuration_aliases = [databricks.account]` per DATABRICK
 
 ## PrivateLink wiring
 
-Pass `vpc_endpoint_ids` from `aws-account-network-privatelink-endpoints` to enable PrivateLink connectivity. The module conditionally includes the `vpc_endpoints` block in `databricks_mws_networks` only when endpoint IDs are provided.
+Pass `vpc_endpoint_ids` from `aws-account-network-privatelink-endpoints` to enable PrivateLink connectivity. Because `databricks_mws_networks` is replace-only for `vpc_endpoints` (network configs are immutable), the module does **not** mutate the existing registration. Instead it keeps the pre-PrivateLink `base` registration and **adds** a separate `<network_name>-privatelink` registration carrying the `vpc_endpoints` block. The caller repoints the workspace's `network_id` (via the `databricks_network_id` output, which resolves to the PrivateLink registration when endpoints are set) — an in-place, running-workspace change. This is Databricks' documented procedure for adding PrivateLink to a running workspace (create a new network config, then update the workspace); nothing is deleted while attached, so there is no delete-while-attached failure. The now-detached `base` registration is retained (harmless; see the `network_ids` output for cleaning it up later).
 
 ## Subnet design
 
@@ -73,8 +73,8 @@ To restrict egress, use `aws-account-network-firewall` instead of this module's 
 
 | Name | Version |
 | ---- | ------- |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.0 |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.50 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.50.0 |
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.117.0 |
 
 ## Modules
 
@@ -99,14 +99,14 @@ No modules.
 | ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_azs"></a> [azs](#input\_azs) | List of availability zone names (e.g. ["us-east-1a", "us-east-1b"]). Must have the same length as private\_subnet\_cidrs. Also used for public and PrivateLink subnets when those lists are non-empty. | `list(string)` | n/a | yes |
 | <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. Used to register the network configuration with the Databricks account API. | `string` | n/a | yes |
-| <a name="input_databricks_gov_shard"></a> [databricks\_gov\_shard](#input\_databricks\_gov\_shard) | Databricks GovCloud shard. null for commercial; "civilian" for AWS GovCloud civilian (FedRAMP High); "dod" for IL5/DoD. | `string` | `null` | no |
-| <a name="input_network_name"></a> [network\_name](#input\_network\_name) | Name for the databricks\_mws\_networks registration. Should be descriptive and unique within the Databricks account. | `string` | n/a | yes |
+| <a name="input_network_name"></a> [network\_name](#input\_network\_name) | Base name for the databricks\_mws\_networks registration(s). Should be descriptive and unique within the Databricks account. When PrivateLink is enabled a second registration named "<network\_name>-privatelink" is created alongside it, so this is capped to leave room for that 12-char suffix. | `string` | n/a | yes |
 | <a name="input_private_subnet_cidrs"></a> [private\_subnet\_cidrs](#input\_private\_subnet\_cidrs) | List of CIDR blocks for private subnets. Must provide at least two subnets (one per AZ) for Databricks HA. Each CIDR must be a valid subnet of vpc\_cidr. | `list(string)` | n/a | yes |
+| <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | Prefix used to name all created resources (VPC, subnets, security group, route tables). Must be 1-32 characters, alphanumeric and hyphens only. | `string` | n/a | yes |
+| <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | CIDR block for the VPC. Must be a valid IPv4 CIDR (e.g. "10.0.0.0/16"). Databricks requires a minimum /16 for the workspace VPC. | `string` | n/a | yes |
+| <a name="input_databricks_gov_shard"></a> [databricks\_gov\_shard](#input\_databricks\_gov\_shard) | Databricks GovCloud shard. null for commercial; "civilian" for AWS GovCloud civilian (FedRAMP High); "dod" for IL5/DoD. | `string` | `null` | no |
 | <a name="input_privatelink_subnet_cidrs"></a> [privatelink\_subnet\_cidrs](#input\_privatelink\_subnet\_cidrs) | Optional list of CIDR blocks for PrivateLink-dedicated subnets. Leave empty to skip PrivateLink subnet creation. Required when deploying aws-account-network-privatelink-endpoints. | `list(string)` | `[]` | no |
 | <a name="input_public_subnet_cidrs"></a> [public\_subnet\_cidrs](#input\_public\_subnet\_cidrs) | Optional list of CIDR blocks for public subnets. Leave empty to skip public subnet creation. Required if deploying NAT gateways or internet-facing resources. | `list(string)` | `[]` | no |
-| <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | Prefix used to name all created resources (VPC, subnets, security group, route tables). Must be 1-32 characters, alphanumeric and hyphens only. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to all AWS resources created by this module. | `map(string)` | `{}` | no |
-| <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | CIDR block for the VPC. Must be a valid IPv4 CIDR (e.g. "10.0.0.0/16"). Databricks requires a minimum /16 for the workspace VPC. | `string` | n/a | yes |
 | <a name="input_vpc_endpoint_ids"></a> [vpc\_endpoint\_ids](#input\_vpc\_endpoint\_ids) | Optional PrivateLink VPC endpoint IDs from aws-account-network-privatelink-endpoints. When provided, wired into the databricks\_mws\_networks registration to enable PrivateLink connectivity. Set to null to skip PrivateLink wiring. | <pre>object({<br/>    rest_api_id = optional(string)<br/>    relay_id    = optional(string)<br/>  })</pre> | `null` | no |
 
 ## Outputs
@@ -114,7 +114,8 @@ No modules.
 | Name | Description |
 | ---- | ----------- |
 | <a name="output_databricks_account_host"></a> [databricks\_account\_host](#output\_databricks\_account\_host) | Databricks account host URL derived from databricks\_gov\_shard. Useful for root composition validation that the databricks.account provider is configured against the correct host. |
-| <a name="output_databricks_network_id"></a> [databricks\_network\_id](#output\_databricks\_network\_id) | Databricks network configuration ID from databricks\_mws\_networks. Pass to workspace creation modules as their network\_id input. |
+| <a name="output_databricks_network_id"></a> [databricks\_network\_id](#output\_databricks\_network\_id) | Databricks network configuration ID the workspace should use: the PrivateLink registration when vpc\_endpoint\_ids are set, otherwise the base registration. Pass to workspace creation modules as their network\_id input. |
+| <a name="output_network_ids"></a> [network\_ids](#output\_network\_ids) | Map of network config role (base / privatelink) to Databricks network ID. When PrivateLink is enabled both exist; the 'base' entry is the retained, now-detached config left behind by the in-place cutover. It is harmless (metadata-only, no documented account limit); delete it deliberately later if you want to tidy up — safe once no workspace references it. |
 | <a name="output_private_route_table_ids"></a> [private\_route\_table\_ids](#output\_private\_route\_table\_ids) | Map of private subnet name to route table ID. Pass to aws-account-network-egress-internet and aws-account-network-vpc-endpoints (S3 gateway) as their private\_route\_table\_ids input. |
 | <a name="output_private_subnet_ids"></a> [private\_subnet\_ids](#output\_private\_subnet\_ids) | Map of private subnet name to subnet ID. Pass to aws-account-network-vpc-endpoints as its private\_subnet\_ids input. |
 | <a name="output_privatelink_subnet_ids"></a> [privatelink\_subnet\_ids](#output\_privatelink\_subnet\_ids) | Map of PrivateLink subnet name to subnet ID. Pass to aws-account-network-privatelink-endpoints as its privatelink\_subnet\_ids input. Empty when no privatelink\_subnet\_cidrs are configured. |

@@ -270,19 +270,23 @@ run "private_route_tables_match_subnet_count" {
   }
 }
 
-# ── PrivateLink conditional logic ─────────────────────────────────────────────
+# ── PrivateLink conditional logic + retain-old-config model ───────────────────
 
-run "no_vpc_endpoints_block_when_null" {
+run "only_base_config_when_no_endpoints" {
   command = plan
 
-  # vpc_endpoint_ids defaults to null — no vpc_endpoints block should be included.
+  # vpc_endpoint_ids defaults to null — a single "base" registration, no vpc_endpoints block.
   assert {
-    condition     = length(databricks_mws_networks.this.vpc_endpoints) == 0
-    error_message = "vpc_endpoints block should be absent when vpc_endpoint_ids is null"
+    condition     = length(databricks_mws_networks.this) == 1
+    error_message = "Only the 'base' network config should exist when vpc_endpoint_ids is null"
+  }
+  assert {
+    condition     = length(databricks_mws_networks.this["base"].vpc_endpoints) == 0
+    error_message = "vpc_endpoints block should be absent on the base config when vpc_endpoint_ids is null"
   }
 }
 
-run "vpc_endpoints_block_present_when_provided" {
+run "privatelink_config_added_and_base_retained_when_provided" {
   command = plan
 
   variables {
@@ -292,8 +296,22 @@ run "vpc_endpoints_block_present_when_provided" {
     }
   }
 
+  # Enabling PrivateLink ADDS a "privatelink" config and RETAINS "base" (nothing is replaced or
+  # deleted). This is the core of the in-place-cutover fix: the old config lingers, detached.
   assert {
-    condition     = length(databricks_mws_networks.this.vpc_endpoints) == 1
-    error_message = "vpc_endpoints block should be present when vpc_endpoint_ids is provided"
+    condition     = length(databricks_mws_networks.this) == 2
+    error_message = "Both 'base' and 'privatelink' network configs should exist when vpc_endpoint_ids is provided"
+  }
+  assert {
+    condition     = length(databricks_mws_networks.this["base"].vpc_endpoints) == 0
+    error_message = "The retained 'base' config must have no vpc_endpoints (it is the pre-PrivateLink registration)"
+  }
+  assert {
+    condition     = length(databricks_mws_networks.this["privatelink"].vpc_endpoints) == 1
+    error_message = "The 'privatelink' config must carry the vpc_endpoints block"
+  }
+  assert {
+    condition     = databricks_mws_networks.this["privatelink"].network_name == "test-network-privatelink"
+    error_message = "The PrivateLink config name must be derived as <network_name>-privatelink"
   }
 }
