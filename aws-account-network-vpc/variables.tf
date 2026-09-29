@@ -85,24 +85,32 @@ variable "azs" {
   }
 }
 
+variable "enable_privatelink" {
+  type        = bool
+  description = "Whether to register the additional back-end PrivateLink network config (named \"<network_name>-privatelink\") alongside the retained base config. This is the PLAN-TIME-KNOWN switch that decides the set of network registrations; keep it separate from vpc_endpoint_ids, whose values are typically known only after apply (they come from endpoints created in the same run). Setting it true without vpc_endpoint_ids registers the PrivateLink config without the vpc_endpoints block."
+  default     = false
+  nullable    = false
+}
+
 variable "vpc_endpoint_ids" {
   type = object({
     rest_api_id = optional(string)
     relay_id    = optional(string)
   })
-  description = "Optional PrivateLink VPC endpoint IDs from aws-account-network-privatelink-endpoints. When provided, wired into the databricks_mws_networks registration to enable PrivateLink connectivity. Set to null to skip PrivateLink wiring."
+  description = "Optional PrivateLink VPC endpoint IDs from aws-account-network-privatelink-endpoints. Supplies the vpc_endpoints block ON the PrivateLink registration (see enable_privatelink). Values may be known only after apply; that is fine because enable_privatelink — not this — determines the resource key set. Set to null to omit the vpc_endpoints block."
   default     = null
 }
 
 variable "network_name" {
   type        = string
-  description = "Name for the databricks_mws_networks registration. Should be descriptive and unique within the Databricks account."
+  description = "Base name for the databricks_mws_networks registration(s). Should be descriptive and unique within the Databricks account. When PrivateLink is enabled a second registration named \"<network_name>-privatelink\" is created alongside it, so this is capped to leave room for that 12-char suffix."
   nullable    = false
   validation {
     # No public Databricks-documented constraint; using conservative common-sense bounds.
-    # 1-100 chars, alphanumeric + hyphen + underscore. Tighten if Databricks publishes constraints.
-    condition     = length(var.network_name) >= 1 && length(var.network_name) <= 100 && can(regex("^[A-Za-z0-9_-]+$", var.network_name))
-    error_message = "network_name must be 1-100 characters and contain only alphanumeric, underscore, or hyphen."
+    # Capped at 88 (not 100) so the derived "<name>-privatelink" registration stays <= 100 chars.
+    # Alphanumeric + hyphen + underscore. Tighten further if Databricks publishes constraints.
+    condition     = length(var.network_name) >= 1 && length(var.network_name) <= 88 && can(regex("^[A-Za-z0-9_-]+$", var.network_name))
+    error_message = "network_name must be 1-88 characters and contain only alphanumeric, underscore, or hyphen (capped at 88 to leave room for the \"-privatelink\" suffix)."
   }
 }
 
