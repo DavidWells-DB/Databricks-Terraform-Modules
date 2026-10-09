@@ -47,6 +47,14 @@ resource "google_compute_firewall" "this" {
   }
 
   source_ranges = [var.network_cidr]
+
+  # LIVE 2026-10-09: at workspace creation Databricks ADDS a target_tags entry
+  # ("databricks-<workspace_id>") to this rule in place, scoping intra-node traffic to its
+  # tagged GKE nodes. Terraform must not fight that platform-side management — reverting it
+  # would plan-drift on every apply and potentially widen the rule beyond Databricks' intent.
+  lifecycle {
+    ignore_changes = [target_tags]
+  }
 }
 
 # Register the GCP VPC configuration with the Databricks account API.
