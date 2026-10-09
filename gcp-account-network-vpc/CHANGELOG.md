@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [0.1.1] - 2026-10-09
 
 ### Fixed
-- `google_compute_firewall.this` now carries `ignore_changes = [target_tags]`: at workspace creation Databricks adds a `databricks-<workspace_id>` target tag to the required ingress rule IN PLACE (scoping intra-node traffic to its tagged GKE nodes). Without this, every plan on a workspace-bearing network shows a spurious in-place change, and applying the revert would fight platform-side management (live-verified 2026-10-09, test-sandbox-project).
+- `google_compute_firewall.this` now carries `ignore_changes = [target_tags]`: at workspace creation Databricks adds a `databricks-<workspace_id>` target tag to the required ingress rule IN PLACE (scoping intra-node traffic to its tagged GKE nodes). Without this, every plan on a workspace-bearing network shows a spurious in-place change, and applying the revert would fight platform-side management (live-verified 2026-10-09).
 
 ## [0.1.0] - 2026-06-23
 
