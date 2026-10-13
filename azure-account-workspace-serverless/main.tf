@@ -1,37 +1,57 @@
-resource "azurerm_databricks_workspace" "this" {
-  name                = var.name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  sku                 = var.sku
-  tags                = var.tags
+# A true serverless workspace: ARM properties.computeMode = "Serverless".
+# azurerm_databricks_workspace cannot create this workspace type — it exposes no
+# computeMode argument and always deploys the Classic (managed-VNet) type, which is
+# what v0.1.0 of this module shipped by mistake. This resource targets the ARM API
+# directly.
+# https://learn.microsoft.com/en-us/rest/api/databricks/workspaces/create-or-update?view=rest-databricks-2026-01-01
+resource "azapi_resource" "this" {
+  type      = "Microsoft.Databricks/workspaces@2026-01-01"
+  name      = var.name
+  parent_id = var.resource_group_id
+  location  = var.location
+  tags      = var.tags
 
-  managed_resource_group_name = var.managed_resource_group_name
+  # The 2026-01-01 API version postdates the ARM schemas azapi bundles for this
+  # resource type, so the provider cannot validate the body shape. The plan
+  # tests are the guardrail against body typos.
+  schema_validation_enabled = false
 
-  customer_managed_key_enabled          = var.customer_managed_key_enabled
-  infrastructure_encryption_enabled     = var.infrastructure_encryption_enabled
-  managed_services_cmk_key_vault_key_id = var.managed_services_cmk_key_vault_key_id
-  public_network_access_enabled         = var.public_network_access_enabled
+  body = {
+    sku = {
+      # Serverless workspaces require the premium tier.
+      name = "premium"
+    }
+    properties = {
+      # Required on create, immutable after. "Serverless" = every workload runs on
+      # serverless compute with managed default storage and UC auto-enabled;
+      # "Hybrid" = the classic managed-VNet workspace.
+      computeMode = "Serverless"
 
-  # azurerm requires managed_disk_cmk_key_vault_key_id and
-  # managed_disk_cmk_rotation_to_latest_version_enabled to be set together.
-  managed_disk_cmk_key_vault_key_id                   = var.managed_disk_cmk_key_vault_key_id
-  managed_disk_cmk_rotation_to_latest_version_enabled = var.managed_disk_cmk_key_vault_key_id != null ? var.managed_disk_cmk_rotation_to_latest_version_enabled : null
+      # "Disabled" = front-end reachable only via Private Link; the private
+      # endpoints themselves are wired by the root composition.
+      publicNetworkAccess = var.public_network_access_enabled ? "Enabled" : "Disabled"
 
-  # azurerm requires default_storage_firewall_enabled and access_connector_id to be
-  # specified together. Only set both when the firewall is enabled; omit otherwise.
-  default_storage_firewall_enabled = var.access_connector_id != null ? var.default_storage_firewall_enabled : null
-  access_connector_id              = var.access_connector_id
+      # Managed-services CMK is the only customer-managed key legal in Serverless
+      # computeMode: root storage is a managed service and managed-disk CMK is
+      # rejected by the API. The whole block is omitted when no key is supplied.
+      encryption = local.managed_services_cmk != null ? {
+        entities = {
+          managedServices = {
+            keySource = "Microsoft.Keyvault"
+            keyVaultProperties = {
+              keyName     = local.managed_services_cmk[1]
+              keyVaultUri = "https://${local.managed_services_cmk[0]}"
+              keyVersion  = local.managed_services_cmk[2]
+            }
+          }
+        }
+      } : null
+    }
+  }
 
-  # No custom_parameters block: serverless workspaces do not use VNet injection.
-  # Omitting custom_parameters is the Azure Databricks serverless pattern.
-}
-
-# Root DBFS customer-managed key — applied as a post-creation step because the
-# workspace must exist before the CMK association can be registered.
-resource "azurerm_databricks_workspace_root_dbfs_customer_managed_key" "this" {
-  count = local.root_dbfs_cmk_enabled ? 1 : 0
-
-  workspace_id     = azurerm_databricks_workspace.this.id
-  key_vault_key_id = var.root_dbfs_cmk_key_vault_key_id
-  key_vault_id     = var.root_dbfs_cmk_key_vault_id
+  response_export_values = {
+    workspace_id  = "properties.workspaceId"
+    workspace_url = "properties.workspaceUrl"
+    compute_mode  = "properties.computeMode"
+  }
 }

@@ -5,7 +5,7 @@ Minimum invocation of the `azure-account-workspace-serverless` module against a 
 ## Usage
 
 1. Copy `terraform.tfvars.example` to `terraform.tfvars` and fill in your Azure subscription ID and resource group.
-2. Ensure Azure credentials are configured (via `az login`, service principal environment variables, or managed identity).
+2. Ensure Azure credentials are configured (via `az login`, service principal environment variables `ARM_*`, or managed identity).
 3. Run:
 
    ```
@@ -16,9 +16,9 @@ Minimum invocation of the `azure-account-workspace-serverless` module against a 
 
 ## What this example demonstrates
 
-- Configuring the `azurerm` provider at the root with `features {}` and `subscription_id`.
-- Creating a serverless-only workspace (no VNet injection, no `custom_parameters`).
-- Using the module's default `sku = "premium"` (required for serverless compute).
+- Configuring the `azapi` provider at the root — the module creates the workspace via the ARM API, because `azurerm_databricks_workspace` cannot express `computeMode = "Serverless"`.
+- Creating a true serverless workspace: all workloads run on serverless compute, with managed default storage and Unity Catalog enabled automatically.
+- Deriving the module's `resource_group_id` input from the subscription ID and resource group name.
 
 ## Outputs
 

@@ -1,25 +1,23 @@
 terraform {
   required_version = ">= 1.7.0"
   required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 3.76"
+    azapi = {
+      source  = "Azure/azapi"
+      version = "~> 2.0"
     }
   }
 }
 
-provider "azurerm" {
-  features {}
+provider "azapi" {
   subscription_id = var.azure_subscription_id
 }
 
 module "workspace_serverless" {
   source = "../.."
 
-  name                = var.workspace_name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  sku                 = "premium"
+  name              = var.workspace_name
+  resource_group_id = "/subscriptions/${var.azure_subscription_id}/resourceGroups/${var.resource_group_name}"
+  location          = var.location
 
   tags = {
     Module  = "azure-account-workspace-serverless"
@@ -34,13 +32,13 @@ variable "azure_subscription_id" {
 
 variable "resource_group_name" {
   type        = string
-  description = "Azure resource group where the Databricks workspace will be created."
+  description = "Azure resource group (pre-existing) where the Databricks workspace will be created. Must be in a region that supports serverless workspaces."
 }
 
 variable "location" {
   type        = string
-  description = "Azure region for all resources (e.g. \"eastus\", \"westeurope\")."
-  default     = "eastus"
+  description = "Azure region for the workspace (e.g. \"eastus2\"). Must support serverless workspaces."
+  default     = "eastus2"
 }
 
 variable "workspace_name" {

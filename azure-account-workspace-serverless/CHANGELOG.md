@@ -6,6 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-13
+
+### Fixed — BREAKING (corrective)
+- **The module now creates an actual serverless workspace.** v0.1.0 deployed a Classic (managed-VNet / `computeMode = "Hybrid"`) workspace despite the module name and README: `azurerm_databricks_workspace` has no `computeMode` argument, so "no `custom_parameters` + premium SKU" never made the workspace serverless (reported by external testing — thank you).
+- The workspace is now an `azapi_resource` of `Microsoft.Databricks/workspaces@2026-01-01` with `properties.computeMode = "Serverless"` (required on create, immutable after). `azurerm` is no longer a dependency of this module.
+- Existing workspaces created by v0.1.0 cannot be adopted: `computeMode` cannot be changed, so they must be recreated.
+
+### Changed (breaking interface)
+- `resource_group_name` (bare name) → `resource_group_id` (full ARM ID; azapi's `parent_id`).
+- `sku` variable removed — `premium` is hardcoded in the ARM body (the only tier that supports serverless).
+- Outputs removed: `managed_resource_group_id`, `storage_account_identity`, `managed_disk_identity`, `disk_encryption_set_id` — none exist in Serverless computeMode (managed default storage, no managed resource group).
+- `workspace_id` is now a string (ARM exports it as a string; azurerm returned a number).
+
+### Removed
+- Variables for properties the Serverless computeMode forbids (ARM rejects them at create): `managed_resource_group_name`, `access_connector_id`, `default_storage_firewall_enabled`, `managed_disk_cmk_key_vault_key_id` (+ rotation flag), `root_dbfs_cmk_key_vault_key_id`/`root_dbfs_cmk_key_vault_id` (+ the post-creation root-DBFS CMK resource), `customer_managed_key_enabled`, `infrastructure_encryption_enabled`.
+
+### Added
+- `managed_services_cmk_key_vault_key_id` now carries the CMK alone (managed services is the only legal customer-managed key in Serverless mode) and is parsed into the ARM `keyName`/`keyVaultUri`/`keyVersion` triple; validation requires a versioned key identifier.
+- `response_export_values` exports `computeMode` so tests assert the deployed workspace type.
+- Plan tests assert `body.properties.computeMode == "Serverless"`, the pinned `@2026-01-01` API version, and the key-ID parsing; the integration test asserts the live workspace reports `computeMode == "Serverless"`.
+
+
 ## [0.1.0] - 2026-06-23
 
 ### Added

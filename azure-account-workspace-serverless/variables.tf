@@ -10,32 +10,20 @@ variable "name" {
   }
 }
 
-variable "resource_group_name" {
+variable "resource_group_id" {
   type        = string
-  description = "Name of the Azure resource group in which to create the Databricks workspace."
+  description = "ARM resource ID of the Azure resource group in which to create the workspace (azapi's parent_id takes the full ID, not the bare name)."
   nullable    = false
+  validation {
+    condition     = can(regex("^/subscriptions/[a-f0-9-]+/resourceGroups/[a-zA-Z0-9_.()-]+$", var.resource_group_id))
+    error_message = "resource_group_id must be a full ARM resource group ID: /subscriptions/<uuid>/resourceGroups/<name>."
+  }
 }
 
 variable "location" {
   type        = string
-  description = "Azure region for the workspace (e.g., \"eastus\", \"westeurope\"). Must match the resource group region."
+  description = "Azure region for the workspace (e.g., \"eastus2\", \"westeurope\"). Must be a region that supports serverless workspaces — see https://learn.microsoft.com/en-us/azure/databricks/resources/feature-region-support."
   nullable    = false
-}
-
-variable "sku" {
-  type        = string
-  description = "Databricks workspace SKU. Use \"premium\" for serverless compute, Unity Catalog, and all Premium features. \"standard\" does not support serverless compute."
-  default     = "premium"
-  validation {
-    condition     = contains(["standard", "premium", "trial"], var.sku)
-    error_message = "sku must be \"standard\", \"premium\", or \"trial\"."
-  }
-}
-
-variable "managed_resource_group_name" {
-  type        = string
-  description = "Optional name for the managed resource group that Azure Databricks creates for control-plane resources. If null, Azure generates a name automatically."
-  default     = null
 }
 
 variable "tags" {
@@ -48,7 +36,7 @@ variable "tags" {
 
 variable "public_network_access_enabled" {
   type        = bool
-  description = "Allow public network access to the workspace front-end. Set to false to require private connectivity only (requires private endpoints wired by the root composition)."
+  description = "Allow public network access to the workspace front-end. Set to false to require private connectivity only (front-end Private Link; the private endpoints themselves are wired by the root composition)."
   default     = true
 }
 
@@ -56,56 +44,10 @@ variable "public_network_access_enabled" {
 
 variable "managed_services_cmk_key_vault_key_id" {
   type        = string
-  description = "Key Vault key ID for managed services (notebooks, artifacts) encryption. Requires customer_managed_key_enabled = true and premium SKU."
+  description = "Versioned Key Vault key identifier (https://<vault>/keys/<name>/<version>) for managed-services encryption — the only customer-managed key legal in a serverless workspace. Omit for platform-managed keys."
   default     = null
-}
-
-variable "managed_disk_cmk_key_vault_key_id" {
-  type        = string
-  description = "Key Vault key ID for managed disk encryption. Requires premium SKU."
-  default     = null
-}
-
-variable "managed_disk_cmk_rotation_to_latest_version_enabled" {
-  type        = bool
-  description = "Automatically rotate managed disk CMK to the latest key version. Only relevant when managed_disk_cmk_key_vault_key_id is set."
-  default     = false
-}
-
-variable "customer_managed_key_enabled" {
-  type        = bool
-  description = "Enable customer-managed key for managed services encryption. Requires premium SKU and managed_services_cmk_key_vault_key_id."
-  default     = false
-}
-
-variable "infrastructure_encryption_enabled" {
-  type        = bool
-  description = "Enable a secondary layer of encryption for workspace data at rest. Requires premium SKU. Immutable after workspace creation."
-  default     = false
-}
-
-variable "root_dbfs_cmk_key_vault_key_id" {
-  type        = string
-  description = "Key Vault key ID for root DBFS encryption via azurerm_databricks_workspace_root_dbfs_customer_managed_key. When set, root DBFS CMK is configured as a post-creation step."
-  default     = null
-}
-
-variable "root_dbfs_cmk_key_vault_id" {
-  type        = string
-  description = "Resource ID of the Key Vault containing root_dbfs_cmk_key_vault_key_id. Required only when the Key Vault is in a different subscription than the workspace."
-  default     = null
-}
-
-# Default storage firewall
-
-variable "default_storage_firewall_enabled" {
-  type        = bool
-  description = "Disallow public access to the default storage account. When true, access_connector_id must also be set."
-  default     = false
-}
-
-variable "access_connector_id" {
-  type        = string
-  description = "Resource ID of the Azure Databricks Access Connector. Required when default_storage_firewall_enabled = true."
-  default     = null
+  validation {
+    condition     = var.managed_services_cmk_key_vault_key_id == null || can(regex("^https://[^/]+/keys/[^/]+/[^/]+$", var.managed_services_cmk_key_vault_key_id))
+    error_message = "managed_services_cmk_key_vault_key_id must be a versioned key identifier: https://<vault-host>/keys/<key-name>/<key-version>."
+  }
 }
