@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-14
+
+### Added
+- `compute_mode` output — the deployed workspace compute mode, refreshed from the account API on every plan/apply. Lets roots assert the deployed workspace type (a value other than `SERVERLESS` would mean the workspace is not what this module promises); asserted by a new plan-test run against the mock.
+
 ## [0.1.0] - 2026-06-23
 
 ### Added

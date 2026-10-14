@@ -32,3 +32,8 @@ output "ncc_binding_id" {
   description = "ID of the NCC binding resource, or null if no network_connectivity_config_id was provided."
   value       = length(databricks_mws_ncc_binding.this) > 0 ? databricks_mws_ncc_binding.this[0].id : null
 }
+
+output "compute_mode" {
+  description = "The deployed workspace compute mode (\"SERVERLESS\"), refreshed from the account API on every plan/apply. Lets consumers assert the deployed workspace type — a value other than SERVERLESS here would mean the workspace is not what this module promises."
+  value       = databricks_mws_workspaces.this.compute_mode
+}

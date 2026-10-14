@@ -7,6 +7,7 @@ mock_provider "databricks" {
       workspace_url            = "https://my-serverless-workspace.cloud.databricks.com"
       workspace_status         = "RUNNING"
       workspace_status_message = ""
+      compute_mode             = "SERVERLESS"
     }
   }
 
@@ -204,5 +205,16 @@ run "ncc_binding_created_with_config_id" {
   assert {
     condition     = databricks_mws_ncc_binding.this[0].network_connectivity_config_id == "mock-ncc-id-abc123"
     error_message = "NCC binding should reference the provided network_connectivity_config_id"
+  }
+}
+
+# --- Deployed-type readback ----------------------------------------------------
+
+run "compute_mode_output_reports_serverless" {
+  command = plan
+
+  assert {
+    condition     = output.compute_mode == "SERVERLESS"
+    error_message = "compute_mode output must report SERVERLESS (the deployed workspace type, refreshed from the account API)"
   }
 }
