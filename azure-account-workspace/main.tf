@@ -96,3 +96,18 @@ resource "azapi_update_resource" "compliance_standards" {
 
   depends_on = [azurerm_databricks_workspace.this]
 }
+
+# Deployed-type readback: read the workspace back from the ARM API and expose
+# properties.computeMode. azurerm cannot see this field at all (it has no
+# compute_mode argument), so this is the only in-Terraform way for a consumer
+# to verify the deployed workspace is the Hybrid/classic type this module
+# creates — the same class of check that catches a "serverless" deployment
+# silently coming up as the managed-VNet classic type.
+data "azapi_resource" "this" {
+  type        = "Microsoft.Databricks/workspaces@2026-01-01"
+  resource_id = azurerm_databricks_workspace.this.id
+
+  response_export_values = {
+    compute_mode = "properties.computeMode"
+  }
+}

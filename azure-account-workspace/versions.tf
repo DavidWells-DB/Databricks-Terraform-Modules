@@ -8,9 +8,10 @@ terraform {
       version = ">= 3.76"
     }
     azapi = {
-      # 1.9+: stable azapi_update_resource with ignore_missing_property behavior
+      # 2.x: object-style `body` (the compliance azapi_update_resource already uses it)
+      # and the azapi_resource data source for the computeMode readback.
       source  = "Azure/azapi"
-      version = ">= 1.9"
+      version = ">= 2.0"
     }
   }
 }

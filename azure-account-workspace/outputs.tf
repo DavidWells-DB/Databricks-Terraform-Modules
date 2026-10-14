@@ -32,3 +32,8 @@ output "disk_encryption_set_id" {
   description = "Resource ID of the Managed Disk Encryption Set. Populated only when managed_disk_cmk_key_vault_key_id is set."
   value       = azurerm_databricks_workspace.this.disk_encryption_set_id
 }
+
+output "compute_mode" {
+  description = "The deployed ARM properties.computeMode (\"Hybrid\" for this module's classic workspace), read back from the ARM API on every plan/apply. Lets consumers assert the deployed workspace type rather than trusting the config."
+  value       = data.azapi_resource.this.output.compute_mode
+}

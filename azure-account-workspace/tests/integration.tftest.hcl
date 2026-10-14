@@ -43,6 +43,11 @@ run "applies_and_produces_workspace_url" {
     condition     = output.workspace_resource_id != ""
     error_message = "Expected non-empty workspace_resource_id after successful apply"
   }
+
+  assert {
+    condition     = output.compute_mode == "Hybrid"
+    error_message = "Live workspace must report ARM computeMode == \"Hybrid\" (this module's classic type — anything else means the deployed workspace is not what the module promises)"
+  }
 }
 
 # Tier-gated failure test: enhanced security features require the Enhanced Security and

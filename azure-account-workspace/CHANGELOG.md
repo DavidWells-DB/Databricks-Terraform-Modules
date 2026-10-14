@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-14
+
+### Added
+- `compute_mode` output — the deployed ARM `properties.computeMode` (`"Hybrid"` for this module's classic workspace), read back via an `azapi_resource` data source on every plan/apply. azurerm cannot see this field at all, so this is the only in-Terraform way for consumers to verify the deployed workspace type; asserted in the integration test. (Mocked plan runs cannot materialize azapi's dynamic `output`, so no plan-test assertion.)
+
+### Changed
+- azapi provider floor `>= 1.9` → `>= 2.0` (honest pin: the compliance `azapi_update_resource` already used the 2.x object-style body; the new data source's `response_export_values` map form is 2.x-only).
+
+
 ## [0.1.0] - 2026-06-23
 
 ### Added
