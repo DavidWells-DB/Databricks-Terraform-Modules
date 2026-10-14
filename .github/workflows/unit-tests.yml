@@ -1,7 +1,7 @@
 name: Unit tests (fmt / validate / plan-test)
 
 # Credential-free gate that runs on every push and PR. Enforces the cheap half of
-# the module rules Rule 4.x for every module:
+# quality gates for every module:
 #   - terraform fmt -check   (formatted)
 #   - terraform validate     (config is internally consistent)
 #   - terraform test         (tests/plan.tftest.hcl — mock_provider, command = plan)

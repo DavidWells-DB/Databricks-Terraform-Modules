@@ -45,13 +45,6 @@ Each module's README documents inputs, outputs, minimum tier, provider configura
 | Workspace | Agnostic | 8 |
 | **Total** | | **51** |
 
-Full catalog with purpose and resources: [docs/module candidate notes](./docs/module candidate notes)
-
-## Rules
-
-Modules are authored against two rules documents:
-- [docs/the module rules](./docs/the module rules) — general Terraform module rules
-- [docs/the Databricks module rules](./docs/the Databricks module rules) — Databricks-specific extensions
 
 ## Testing
 
