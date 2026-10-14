@@ -42,4 +42,9 @@ run "applies_true_serverless_workspace" {
     condition     = azapi_resource.this.output.compute_mode == "Serverless"
     error_message = "Live workspace must report properties.computeMode == \"Serverless\" (v0.1.0 deployed the Classic managed-VNet type here)"
   }
+
+  assert {
+    condition     = output.compute_mode == "Serverless"
+    error_message = "compute_mode OUTPUT must report Serverless (mocked plan runs cannot materialize azapi's dynamic output — this is the live assertion)"
+  }
 }

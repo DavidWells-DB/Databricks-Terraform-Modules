@@ -50,6 +50,7 @@ This module uses only the **`azapi`** provider (`~> 2.0`). `azurerm` is delibera
 | `workspace_id` | Numeric Databricks workspace ID (string) for the control plane. |
 | `workspace_url` | `https://adb-{id}.{n}.azuredatabricks.net` — host for the workspace-scoped Databricks provider. |
 | `workspace_resource_id` | ARM resource ID of the workspace (RBAC, policy, diagnostic settings, private endpoint wiring). |
+| `compute_mode` | The deployed ARM `properties.computeMode` (`"Serverless"`) — lets consumers verify the workspace type live; this exact check would have caught the v0.1.0 bug. |
 
 ## What the module deliberately does NOT expose (and why)
 

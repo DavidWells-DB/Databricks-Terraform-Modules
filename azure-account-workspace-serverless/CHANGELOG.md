@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-10-14
+
+### Added
+- `compute_mode` output — the deployed ARM `properties.computeMode` (`"Serverless"`), from the same `response_export_values` path. Lets roots/journeys verify the deployed workspace type post-apply without an out-of-band `az show`. (Mocked plan tests cannot materialize azapi's dynamic `output` attribute, so this is asserted in the integration test and by live journeys.)
+
+
 ## [1.0.0] - 2026-10-13
 
 ### Fixed — BREAKING (corrective)

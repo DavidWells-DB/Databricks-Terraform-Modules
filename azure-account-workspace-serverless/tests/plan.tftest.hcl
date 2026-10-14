@@ -226,3 +226,4 @@ run "unversioned_key_id_rejected" {
 
   expect_failures = [var.managed_services_cmk_key_vault_key_id]
 }
+
