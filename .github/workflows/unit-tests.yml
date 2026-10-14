@@ -12,7 +12,8 @@ name: Unit tests (fmt / validate / plan-test)
 # block — the example IS the fixture (Rule 4.4). fmt and plan-tests run at the module root.
 #
 # The apply-command integration tests (tests/integration.tftest.hcl) need real
-# credentials and run separately in integration-tests.yml.
+# credentials and provision real cloud infrastructure, so they are NOT run in CI.
+# Run them locally against a test account with `terraform test`.
 #
 # Module directories are discovered dynamically, so new modules are covered the moment
 # they land — no workflow edit required. Test fixtures under tests/ are excluded.

@@ -58,7 +58,7 @@ Modules are authored against two rules documents:
 Every module ships with:
 - **Static analysis:** `terraform fmt`, `terraform validate`, TFLint, tfsec, Checkov
 - **Unit tests:** `tests/plan.tftest.hcl` — `mock_provider` + `command = plan`. No credentials required.
-- **Integration tests:** `tests/integration.tftest.hcl` — `command = apply` against real infrastructure. Credential-gated.
+- **Integration tests:** `tests/integration.tftest.hcl` — `command = apply` against real infrastructure. Credential-gated, **run locally only** (not in CI).
 
 Run unit tests:
 ```bash
@@ -77,11 +77,19 @@ terraform test -filter=tests/plan.tftest.hcl
 - **`unit-tests.yml`** — runs on every push/PR, no credentials. For each module: `fmt -check`,
   `validate` (via `examples/basic`), and the `plan.tftest.hcl` plan-tests. Modules are
   discovered dynamically.
-- **`integration-tests.yml`** — credential-gated apply-level tests (nightly, manual dispatch,
-  or PRs labelled `integration`). Runs each module's `integration.tftest.hcl` apply cases,
-  then an **idempotency gate** (`scripts/idempotency-check.sh`): apply the example, re-plan
-  with `-detailed-exitcode`, fail on drift. This is the gate that catches the E6/E7/E11/E13
-  class of defects — all of which passed plan-only testing and only failed at apply/re-plan.
+Apply-level integration tests are **not run in CI** — they provision real cloud
+infrastructure (cost, credentials, and shared-account collisions make them a poor fit for
+GitHub Actions). Run them locally against a test account:
+
+```bash
+cd <module-name>
+terraform test -filter=tests/integration.tftest.hcl
+# idempotency check (apply example, re-plan = no changes):
+bash scripts/idempotency-check.sh <module-name>
+```
+
+This is the gate that catches the E6/E7/E11/E13 class of defects — all of which passed
+plan-only testing and only failed at apply/re-plan.
 
 ## Pre-commit
 
