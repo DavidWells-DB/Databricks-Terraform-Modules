@@ -111,6 +111,7 @@ jobs:
       - name: install tflint + tfsec
         run: |
           curl -s https://raw.githubusercontent.com/terraform-linters/tflint/main/install_linux.sh | bash
+          sudo mv tflint /usr/local/bin/tflint
           curl -sSL https://github.com/aquasecurity/tfsec/releases/latest/download/tfsec-linux-amd64 \
             -o /usr/local/bin/tfsec && chmod +x /usr/local/bin/tfsec
       - name: tflint (recursive, no plugins)
