@@ -15,15 +15,14 @@ provider "aws" {
 module "serverless_privatelink" {
   source = "../.."
 
-  name                  = "databricks-serverless-pl"
-  vpc_id                = var.vpc_id
-  subnet_ids            = var.subnet_ids
-  target_ip             = var.target_ip
-  target_port           = var.target_port
-  listener_port         = var.listener_port
-  databricks_account_id = var.databricks_account_id
-  aws_partition         = "aws"
-  databricks_gov_shard  = null
+  name                 = "databricks-serverless-pl"
+  vpc_id               = var.vpc_id
+  subnet_ids           = var.subnet_ids
+  target_ip            = var.target_ip
+  target_port          = var.target_port
+  listener_port        = var.listener_port
+  aws_partition        = "aws"
+  databricks_gov_shard = null
 
   tags = {
     Module  = "aws-account-network-serverless-privatelink"
@@ -64,10 +63,6 @@ variable "listener_port" {
   default     = null
 }
 
-variable "databricks_account_id" {
-  type        = string
-  description = "Databricks account ID."
-}
 
 output "endpoint_service_name" {
   value       = module.serverless_privatelink.endpoint_service_name

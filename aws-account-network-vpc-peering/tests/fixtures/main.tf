@@ -2,6 +2,8 @@
 # This module creates the prerequisites needed to test the vpc-peering module.
 
 terraform {
+  required_version = ">= 1.7.0"
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"

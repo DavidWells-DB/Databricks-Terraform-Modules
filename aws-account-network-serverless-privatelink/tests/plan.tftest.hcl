@@ -1,14 +1,13 @@
 mock_provider "aws" {}
 
 variables {
-  name                  = "test-serverless-pl"
-  vpc_id                = "vpc-0123456789abcdef0"
-  subnet_ids            = ["subnet-0123456789abcdef0"]
-  target_ip             = "10.0.1.100"
-  target_port           = 5432
-  databricks_account_id = "00000000-0000-0000-0000-000000000000"
-  aws_partition         = "aws"
-  databricks_gov_shard  = null
+  name                 = "test-serverless-pl"
+  vpc_id               = "vpc-0123456789abcdef0"
+  subnet_ids           = ["subnet-0123456789abcdef0"]
+  target_ip            = "10.0.1.100"
+  target_port          = 5432
+  aws_partition        = "aws"
+  databricks_gov_shard = null
 }
 
 run "commercial_shard_uses_commercial_account_id" {

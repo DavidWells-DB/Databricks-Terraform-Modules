@@ -62,11 +62,6 @@ variable "listener_port" {
   }
 }
 
-variable "databricks_account_id" {
-  type        = string
-  description = "Databricks account ID. Used to construct the AWS account principal ARN that is authorized to connect to the VPC endpoint service."
-  nullable    = false
-}
 
 variable "databricks_gov_shard" {
   type        = string

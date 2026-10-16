@@ -23,6 +23,8 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  schedule:
+    - cron: "0 6 * * 0" # weekly (Sun 06:00 UTC): catch provider drift with no cloud creds
 
 permissions:
   contents: read
@@ -98,3 +100,20 @@ jobs:
           else
             echo "No tests/plan.tftest.hcl — skipping (plan tests are expected per Rule 4.3)."
           fi
+
+  # Static analysis (the verify checklist's mandated gates): tflint for config
+  # hygiene and tfsec for security findings, across every module + its examples.
+  static-analysis:
+    name: tflint + tfsec
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: install tflint + tfsec
+        run: |
+          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/main/install_linux.sh | bash
+          curl -sSL https://github.com/aquasecurity/tfsec/releases/latest/download/tfsec-linux-amd64 \
+            -o /usr/local/bin/tfsec && chmod +x /usr/local/bin/tfsec
+      - name: tflint (recursive, no plugins)
+        run: tflint --recursive --chdir=.
+      - name: tfsec
+        run: tfsec --no-guide 2>/dev/null || tfsec

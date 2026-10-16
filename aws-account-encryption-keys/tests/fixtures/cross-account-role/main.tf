@@ -1,3 +1,14 @@
+terraform {
+  required_version = ">= 1.7.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
 # Minimal cross-account IAM role for testing encryption-keys module
 # The encryption-keys module needs a cross-account role ARN to add to the workspace-storage key policy
 
