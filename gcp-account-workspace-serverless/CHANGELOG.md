@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-16
+
+### Added
+- `compute_mode` output — deployed-type readback (`"SERVERLESS"`) from `databricks_mws_workspaces.compute_mode`, the same detection pattern as the aws/azure serverless modules. Lets roots and the acceptance harness verify the deployed workspace type post-apply.
+
+
 ## [0.1.0] - 2026-06-23
 
 ### Added

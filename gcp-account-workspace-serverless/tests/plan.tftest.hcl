@@ -7,6 +7,7 @@ mock_provider "databricks" {
       workspace_id    = 1234567890
       workspace_url   = "https://1234567890.gcp.databricks.com"
       deployment_name = "example-serverless"
+      compute_mode    = "SERVERLESS"
     }
   }
 }
@@ -164,4 +165,13 @@ run "invalid_workspace_name_spaces_rejected" {
   }
 
   expect_failures = [var.workspace_name]
+}
+
+run "compute_mode_output_reports_serverless" {
+  command = plan
+
+  assert {
+    condition     = output.compute_mode == "SERVERLESS"
+    error_message = "compute_mode output must report the deployed SERVERLESS type (detection pattern)"
+  }
 }

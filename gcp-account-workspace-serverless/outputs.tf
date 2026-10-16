@@ -22,3 +22,8 @@ output "dns_propagation_complete" {
   description = "Opaque value that becomes available only after the DNS propagation sleep completes. Use this output as an implicit depends_on trigger in root compositions that configure workspace-scoped providers."
   value       = time_sleep.dns_propagation.id
 }
+
+output "compute_mode" {
+  description = "Deployed compute mode readback (\"SERVERLESS\") — lets consumers verify the deployed workspace type post-apply, the same detection pattern as the aws/azure serverless modules."
+  value       = databricks_mws_workspaces.this.compute_mode
+}
