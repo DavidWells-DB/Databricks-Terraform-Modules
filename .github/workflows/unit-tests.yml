@@ -110,8 +110,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: install tflint + tfsec
         run: |
-          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/main/install_linux.sh | bash
-          sudo mv tflint /usr/local/bin/tflint
+          # (the raw install_linux.sh URL 404s and its error page got piped to bash)
+          curl -sSLo tflint.zip https://github.com/terraform-linters/tflint/releases/latest/download/tflint_linux_amd64.zip
+          unzip -q tflint.zip && sudo mv tflint /usr/local/bin/tflint
           curl -sSL https://github.com/aquasecurity/tfsec/releases/latest/download/tfsec-linux-amd64 \
             -o /usr/local/bin/tfsec && chmod +x /usr/local/bin/tfsec
       - name: tflint (recursive, no plugins)
