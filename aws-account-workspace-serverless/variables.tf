@@ -38,11 +38,6 @@ variable "databricks_gov_shard" {
   }
 }
 
-variable "managed_services_key_id" {
-  type        = string
-  description = "Optional. Databricks customer-managed key ID (from databricks_mws_customer_managed_keys with use_cases=[\"MANAGED_SERVICES\"]) for encrypting workspace notebooks and secrets in the control plane. Leave null to use Databricks-managed encryption."
-  default     = null
-}
 
 variable "network_connectivity_config_id" {
   type        = string
