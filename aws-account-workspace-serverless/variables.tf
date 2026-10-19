@@ -57,8 +57,3 @@ variable "custom_tags" {
   default     = {}
 }
 
-variable "managed_services_key_id" {
-  type        = string
-  description = "KMS key for managed-services encryption — the only CMK that applies to a serverless workspace (covers control-plane data plus serverless default/root storage: job results, SQL results, notebook revisions). REQUIRES THE ENTERPRISE TIER on the account; non-Enterprise accounts reject the create outright. Null = platform-managed keys."
-  default     = null
-}

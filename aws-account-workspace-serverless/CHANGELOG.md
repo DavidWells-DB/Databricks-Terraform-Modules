@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-19
+
+### Removed (mechanism corrected — the definitive answer)
+- `managed_services_key_id` input removed, this time for the right reason: **CMK is not applied at the AWS workspace-CREATE level** — the field is invalid in the serverless create body. The documented mechanism (per product + the serverless-workspaces doc): register the KMS key as an account-level key configuration (`use_cases = ["MANAGED_SERVICES"]`), then PATCH the existing workspace's `managed_services_customer_managed_key_id` (takes the Databricks key-configuration ID, NOT the raw KMS ARN) and poll for RUNNING. Enterprise tier required; the managed-services key covers the serverless root storage; `storage_customer_managed_key_id` must not be set for serverless. The module documents the PATCH path in its README; a first-class input returns if/when the provider exposes the post-create update as a resource.
+
 ## [0.3.0] - 2026-10-19
 
 ### Restored (v0.2.0's removal was a misread)
