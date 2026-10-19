@@ -9,12 +9,16 @@ resource "databricks_mws_workspaces" "this" {
   # Serverless workspaces do not use credentials_id or storage_configuration_id.
   # Those fields are prohibited when compute_mode = "SERVERLESS".
 
-  # NOTE: NO managed_services_customer_managed_key_id — LIVE 2026-10-19 (readiness
-  # campaign, rc-aw1 probe): the account API rejects the combination outright
-  # ("Cannot parse request body") when compute_mode = SERVERLESS — identical to GCP.
-  # CMK is not supported on AWS serverless workspaces at the API level.
-  deployment_name = var.deployment_name
-  custom_tags     = var.custom_tags
+  # Managed-services CMK — the ONLY key that applies to a serverless workspace
+  # (covers control-plane data + serverless default/root storage: job results,
+  # SQL results, notebook revisions). Workspace-storage/EBS CMKs do NOT apply to
+  # serverless compute. REQUIRES THE ENTERPRISE TIER: on non-Enterprise accounts
+  # the create is rejected ("Cannot parse request body", live 2026-10-19 on the
+  # sandbox account) — a TIER GATE misread once as API-level illegality and
+  # corrected 2026-10-19 on authoritative product info.
+  managed_services_customer_managed_key_id = var.managed_services_key_id
+  deployment_name                          = var.deployment_name
+  custom_tags                              = var.custom_tags
 
   lifecycle {
     # custom_tags may be modified by humans via the Databricks UI or API outside Terraform.

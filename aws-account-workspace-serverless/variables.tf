@@ -56,3 +56,9 @@ variable "custom_tags" {
   description = "Optional. Key-value tags applied to clusters launched in this workspace. Note: tags set here may be overridden by humans in the Databricks UI; this field is ignored on plan after initial creation (see lifecycle ignore_changes comment in main.tf)."
   default     = {}
 }
+
+variable "managed_services_key_id" {
+  type        = string
+  description = "KMS key for managed-services encryption — the only CMK that applies to a serverless workspace (covers control-plane data plus serverless default/root storage: job results, SQL results, notebook revisions). REQUIRES THE ENTERPRISE TIER on the account; non-Enterprise accounts reject the create outright. Null = platform-managed keys."
+  default     = null
+}

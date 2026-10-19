@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-19
+
+### Restored (v0.2.0's removal was a misread)
+- `managed_services_key_id` input RESTORED — CMK on serverless workspaces is a real capability (authoritative product correction): the managed-services key covers control-plane data plus serverless default/root storage (job results, SQL results, notebook revisions); workspace-storage/EBS CMKs do not apply to serverless compute. **REQUIRES THE ENTERPRISE TIER** — the v0.2.0 probe's 'Cannot parse request body' rejection was the sandbox account's TIER GATE, not API-level illegality. The input stays with the tier requirement documented.
+
 ## [0.2.0] - 2026-10-19
 
 ### Removed
