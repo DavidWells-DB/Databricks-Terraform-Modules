@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-19
+
+### Removed
+- `managed_services_key_id` input — LIVE 2026-10-19 (readiness campaign, rc-g2): the account API rejects `managed_services_customer_managed_key_id` combined with `compute_mode = "SERVERLESS"` outright ("Cannot parse request body"). CMK is not supported on GCP serverless workspaces at the API level; the input could never work and is removed rather than kept as a footgun.
+
 ## [0.1.1] - 2026-10-16
 
 ### Added

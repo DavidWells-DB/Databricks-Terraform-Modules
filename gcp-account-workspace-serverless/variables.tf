@@ -54,11 +54,6 @@ variable "resource_prefix" {
   }
 }
 
-variable "managed_services_key_id" {
-  type        = string
-  description = "Databricks CMK configuration ID for managed services (notebooks, secrets) encryption. null uses the Databricks-managed key."
-  default     = null
-}
 
 variable "custom_tags" {
   type        = map(string)

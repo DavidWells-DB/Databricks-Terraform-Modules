@@ -17,7 +17,10 @@ resource "databricks_mws_workspaces" "this" {
 
   deployment_name = "${var.resource_prefix}-serverless"
 
-  managed_services_customer_managed_key_id = var.managed_services_key_id
+  # NOTE: NO managed_services_customer_managed_key_id here — LIVE 2026-10-19
+  # (readiness campaign, rc-g2): the account API rejects the combination outright
+  # ("Cannot parse request body") when compute_mode = SERVERLESS. CMK is not
+  # supported on GCP serverless workspaces at the API level.
 
   custom_tags = var.custom_tags
 
