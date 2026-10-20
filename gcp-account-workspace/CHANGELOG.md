@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-20
+
+### Fixed
+- No longer requests a custom `deployment_name` at create — the GCP platform assigns its own (`<workspace-id>.9`) and ignores the request, which made every fresh deployment's first re-plan show an output-only drift (an E11-class false positive caught by the acceptance matrix's idempotency gate, live 2026-10-20). The `deployment_name` output remains the readback of the real platform value.
+
 ## [0.1.0] - 2026-06-23
 
 ### Added

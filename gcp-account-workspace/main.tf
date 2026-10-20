@@ -1,9 +1,14 @@
 resource "databricks_mws_workspaces" "this" {
-  provider        = databricks.account
-  account_id      = var.databricks_account_id
-  workspace_name  = var.workspace_name
-  deployment_name = var.resource_prefix
-  location        = var.region
+  provider       = databricks.account
+  account_id     = var.databricks_account_id
+  workspace_name = var.workspace_name
+  # deployment_name is NOT requested on GCP — the platform assigns its own
+  # (<workspace-id>.9 format), and requesting a custom one is silently ignored:
+  # the create response records the requested value, the first refresh corrects
+  # it, and every fresh state's first plan shows an output-only drift (E11-class
+  # false positive — live 2026-10-20, matrix w5). The deployment_name OUTPUT is
+  # the readback of the real platform value.
+  location = var.region
 
   cloud_resource_container {
     gcp {
