@@ -112,10 +112,13 @@ resource "azurerm_route" "this" {
   next_hop_in_ip_address = azurerm_firewall.this.ip_configuration[0].private_ip_address
 }
 
-# Associate the forced-tunnel route table with each spoke subnet via the caller-supplied
-# subnet IDs. One association is created per entry in spoke_subnet_ids.
+# Associate the forced-tunnel route table with each spoke subnet. The interface is a
+# MAP (name → subnet ID), not a list: for_each keys must be known at PLAN time, and
+# list elements are known-after-apply when the caller creates the subnets in the
+# same run — a list raised "Invalid for_each argument" (live E23, 2026-10-20).
+# Map KEYS (the names) are plan-time constants; only the values are unknown.
 resource "azurerm_subnet_route_table_association" "spoke" {
-  for_each = toset(var.spoke_subnet_ids)
+  for_each = var.spoke_subnets
 
   subnet_id      = each.value
   route_table_id = azurerm_route_table.this.id

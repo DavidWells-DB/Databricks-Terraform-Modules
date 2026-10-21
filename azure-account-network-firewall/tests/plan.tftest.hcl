@@ -5,9 +5,9 @@ variables {
   location            = "eastus"
   firewall_name       = "hub-fw"
   firewall_subnet_id  = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-hub/providers/Microsoft.Network/virtualNetworks/hub-vnet/subnets/AzureFirewallSubnet"
-  spoke_subnet_ids = [
-    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-spoke/providers/Microsoft.Network/virtualNetworks/spoke-vnet/subnets/host-subnet",
-  ]
+  spoke_subnets = {
+    spoke1 = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-spoke/providers/Microsoft.Network/virtualNetworks/spoke-vnet/subnets/host-subnet",
+  }
   allowed_spoke_cidr_ranges = ["10.1.0.0/24"]
   service_tag_rules = [
     {
@@ -87,20 +87,20 @@ run "spoke_subnet_ids_empty_rejected" {
   command = plan
 
   variables {
-    spoke_subnet_ids = []
+    spoke_subnets = {}
   }
 
-  expect_failures = [var.spoke_subnet_ids]
+  expect_failures = [var.spoke_subnets]
 }
 
 run "spoke_subnet_id_invalid_format_rejected" {
   command = plan
 
   variables {
-    spoke_subnet_ids = ["not-a-resource-id"]
+    spoke_subnets = { bad = "not-a-resource-id" }
   }
 
-  expect_failures = [var.spoke_subnet_ids]
+  expect_failures = [var.spoke_subnets]
 }
 
 run "allowed_spoke_cidr_ranges_empty_rejected" {

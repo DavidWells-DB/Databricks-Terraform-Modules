@@ -45,17 +45,17 @@ variable "firewall_subnet_id" {
   }
 }
 
-variable "spoke_subnet_ids" {
-  type        = list(string)
-  description = "List of spoke subnet resource IDs whose egress should be forced through the firewall. A forced-tunnel route table (0.0.0.0/0 → firewall private IP) is created and associated with each subnet. At least one subnet ID is required."
+variable "spoke_subnets" {
+  type        = map(string)
+  description = "Map of spoke subnet NAME → subnet resource ID whose egress should be forced through the firewall. A forced-tunnel route table (0.0.0.0/0 → firewall private IP) is created and associated with each subnet. The KEYS are arbitrary names chosen by the caller — they must be plan-time constants (for_each keys), which is what allows the subnets to be created in the SAME run as the firewall; the VALUES may reference resources created in that run. At least one entry is required."
   nullable    = false
   validation {
-    condition     = length(var.spoke_subnet_ids) >= 1
-    error_message = "At least one spoke subnet ID is required."
+    condition     = length(var.spoke_subnets) >= 1
+    error_message = "At least one spoke subnet entry is required."
   }
   validation {
-    condition     = alltrue([for id in var.spoke_subnet_ids : can(regex("^/subscriptions/[^/]+/resourceGroups/[^/]+/providers/Microsoft\\.Network/virtualNetworks/[^/]+/subnets/[^/]+$", id))])
-    error_message = "Each entry in spoke_subnet_ids must be a valid Azure subnet resource ID."
+    condition     = alltrue([for id in values(var.spoke_subnets) : can(regex("^/subscriptions/[^/]+/resourceGroups/[^/]+/providers/Microsoft\\.Network/virtualNetworks/[^/]+/subnets/[^/]+$", id))])
+    error_message = "Each value in spoke_subnets must be a valid Azure subnet resource ID."
   }
 }
 
