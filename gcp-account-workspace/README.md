@@ -41,8 +41,6 @@ Pass pre-registered Databricks CMK configuration IDs to `managed_services_key_id
 ## Generated reference
 
 <!-- BEGIN_TF_DOCS -->
-/dev/stdout updated successfully
-<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -73,16 +71,16 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_custom_tags"></a> [custom\_tags](#input\_custom\_tags) | Tags propagated to workspace-related GCP resources by the Databricks control plane. | `map(string)` | `{}` | no |
 | <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. Used to scope the workspace within the account. | `string` | n/a | yes |
 | <a name="input_databricks_network_id"></a> [databricks\_network\_id](#input\_databricks\_network\_id) | Databricks network configuration ID produced by the gcp-account-network-vpc module. Identifies the VPC and subnetwork in which workspace compute runs. | `string` | n/a | yes |
-| <a name="input_managed_services_key_id"></a> [managed\_services\_key\_id](#input\_managed\_services\_key\_id) | Databricks CMK configuration ID for managed services (notebooks, secrets) encryption. null uses the Databricks-managed key. | `string` | `null` | no |
-| <a name="input_private_access_settings_id"></a> [private\_access\_settings\_id](#input\_private\_access\_settings\_id) | Databricks private access settings ID. When set, enables PSC (Private Service Connect) for the workspace. Produced by the gcp-account-network-psc-endpoints module. null disables PSC. | `string` | `null` | no |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | GCP project ID in which the workspace data plane runs. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | GCP region for the workspace data plane (e.g. "us-central1"). Must match the region of the network and storage configurations. | `string` | n/a | yes |
 | <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | Prefix used to derive the workspace deployment name. Must be 1-20 characters, lowercase letters, digits, or hyphens, starting with a letter. | `string` | n/a | yes |
 | <a name="input_storage_configuration_id"></a> [storage\_configuration\_id](#input\_storage\_configuration\_id) | Databricks storage configuration ID produced by the gcp-account-workspace-storage module. Identifies the GCS bucket used as the workspace's root storage. | `string` | n/a | yes |
 | <a name="input_workspace_name"></a> [workspace\_name](#input\_workspace\_name) | Human-readable name of the Databricks workspace. Must be unique within the Databricks account. | `string` | n/a | yes |
+| <a name="input_custom_tags"></a> [custom\_tags](#input\_custom\_tags) | Tags propagated to workspace-related GCP resources by the Databricks control plane. | `map(string)` | `{}` | no |
+| <a name="input_managed_services_key_id"></a> [managed\_services\_key\_id](#input\_managed\_services\_key\_id) | Databricks CMK configuration ID for managed services (notebooks, secrets) encryption. null uses the Databricks-managed key. | `string` | `null` | no |
+| <a name="input_private_access_settings_id"></a> [private\_access\_settings\_id](#input\_private\_access\_settings\_id) | Databricks private access settings ID. When set, enables PSC (Private Service Connect) for the workspace. Produced by the gcp-account-network-psc-endpoints module. null disables PSC. | `string` | `null` | no |
 | <a name="input_workspace_storage_key_id"></a> [workspace\_storage\_key\_id](#input\_workspace\_storage\_key\_id) | Databricks CMK configuration ID for workspace storage (root GCS bucket) encryption. null uses the Databricks-managed key. | `string` | `null` | no |
 
 ## Outputs

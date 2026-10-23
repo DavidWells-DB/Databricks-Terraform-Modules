@@ -52,8 +52,6 @@ No AWS provider is required — serverless workspaces do not create any AWS-side
 ## Generated reference
 
 <!-- BEGIN_TF_DOCS -->
-/dev/stdout updated successfully
-<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -82,13 +80,13 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_custom_tags"></a> [custom\_tags](#input\_custom\_tags) | Optional. Key-value tags applied to clusters launched in this workspace. Note: tags set here may be overridden by humans in the Databricks UI; this field is ignored on plan after initial creation (see lifecycle ignore\_changes comment in main.tf). | `map(string)` | `{}` | no |
 | <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. Must match the account\_id used by the databricks.account provider. | `string` | n/a | yes |
+| <a name="input_region"></a> [region](#input\_region) | AWS region in which to create the serverless workspace (e.g. "us-east-1", "us-gov-west-1"). | `string` | n/a | yes |
+| <a name="input_workspace_name"></a> [workspace\_name](#input\_workspace\_name) | Display name for the workspace in the Databricks UI. Must be unique within the Databricks account. | `string` | n/a | yes |
+| <a name="input_custom_tags"></a> [custom\_tags](#input\_custom\_tags) | Optional. Key-value tags applied to clusters launched in this workspace. Note: tags set here may be overridden by humans in the Databricks UI; this field is ignored on plan after initial creation (see lifecycle ignore\_changes comment in main.tf). | `map(string)` | `{}` | no |
 | <a name="input_databricks_gov_shard"></a> [databricks\_gov\_shard](#input\_databricks\_gov\_shard) | Databricks GovCloud shard. null for commercial; "civilian" for AWS GovCloud civilian (FedRAMP High); "dod" for IL5/DoD. | `string` | `null` | no |
 | <a name="input_deployment_name"></a> [deployment\_name](#input\_deployment\_name) | Optional. URL prefix component for the workspace host (e.g. "my-ws" produces "my-ws.cloud.databricks.com"). Leave null to let Databricks auto-assign. | `string` | `null` | no |
 | <a name="input_network_connectivity_config_id"></a> [network\_connectivity\_config\_id](#input\_network\_connectivity\_config\_id) | Optional. Network Connectivity Config (NCC) ID to bind to the workspace, enabling serverless private connectivity to data sources. Leave null if no NCC is required. | `string` | `null` | no |
-| <a name="input_region"></a> [region](#input\_region) | AWS region in which to create the serverless workspace (e.g. "us-east-1", "us-gov-west-1"). | `string` | n/a | yes |
-| <a name="input_workspace_name"></a> [workspace\_name](#input\_workspace\_name) | Display name for the workspace in the Databricks UI. Must be unique within the Databricks account. | `string` | n/a | yes |
 
 ## Outputs
 
