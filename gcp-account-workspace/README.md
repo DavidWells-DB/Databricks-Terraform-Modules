@@ -41,10 +41,12 @@ Pass pre-registered Databricks CMK configuration IDs to `managed_services_key_id
 ## Generated reference
 
 <!-- BEGIN_TF_DOCS -->
+/dev/stdout updated successfully
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9 |
@@ -52,9 +54,9 @@ Pass pre-registered Databricks CMK configuration IDs to `managed_services_key_id
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.50 |
-| <a name="provider_time"></a> [time](#provider\_time) | >= 0.9 |
+|------|---------|
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.117.0 |
+| <a name="provider_time"></a> [time](#provider\_time) | 0.14.0 |
 
 ## Modules
 
@@ -63,14 +65,14 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_mws_workspaces.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_workspaces) | resource |
 | [time_sleep.dns_propagation](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_custom_tags"></a> [custom\_tags](#input\_custom\_tags) | Tags propagated to workspace-related GCP resources by the Databricks control plane. | `map(string)` | `{}` | no |
 | <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. Used to scope the workspace within the account. | `string` | n/a | yes |
 | <a name="input_databricks_network_id"></a> [databricks\_network\_id](#input\_databricks\_network\_id) | Databricks network configuration ID produced by the gcp-account-network-vpc module. Identifies the VPC and subnetwork in which workspace compute runs. | `string` | n/a | yes |
@@ -86,12 +88,13 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_deployment_name"></a> [deployment\_name](#output\_deployment\_name) | Deployment name portion of the workspace URL subdomain. Useful for constructing workspace-specific resource names. |
 | <a name="output_dns_propagation_complete"></a> [dns\_propagation\_complete](#output\_dns\_propagation\_complete) | Opaque value that becomes available only after the DNS propagation sleep completes. Use this output as an implicit depends\_on trigger in root compositions that configure workspace-scoped providers. |
 | <a name="output_workspace_host"></a> [workspace\_host](#output\_workspace\_host) | Alias for workspace\_url. Provided for callers that prefer the 'host' naming convention when configuring the workspace Databricks provider. |
 | <a name="output_workspace_id"></a> [workspace\_id](#output\_workspace\_id) | Databricks workspace ID (numeric). Used by workspace-scoped modules and data sources that require a workspace ID. |
 | <a name="output_workspace_url"></a> [workspace\_url](#output\_workspace\_url) | Full URL of the Databricks workspace (e.g. https://<id>.gcp.databricks.com). Use as the host for the workspace-scoped Databricks provider after DNS propagation. |
+<!-- END_TF_DOCS -->
 <!-- END_TF_DOCS -->
 
 ## Example

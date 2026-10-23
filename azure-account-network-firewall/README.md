@@ -39,18 +39,20 @@ Pass Databricks-specific service tag rules via `service_tag_rules`. Each rule sp
 ## Generated reference
 
 <!-- BEGIN_TF_DOCS -->
+/dev/stdout updated successfully
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.75 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.75 |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.76.0 |
 
 ## Modules
 
@@ -59,7 +61,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_firewall.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/firewall) | resource |
 | [azurerm_firewall_policy.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/firewall_policy) | resource |
 | [azurerm_firewall_policy_rule_collection_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/firewall_policy_rule_collection_group) | resource |
@@ -72,7 +74,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_allowed_spoke_cidr_ranges"></a> [allowed\_spoke\_cidr\_ranges](#input\_allowed\_spoke\_cidr\_ranges) | List of CIDR ranges for spoke VNet subnets. Used to populate the source IP group in the firewall network rules that permit spoke egress traffic through the firewall. | `list(string)` | n/a | yes |
 | <a name="input_firewall_name"></a> [firewall\_name](#input\_firewall\_name) | Name for the Azure Firewall. Used as the base name for the firewall, policy, IP group, public IP, and route table resources. | `string` | n/a | yes |
 | <a name="input_firewall_sku_tier"></a> [firewall\_sku\_tier](#input\_firewall\_sku\_tier) | SKU tier for the Azure Firewall and its policy. "Standard" or "Premium". Premium enables TLS inspection and IDPS; recommended for SNI-based Databricks egress filtering. | `string` | `"Premium"` | no |
@@ -80,13 +82,13 @@ No modules.
 | <a name="input_location"></a> [location](#input\_location) | Azure region where all firewall resources are created (e.g. "eastus", "westeurope"). Must match the resource group's region. | `string` | n/a | yes |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of the Azure resource group in which to create all firewall resources. | `string` | n/a | yes |
 | <a name="input_service_tag_rules"></a> [service\_tag\_rules](#input\_service\_tag\_rules) | List of network rule objects that permit traffic from spoke subnets to Databricks-specific<br/>Azure service tags. Each rule targets a set of Azure service tags (e.g. ["AzureDatabricks",<br/>"Storage.EastUs"]) on the specified ports and protocols. Priority must be unique per rule<br/>within the rule collection group and in the range 100-65000. Action must be "Allow" or "Deny".<br/>Protocols must each be one of "Any", "TCP", "UDP", "ICMP". | <pre>list(object({<br/>    name              = string<br/>    priority          = number<br/>    action            = string<br/>    destination_tags  = list(string)<br/>    destination_ports = list(string)<br/>    protocols         = list(string)<br/>  }))</pre> | n/a | yes |
-| <a name="input_spoke_subnet_ids"></a> [spoke\_subnet\_ids](#input\_spoke\_subnet\_ids) | List of spoke subnet resource IDs whose egress should be forced through the firewall. A forced-tunnel route table (0.0.0.0/0 → firewall private IP) is created and associated with each subnet. At least one subnet ID is required. | `list(string)` | n/a | yes |
+| <a name="input_spoke_subnets"></a> [spoke\_subnets](#input\_spoke\_subnets) | Map of spoke subnet NAME → subnet resource ID whose egress should be forced through the firewall. A forced-tunnel route table (0.0.0.0/0 → firewall private IP) is created and associated with each subnet. The KEYS are arbitrary names chosen by the caller — they must be plan-time constants (for\_each keys), which is what allows the subnets to be created in the SAME run as the firewall; the VALUES may reference resources created in that run. At least one entry is required. | `map(string)` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to all Azure resources created by this module. | `map(string)` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_firewall_id"></a> [firewall\_id](#output\_firewall\_id) | Resource ID of the Azure Firewall. Useful for cross-referencing in diagnostic settings, monitoring, or policy assignments. |
 | <a name="output_firewall_policy_id"></a> [firewall\_policy\_id](#output\_firewall\_policy\_id) | Resource ID of the Azure Firewall Policy. Pass to additional azurerm\_firewall\_policy\_rule\_collection\_group resources that extend rule collections post-deployment. |
 | <a name="output_firewall_private_ip"></a> [firewall\_private\_ip](#output\_firewall\_private\_ip) | Private IP address of the Azure Firewall front-end interface. Used as the next-hop in forced-tunnel routes and for verifying traffic flow. |
@@ -94,6 +96,7 @@ No modules.
 | <a name="output_firewall_public_ip_id"></a> [firewall\_public\_ip\_id](#output\_firewall\_public\_ip\_id) | Resource ID of the public IP address associated with the Azure Firewall. Useful for DDoS protection plan association at the root composition. |
 | <a name="output_ip_group_id"></a> [ip\_group\_id](#output\_ip\_group\_id) | Resource ID of the IP group representing spoke CIDR ranges. Useful for referencing in additional firewall policy rule collections that need to match on the same source addresses. |
 | <a name="output_route_table_id"></a> [route\_table\_id](#output\_route\_table\_id) | Resource ID of the spoke route table containing the forced-tunnel (0.0.0.0/0 → firewall) route. The module associates this route table with each subnet in spoke\_subnet\_ids; expose here for cross-referencing. |
+<!-- END_TF_DOCS -->
 <!-- END_TF_DOCS -->
 
 ## Example

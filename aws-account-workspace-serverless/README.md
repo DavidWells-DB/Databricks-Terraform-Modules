@@ -46,24 +46,26 @@ No AWS provider is required — serverless workspaces do not create any AWS-side
 
 ## Optional features
 
-- **Managed-services CMK** (`managed_services_key_id`): ID of a `databricks_mws_customer_managed_keys` object with `use_cases = ["MANAGED_SERVICES"]`. Encrypts notebooks and secrets in the control plane.
+- **Managed-services CMK** — available on this substrate but **NOT at workspace create** (the field is invalid in the serverless create body). The documented Day-2 mechanism: register the KMS key as an account-level key configuration (`databricks_mws_customer_managed_keys` with `use_cases = ["MANAGED_SERVICES"]`), then PATCH the existing workspace's `managed_services_customer_managed_key_id` (the Databricks KEY-CONFIGURATION ID, not the raw KMS ARN) and poll for RUNNING. **Requires the Enterprise tier.** The managed-services key covers control-plane data plus the serverless workspace's default/root storage (job results, SQL results, notebook revisions); the separate workspace-storage key does not apply to serverless compute. The module intentionally has no CMK input (it cannot be part of the create); apply it via the account API or console after the workspace exists.
 - **NCC binding** (`network_connectivity_config_id`): Binds a Network Connectivity Config to the workspace for serverless private connectivity to customer data sources. Creates a `databricks_mws_ncc_binding` resource.
 
 ## Generated reference
 
 <!-- BEGIN_TF_DOCS -->
+/dev/stdout updated successfully
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.50 |
+|------|---------|
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.117.0 |
 
 ## Modules
 
@@ -72,19 +74,18 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_mws_ncc_binding.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_ncc_binding) | resource |
 | [databricks_mws_workspaces.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_workspaces) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_custom_tags"></a> [custom\_tags](#input\_custom\_tags) | Optional. Key-value tags applied to clusters launched in this workspace. Note: tags set here may be overridden by humans in the Databricks UI; this field is ignored on plan after initial creation (see lifecycle ignore\_changes comment in main.tf). | `map(string)` | `{}` | no |
 | <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. Must match the account\_id used by the databricks.account provider. | `string` | n/a | yes |
 | <a name="input_databricks_gov_shard"></a> [databricks\_gov\_shard](#input\_databricks\_gov\_shard) | Databricks GovCloud shard. null for commercial; "civilian" for AWS GovCloud civilian (FedRAMP High); "dod" for IL5/DoD. | `string` | `null` | no |
 | <a name="input_deployment_name"></a> [deployment\_name](#input\_deployment\_name) | Optional. URL prefix component for the workspace host (e.g. "my-ws" produces "my-ws.cloud.databricks.com"). Leave null to let Databricks auto-assign. | `string` | `null` | no |
-| <a name="input_managed_services_key_id"></a> [managed\_services\_key\_id](#input\_managed\_services\_key\_id) | Optional. Databricks customer-managed key ID (from databricks\_mws\_customer\_managed\_keys with use\_cases=["MANAGED\_SERVICES"]) for encrypting workspace notebooks and secrets in the control plane. Leave null to use Databricks-managed encryption. | `string` | `null` | no |
 | <a name="input_network_connectivity_config_id"></a> [network\_connectivity\_config\_id](#input\_network\_connectivity\_config\_id) | Optional. Network Connectivity Config (NCC) ID to bind to the workspace, enabling serverless private connectivity to data sources. Leave null if no NCC is required. | `string` | `null` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS region in which to create the serverless workspace (e.g. "us-east-1", "us-gov-west-1"). | `string` | n/a | yes |
 | <a name="input_workspace_name"></a> [workspace\_name](#input\_workspace\_name) | Display name for the workspace in the Databricks UI. Must be unique within the Databricks account. | `string` | n/a | yes |
@@ -92,7 +93,8 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
+| <a name="output_compute_mode"></a> [compute\_mode](#output\_compute\_mode) | The deployed workspace compute mode ("SERVERLESS"), refreshed from the account API on every plan/apply. Lets consumers assert the deployed workspace type — a value other than SERVERLESS here would mean the workspace is not what this module promises. |
 | <a name="output_databricks_account_host"></a> [databricks\_account\_host](#output\_databricks\_account\_host) | Databricks account console host URL computed from databricks\_gov\_shard. Useful for configuring the account provider in the root composition. |
 | <a name="output_ncc_binding_id"></a> [ncc\_binding\_id](#output\_ncc\_binding\_id) | ID of the NCC binding resource, or null if no network\_connectivity\_config\_id was provided. |
 | <a name="output_workspace_host"></a> [workspace\_host](#output\_workspace\_host) | Workspace URL without trailing slash — identical to workspace\_url. Provided as a convenience alias for provider host arguments. |
@@ -100,6 +102,7 @@ No modules.
 | <a name="output_workspace_status"></a> [workspace\_status](#output\_workspace\_status) | Current provisioning status of the workspace (e.g. RUNNING, PROVISIONING, FAILED). Useful for debugging and downstream conditional logic. |
 | <a name="output_workspace_status_message"></a> [workspace\_status\_message](#output\_workspace\_status\_message) | Human-readable message accompanying workspace\_status. Populated on error to aid diagnosis. |
 | <a name="output_workspace_url"></a> [workspace\_url](#output\_workspace\_url) | Full HTTPS URL of the workspace (e.g. https://my-ws.cloud.databricks.com). Use as the host for the workspace-scoped Databricks provider. |
+<!-- END_TF_DOCS -->
 <!-- END_TF_DOCS -->
 
 ## Example
