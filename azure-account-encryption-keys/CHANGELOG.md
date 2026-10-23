@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-23
+
+### Fixed
+- The operator key-vault policy now includes the **Rotate** permission (the comment promised rotate since v0.1.0 but the permission list lacked it — found live during the campaign's CMK key-rotation test, which had to mint the new key version via `az keyvault key create` directly).
+
 ### Fixed
 - **Pin `azurerm < 5.0`.** azurerm 5.x removed `private_dns_zone_name` from `azurerm_private_dns_zone_virtual_network_link`; the module targets the 3.x/4.x API. The unbounded `>= 3.75` constraint let CI resolve 5.x and fail. (Found by the new unit-test CI, E10.)
 

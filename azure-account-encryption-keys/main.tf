@@ -50,6 +50,7 @@ resource "azurerm_key_vault_access_policy" "terraform" {
     "List",
     "Purge",
     "Recover",
+    "Rotate",
     "Update",
     "WrapKey",
     "UnwrapKey",
