@@ -180,7 +180,7 @@ variable "compliance_security_profile_enabled" {
 
 variable "compliance_security_profile_standards" {
   type        = list(string)
-  description = "List of compliance standards to enable. Valid values via azurerm: \"HIPAA\", \"PCI_DSS\", \"NONE\". Other standards (HITRUST, IRAP_PROTECTED, UK_CYBER_ESSENTIALS_PLUS, CANADA_PROTECTED_B) require the azapi workaround (see extended_compliance_standards). Only meaningful when compliance_security_profile_enabled = true."
+  description = "List of compliance standards to enable via the azurerm resource. This module's conservative set: \"HIPAA\", \"PCI_DSS\", \"NONE\". Other standards (HITRUST, IRAP_PROTECTED, UK_CYBER_ESSENTIALS_PLUS, CANADA_PROTECTED_B) go via the azapi patch path (see extended_compliance_standards). Only meaningful when compliance_security_profile_enabled = true."
   default     = []
   validation {
     condition     = length([for s in var.compliance_security_profile_standards : s if !contains(["HIPAA", "PCI_DSS", "NONE"], s)]) == 0

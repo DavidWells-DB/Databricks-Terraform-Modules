@@ -24,7 +24,7 @@ Creates an Azure Databricks workspace with optional VNet injection, customer-man
 
 ## Azure Government parameterization
 
-Azure Government is a provider-level concern, not a module-level input. At the root composition, configure the `azurerm` provider with `environment = "usgovernment"`. This module does not need a separate input for Azure Gov; the provider handles all endpoint routing. On Azure Gov / IL5 workspaces the compliance security profile is auto-enabled; the `compliance_security_profile_enabled` variable should be set to `true` to reflect this in state.
+Azure Government is a provider-level concern, not a module-level input. At the root composition, configure the `azurerm` provider with `environment = "usgovernment"`. This module does not need a separate input for Azure Gov; the provider handles all endpoint routing. IL5-attested deployments require the compliance security profile; UNVERIFIED whether the platform auto-enables it on Azure Gov workspaces (no Azure Gov test environment in this module's testing) — verify on your workspace and, if it is on, set `compliance_security_profile_enabled = true` so Terraform state reflects it.
 
 ## Provider configuration
 
@@ -48,7 +48,7 @@ Root DBFS CMK is applied as a post-creation step via `azurerm_databricks_workspa
 
 ## Compliance security profile and extended standards
 
-The `azurerm` provider supports only `HIPAA`, `PCI_DSS`, and `NONE` as `compliance_security_profile_standards`. For `HITRUST`, `IRAP_PROTECTED`, `UK_CYBER_ESSENTIALS_PLUS`, or `CANADA_PROTECTED_B`, pass those values in `extended_compliance_standards`. The module applies them via `azapi_update_resource` (ARM REST API patch), and `ignore_changes` on the `azurerm` workspace prevents Terraform from reverting them on subsequent plans. This is a sanctioned `ignore_changes` use per the Databricks module rules Rule 3.2.
+This module routes only `HIPAA`, `PCI_DSS`, and `NONE` through the azurerm resource — a deliberate, conservative boundary enforced by the module's own variable validation (the current azurerm schema declares `compliance_security_profile_standards` as an unvalidated string set, so the module does not rely on the provider to reject unsupported values). For `HITRUST`, `IRAP_PROTECTED`, `UK_CYBER_ESSENTIALS_PLUS`, or `CANADA_PROTECTED_B`, pass those values in `extended_compliance_standards`. The module applies them via `azapi_update_resource` (ARM REST API patch), and `ignore_changes` on the `azurerm` workspace prevents Terraform from reverting them on subsequent plans. This is a sanctioned `ignore_changes` use per the module rules.
 
 ## Generated reference
 
@@ -58,15 +58,15 @@ The `azurerm` provider supports only `HIPAA`, `PCI_DSS`, and `NONE` as `complian
 | Name | Version |
 | ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
-| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | >= 1.9 |
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | >= 2.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.76 |
 
 ## Providers
 
 | Name | Version |
 | ---- | ------- |
-| <a name="provider_azapi"></a> [azapi](#provider\_azapi) | >= 1.9 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.76 |
+| <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 2.10.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.76.0 |
 
 ## Modules
 
@@ -79,6 +79,7 @@ No modules.
 | [azapi_update_resource.compliance_standards](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/update_resource) | resource |
 | [azurerm_databricks_workspace.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/databricks_workspace) | resource |
 | [azurerm_databricks_workspace_root_dbfs_customer_managed_key.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/databricks_workspace_root_dbfs_customer_managed_key) | resource |
+| [azapi_resource.this](https://registry.terraform.io/providers/Azure/azapi/latest/docs/data-sources/resource) | data source |
 
 ## Inputs
 
@@ -87,7 +88,7 @@ No modules.
 | <a name="input_access_connector_id"></a> [access\_connector\_id](#input\_access\_connector\_id) | Resource ID of the Azure Databricks Access Connector. Required when default\_storage\_firewall\_enabled = true. | `string` | `null` | no |
 | <a name="input_automatic_cluster_update_enabled"></a> [automatic\_cluster\_update\_enabled](#input\_automatic\_cluster\_update\_enabled) | Enable automatic cluster update. Part of the Enhanced Security and Compliance add-on. Requires compliance\_security\_profile\_enabled = true when the compliance profile is in use. | `bool` | `false` | no |
 | <a name="input_compliance_security_profile_enabled"></a> [compliance\_security\_profile\_enabled](#input\_compliance\_security\_profile\_enabled) | Enable the Compliance Security Profile. Permanent for a workspace — cannot be disabled once enabled. Requires the Enhanced Security and Compliance add-on and premium SKU. | `bool` | `false` | no |
-| <a name="input_compliance_security_profile_standards"></a> [compliance\_security\_profile\_standards](#input\_compliance\_security\_profile\_standards) | List of compliance standards to enable. Valid values via azurerm: "HIPAA", "PCI\_DSS", "NONE". Other standards (HITRUST, IRAP\_PROTECTED, UK\_CYBER\_ESSENTIALS\_PLUS, CANADA\_PROTECTED\_B) require the azapi workaround (see extended\_compliance\_standards). Only meaningful when compliance\_security\_profile\_enabled = true. | `list(string)` | `[]` | no |
+| <a name="input_compliance_security_profile_standards"></a> [compliance\_security\_profile\_standards](#input\_compliance\_security\_profile\_standards) | List of compliance standards to enable via the azurerm resource. This module's conservative set: "HIPAA", "PCI\_DSS", "NONE". Other standards (HITRUST, IRAP\_PROTECTED, UK\_CYBER\_ESSENTIALS\_PLUS, CANADA\_PROTECTED\_B) go via the azapi patch path (see extended\_compliance\_standards). Only meaningful when compliance\_security\_profile\_enabled = true. | `list(string)` | `[]` | no |
 | <a name="input_container_subnet_name"></a> [container\_subnet\_name](#input\_container\_subnet\_name) | Name of the private (container) subnet within the VNet for VNet injection. Required when virtual\_network\_id is set. | `string` | `null` | no |
 | <a name="input_customer_managed_key_enabled"></a> [customer\_managed\_key\_enabled](#input\_customer\_managed\_key\_enabled) | Enable customer-managed key for managed services encryption. Requires premium SKU and managed\_services\_cmk\_key\_vault\_key\_id. | `bool` | `false` | no |
 | <a name="input_default_storage_firewall_enabled"></a> [default\_storage\_firewall\_enabled](#input\_default\_storage\_firewall\_enabled) | Disallow public access to the default storage account. When true, access\_connector\_id must also be set. | `bool` | `false` | no |
@@ -117,6 +118,7 @@ No modules.
 
 | Name | Description |
 | ---- | ----------- |
+| <a name="output_compute_mode"></a> [compute\_mode](#output\_compute\_mode) | The deployed ARM properties.computeMode ("Hybrid" for this module's classic workspace), read back from the ARM API on every plan/apply. Lets consumers assert the deployed workspace type rather than trusting the config. |
 | <a name="output_disk_encryption_set_id"></a> [disk\_encryption\_set\_id](#output\_disk\_encryption\_set\_id) | Resource ID of the Managed Disk Encryption Set. Populated only when managed\_disk\_cmk\_key\_vault\_key\_id is set. |
 | <a name="output_managed_disk_identity"></a> [managed\_disk\_identity](#output\_managed\_disk\_identity) | Managed identity of the managed disk encryption set (principal\_id, tenant\_id, type). Used for Key Vault access policies when disk CMK is enabled. |
 | <a name="output_managed_resource_group_id"></a> [managed\_resource\_group\_id](#output\_managed\_resource\_group\_id) | Azure Resource Manager resource ID of the managed resource group created by Databricks for control-plane resources. |
@@ -140,4 +142,4 @@ See [`examples/basic/`](./examples/basic/).
 
 Run with `terraform test` from the module root.
 
-An apply-command integration test (against a real Azure + Databricks account) verifies actual workspace creation. It is credential-gated and is added when the test environment is wired (per the Databricks module rules Rule 4.1).
+An apply-command integration test (against a real Azure subscription) verifies actual workspace creation — credential-gated, run locally with `terraform test -filter=tests/integration.tftest.hcl`. It asserts the deployed workspace reports `computeMode = "Hybrid"` (the classic type) alongside the workspace URL/ID outputs.
