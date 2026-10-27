@@ -36,7 +36,7 @@ run "back_end_pe_always_planned" {
   command = plan
 
   assert {
-    condition     = contains(keys(azurerm_private_endpoint.this), "back_end")
+    condition     = azurerm_private_endpoint.back_end.name == "my-workspace-be-pe"
     error_message = "back_end private endpoint must always be planned"
   }
 }
@@ -45,7 +45,7 @@ run "back_end_pe_subresource_is_databricks_ui_api" {
   command = plan
 
   assert {
-    condition     = azurerm_private_endpoint.this["back_end"].private_service_connection[0].subresource_names == tolist(["databricks_ui_api"])
+    condition     = azurerm_private_endpoint.back_end.private_service_connection[0].subresource_names == tolist(["databricks_ui_api"])
     error_message = "back_end PE must use databricks_ui_api sub-resource"
   }
 }
@@ -54,7 +54,7 @@ run "back_end_pe_location_matches_input" {
   command = plan
 
   assert {
-    condition     = azurerm_private_endpoint.this["back_end"].location == "eastus"
+    condition     = azurerm_private_endpoint.back_end.location == "eastus"
     error_message = "back_end PE location must match the location input"
   }
 }
@@ -65,7 +65,7 @@ run "front_end_pe_not_created_by_default" {
   command = plan
 
   assert {
-    condition     = !contains(keys(azurerm_private_endpoint.this), "front_end")
+    condition     = length(azurerm_private_endpoint.front_end) == 0
     error_message = "front_end PE must not be created when enable_front_end_pe is false"
   }
 }
@@ -78,7 +78,7 @@ run "front_end_pe_created_when_enabled" {
   }
 
   assert {
-    condition     = contains(keys(azurerm_private_endpoint.this), "front_end")
+    condition     = length(azurerm_private_endpoint.front_end) == 1
     error_message = "front_end PE must be planned when enable_front_end_pe is true"
   }
 }
@@ -89,7 +89,7 @@ run "browser_auth_pe_not_created_by_default" {
   command = plan
 
   assert {
-    condition     = !contains(keys(azurerm_private_endpoint.this), "browser_auth")
+    condition     = length(azurerm_private_endpoint.browser_auth) == 0
     error_message = "browser_auth PE must not be created when enable_browser_auth_pe is false"
   }
 }
@@ -102,7 +102,7 @@ run "browser_auth_pe_created_when_enabled" {
   }
 
   assert {
-    condition     = contains(keys(azurerm_private_endpoint.this), "browser_auth")
+    condition     = length(azurerm_private_endpoint.browser_auth) == 1
     error_message = "browser_auth PE must be planned when enable_browser_auth_pe is true"
   }
 }
@@ -115,7 +115,7 @@ run "browser_auth_pe_subresource_is_browser_authentication" {
   }
 
   assert {
-    condition     = azurerm_private_endpoint.this["browser_auth"].private_service_connection[0].subresource_names == tolist(["browser_authentication"])
+    condition     = azurerm_private_endpoint.browser_auth[0].private_service_connection[0].subresource_names == tolist(["browser_authentication"])
     error_message = "browser_auth PE must use browser_authentication sub-resource"
   }
 }

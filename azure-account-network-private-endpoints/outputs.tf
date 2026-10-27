@@ -10,32 +10,32 @@ output "private_dns_zone_name" {
 
 output "back_end_pe_id" {
   description = "Azure resource ID of the back-end private endpoint (databricks_ui_api sub-resource). Always created."
-  value       = azurerm_private_endpoint.this["back_end"].id
+  value       = azurerm_private_endpoint.back_end.id
 }
 
 output "back_end_pe_private_ip" {
   description = "Private IP address allocated to the back-end private endpoint NIC. Useful for custom DNS or network ACL rules."
-  value       = azurerm_private_endpoint.this["back_end"].private_service_connection[0].private_ip_address
+  value       = azurerm_private_endpoint.back_end.private_service_connection[0].private_ip_address
 }
 
 output "front_end_pe_id" {
   description = "Azure resource ID of the front-end private endpoint. null when enable_front_end_pe is false."
-  value       = var.enable_front_end_pe ? azurerm_private_endpoint.this["front_end"].id : null
+  value       = var.enable_front_end_pe ? azurerm_private_endpoint.front_end[0].id : null
 }
 
 output "front_end_pe_private_ip" {
   description = "Private IP address of the front-end private endpoint NIC. null when enable_front_end_pe is false."
-  value       = var.enable_front_end_pe ? azurerm_private_endpoint.this["front_end"].private_service_connection[0].private_ip_address : null
+  value       = var.enable_front_end_pe ? azurerm_private_endpoint.front_end[0].private_service_connection[0].private_ip_address : null
 }
 
 output "browser_auth_pe_id" {
   description = "Azure resource ID of the browser_authentication private endpoint. null when enable_browser_auth_pe is false."
-  value       = var.enable_browser_auth_pe ? azurerm_private_endpoint.this["browser_auth"].id : null
+  value       = var.enable_browser_auth_pe ? azurerm_private_endpoint.browser_auth[0].id : null
 }
 
 output "browser_auth_pe_private_ip" {
   description = "Private IP address of the browser_authentication private endpoint NIC. null when enable_browser_auth_pe is false."
-  value       = var.enable_browser_auth_pe ? azurerm_private_endpoint.this["browser_auth"].private_service_connection[0].private_ip_address : null
+  value       = var.enable_browser_auth_pe ? azurerm_private_endpoint.browser_auth[0].private_service_connection[0].private_ip_address : null
 }
 
 output "dns_zone_virtual_network_link_ids" {
