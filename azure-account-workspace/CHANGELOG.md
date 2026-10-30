@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-30
+
+### Changed — BREAKING interface change
+- `resource_group_name` replaced by `resource_group_id` (full ARM resource-group id, same contract as `azure-account-workspace-serverless`). Found by the first live plan of v0.2.0: deriving the parent scope via a `data.azurerm_resource_group` lookup forces an EAGER plan-time read of a resource group that a fresh apply creates later in the SAME apply (module inputs carrying a known value do not defer data reads) — first applies failed with "Resource Group ... was not found". Passing the id composes cleanly in both fresh and existing-RG applies. The data source is gone; `managedResourceGroupId` is now derived by string composition from the id (default managed RG name still `databricks-rg-<parent-rg-name>`, azurerm's fallback).
+
 ## [0.2.0] - 2026-10-30
 
 ### Changed — BREAKING for existing state (see Migration)

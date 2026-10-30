@@ -10,10 +10,14 @@ variable "name" {
   }
 }
 
-variable "resource_group_name" {
+variable "resource_group_id" {
   type        = string
-  description = "Name of the Azure resource group in which to create the Databricks workspace."
+  description = "Full ARM resource-group ID (/subscriptions/<sub>/resourceGroups/<rg>) in which to create the Databricks workspace. Pass the azurerm resource's id (NOT its name): a name-only interface would force an eager plan-time data-source read of a resource group that a fresh apply creates later in the SAME apply — the id composes cleanly. Same contract as azure-account-workspace-serverless."
   nullable    = false
+  validation {
+    condition     = can(regex("^/subscriptions/[^/]+/resourceGroups/[^/]+$", var.resource_group_id))
+    error_message = "resource_group_id must be a full ARM resource-group id: /subscriptions/<subscription-id>/resourceGroups/<name>."
+  }
 }
 
 variable "location" {

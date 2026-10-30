@@ -1,10 +1,4 @@
 mock_provider "azurerm" {
-  mock_data "azurerm_resource_group" {
-    defaults = {
-      id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg"
-    }
-  }
-
   mock_resource "azurerm_databricks_workspace_root_dbfs_customer_managed_key" {
     defaults = {
       id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Databricks/workspaces/test-workspace"
@@ -38,9 +32,9 @@ mock_provider "azapi" {
 }
 
 variables {
-  name                = "test-workspace"
-  resource_group_name = "test-rg"
-  location            = "eastus"
+  name              = "test-workspace"
+  resource_group_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg"
+  location          = "eastus"
 }
 
 # --- Creation path: azapi, 2026-01-01, Hybrid ---

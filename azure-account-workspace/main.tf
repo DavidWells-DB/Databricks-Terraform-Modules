@@ -13,7 +13,7 @@
 resource "azapi_resource" "this" {
   type      = "Microsoft.Databricks/workspaces@2026-01-01"
   name      = var.name
-  parent_id = data.azurerm_resource_group.parent.id
+  parent_id = var.resource_group_id
   location  = var.location
   tags      = var.tags
 
@@ -154,14 +154,6 @@ resource "azapi_resource" "this" {
       error_message = "managed_services_cmk_key_vault_key_id requires customer_managed_key_enabled = true (the key must be prepared for at creation via prepareEncryption)."
     }
   }
-}
-
-# Parent resource group — supplies both the azapi parent_id and the
-# subscription scope for the managed resource group ID. A name-only interface
-# (the azurerm-era contract) needs this lookup; there is no hardcoded
-# control-plane endpoint here.
-data "azurerm_resource_group" "parent" {
-  name = var.resource_group_name
 }
 
 # Root DBFS customer-managed key — applied as a post-creation step because the

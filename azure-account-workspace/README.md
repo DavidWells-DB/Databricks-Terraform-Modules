@@ -85,7 +85,6 @@ No modules.
 | [azapi_resource.this](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_update_resource.compliance_standards](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/update_resource) | resource |
 | [azurerm_databricks_workspace_root_dbfs_customer_managed_key.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/databricks_workspace_root_dbfs_customer_managed_key) | resource |
-| [azurerm_resource_group.parent](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 
 ## Inputs
 
@@ -93,7 +92,7 @@ No modules.
 | ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_location"></a> [location](#input\_location) | Azure region for the workspace (e.g., "eastus", "westeurope"). Must match the resource group region. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name of the Azure Databricks workspace resource. Must be unique within the resource group. | `string` | n/a | yes |
-| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of the Azure resource group in which to create the Databricks workspace. | `string` | n/a | yes |
+| <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | Full ARM resource-group ID (/subscriptions/<sub>/resourceGroups/<rg>) in which to create the Databricks workspace. Pass the azurerm resource's id (NOT its name): a name-only interface would force an eager plan-time data-source read of a resource group that a fresh apply creates later in the SAME apply — the id composes cleanly. Same contract as azure-account-workspace-serverless. | `string` | n/a | yes |
 | <a name="input_access_connector_id"></a> [access\_connector\_id](#input\_access\_connector\_id) | Resource ID of the Azure Databricks Access Connector. Required when default\_storage\_firewall\_enabled = true. | `string` | `null` | no |
 | <a name="input_access_connector_identity_type"></a> [access\_connector\_identity\_type](#input\_access\_connector\_identity\_type) | Identity type of the Access Connector: "SystemAssigned" or "UserAssigned". azurerm looked this up via API; azapi cannot, so it is an explicit input. Required when default\_storage\_firewall\_enabled = true. | `string` | `"SystemAssigned"` | no |
 | <a name="input_access_connector_user_assigned_identity_id"></a> [access\_connector\_user\_assigned\_identity\_id](#input\_access\_connector\_user\_assigned\_identity\_id) | Resource ID of the user-assigned identity behind the Access Connector. Required only when access\_connector\_identity\_type = "UserAssigned". | `string` | `null` | no |

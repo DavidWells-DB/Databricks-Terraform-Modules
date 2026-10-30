@@ -22,10 +22,10 @@ provider "azapi" {}
 module "workspace" {
   source = "../.."
 
-  name                = var.workspace_name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  sku                 = "premium"
+  name              = var.workspace_name
+  resource_group_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-rg"
+  location          = var.location
+  sku               = "premium"
 
   tags = {
     Module  = "azure-account-workspace"
@@ -36,11 +36,6 @@ module "workspace" {
 variable "subscription_id" {
   type        = string
   description = "Azure subscription ID for the provider."
-}
-
-variable "resource_group_name" {
-  type        = string
-  description = "Name of the Azure resource group for the workspace."
 }
 
 variable "location" {

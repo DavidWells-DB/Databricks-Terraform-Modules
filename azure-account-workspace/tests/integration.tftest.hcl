@@ -4,7 +4,7 @@
 #   - ARM_CLIENT_ID, ARM_CLIENT_SECRET, ARM_TENANT_ID, ARM_SUBSCRIPTION_ID env vars
 #     (or az login on the runner)
 #   - An existing Azure resource group in the target subscription
-#   - TF_VAR_resource_group_name and TF_VAR_location set (or a tfvars file)
+#   - TF_VAR_resource_group_id (full ARM resource-group id) and TF_VAR_location set (or a tfvars file)
 #
 # Run with: terraform test -filter=tests/integration.tftest.hcl
 #
@@ -27,7 +27,7 @@ variables {
   location = "eastus"
   sku      = "premium"
   # Required — supply via TF_VAR_* env vars or a .tfvars file:
-  #   resource_group_name (pre-existing resource group)
+  #   resource_group_id (pre-existing resource group, full ARM id)
 }
 
 # Smoke test: module applies cleanly against a Premium subscription and produces a workspace.

@@ -25,8 +25,9 @@ locals {
 
   # Managed resource group: ARM wants the full resource-group ID. Default name
   # mirrors the azurerm provider's fallback (databricks-rg-<parent-rg-name>).
-  subscription_scope        = join("/", slice(split("/", data.azurerm_resource_group.parent.id), 0, 3))
-  managed_resource_group_id = "${local.subscription_scope}/resourceGroups/${coalesce(var.managed_resource_group_name, "databricks-rg-${var.resource_group_name}")}"
+  subscription_scope         = join("/", slice(split("/", var.resource_group_id), 0, 3))
+  parent_resource_group_name = element(split("/", var.resource_group_id), 4)
+  managed_resource_group_id  = "${local.subscription_scope}/resourceGroups/${coalesce(var.managed_resource_group_name, "databricks-rg-${local.parent_resource_group_name}")}"
 
   # Key-id parsing: azurerm required a VERSIONED key id and split it into
   # vault / name / version for the ARM body; same contract here. The regexes
