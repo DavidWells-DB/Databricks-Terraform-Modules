@@ -1,10 +1,16 @@
 # azure-account-workspace
 
-Creates an Azure Databricks workspace with optional VNet injection, customer-managed keys (managed services, managed disk, root DBFS), compliance security profile, and private connectivity settings.
+Creates an Azure Databricks workspace (classic/Hybrid type) with a Day-1 Unity Catalog workspace catalog, optional VNet injection, customer-managed keys (managed services, managed disk, root DBFS), compliance security profile, and private connectivity settings.
 
 ## What this module abstracts
 
-"The workspace Databricks runs on Azure" — the full workspace provisioning surface in one module. The `azurerm_databricks_workspace` resource plus its two companion post-creation resources (`azurerm_databricks_workspace_root_dbfs_customer_managed_key` and the `azapi_update_resource` compliance-standards workaround) always belong together: callers that want a workspace get all three in a single module call.
+"The workspace Databricks runs on Azure" — the full workspace provisioning surface in one module. The workspace is created via `azapi_resource` (`Microsoft.Databricks/workspaces@2026-01-01`) — not `azurerm_databricks_workspace` — together with its two companion post-creation resources (`azurerm_databricks_workspace_root_dbfs_customer_managed_key` and the `azapi_update_resource` compliance-standards workaround). All three always belong together: callers that want a workspace get everything in a single module call.
+
+## Why azapi instead of azurerm (the workspace catalog)
+
+ARM's `properties.defaultCatalog.initialType` defaults to `HiveMetastore`, and the `azurerm` provider exposes no argument for it — so every workspace azurerm creates ships with its default namespace pointing at the legacy `hive_metastore` catalog instead of a Unity Catalog catalog. This module sets `defaultCatalog.initialType = "UnityCatalog"` at creation, which makes the platform provision a **workspace catalog** (named after the workspace, bound only to that workspace) and set it as the workspace's default catalog. The field is honored at creation time only: it cannot be patched onto an existing workspace, which is why the creation itself goes through azapi. On upgrade from v0.1.x see the CHANGELOG migration section — an existing workspace does not retroactively get a workspace catalog; keep setting its default catalog via `default_catalog_name` (the `dbx-uc-metastore-assignment` module).
+
+UNVERIFIED live (no v0.2.0 apply yet): that the platform-created workspace catalog appears and `properties.isUcEnabled` reads true on a real subscription. The `is_uc_enabled` output is the in-module oracle; the catalog itself is visible on the metastore after apply.
 
 ## When to use
 
@@ -20,7 +26,7 @@ Creates an Azure Databricks workspace with optional VNet injection, customer-man
 
 ## Minimum platform tier
 
-**Premium.** Set `sku = "premium"` (the default). The compliance security profile and enhanced security monitoring require the **Enhanced Security and Compliance add-on** (Enterprise-level). The `azurerm` Terraform provider does not enforce tier at plan time; a lower-tier workspace will fail at apply time.
+**Premium.** Set `sku = "premium"` (the default). The compliance security profile and enhanced security monitoring require the **Enhanced Security and Compliance add-on** (Enterprise-level). The module enforces the tier at plan time (a precondition on the azapi resource); a lower-tier workspace never reaches apply.
 
 ## Azure Government parameterization
 
@@ -48,7 +54,7 @@ Root DBFS CMK is applied as a post-creation step via `azurerm_databricks_workspa
 
 ## Compliance security profile and extended standards
 
-This module routes only `HIPAA`, `PCI_DSS`, and `NONE` through the azurerm resource — a deliberate, conservative boundary enforced by the module's own variable validation (the current azurerm schema declares `compliance_security_profile_standards` as an unvalidated string set, so the module does not rely on the provider to reject unsupported values). For `HITRUST`, `IRAP_PROTECTED`, `UK_CYBER_ESSENTIALS_PLUS`, or `CANADA_PROTECTED_B`, pass those values in `extended_compliance_standards`. The module applies them via `azapi_update_resource` (ARM REST API patch), and `ignore_changes` on the `azurerm` workspace prevents Terraform from reverting them on subsequent plans. This is a sanctioned `ignore_changes` use per the module rules.
+This module routes only `HIPAA`, `PCI_DSS`, and `NONE` through the azurerm resource — a deliberate, conservative boundary enforced by the module's own variable validation (the current azurerm schema declares `compliance_security_profile_standards` as an unvalidated string set, so the module does not rely on the provider to reject unsupported values). For `HITRUST`, `IRAP_PROTECTED`, `UK_CYBER_ESSENTIALS_PLUS`, or `CANADA_PROTECTED_B`, pass those values in `extended_compliance_standards`. The module applies them via `azapi_update_resource` (ARM REST API patch); the workspace itself is azapi-created, so no `ignore_changes` workaround is needed.
 
 ## Generated reference
 
@@ -76,16 +82,21 @@ No modules.
 
 | Name | Type |
 | ---- | ---- |
+| [azapi_resource.this](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_update_resource.compliance_standards](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/update_resource) | resource |
-| [azurerm_databricks_workspace.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/databricks_workspace) | resource |
 | [azurerm_databricks_workspace_root_dbfs_customer_managed_key.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/databricks_workspace_root_dbfs_customer_managed_key) | resource |
-| [azapi_resource.this](https://registry.terraform.io/providers/Azure/azapi/latest/docs/data-sources/resource) | data source |
+| [azurerm_resource_group.parent](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 | ---- | ----------- | ---- | ------- | :------: |
+| <a name="input_location"></a> [location](#input\_location) | Azure region for the workspace (e.g., "eastus", "westeurope"). Must match the resource group region. | `string` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | Name of the Azure Databricks workspace resource. Must be unique within the resource group. | `string` | n/a | yes |
+| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of the Azure resource group in which to create the Databricks workspace. | `string` | n/a | yes |
 | <a name="input_access_connector_id"></a> [access\_connector\_id](#input\_access\_connector\_id) | Resource ID of the Azure Databricks Access Connector. Required when default\_storage\_firewall\_enabled = true. | `string` | `null` | no |
+| <a name="input_access_connector_identity_type"></a> [access\_connector\_identity\_type](#input\_access\_connector\_identity\_type) | Identity type of the Access Connector: "SystemAssigned" or "UserAssigned". azurerm looked this up via API; azapi cannot, so it is an explicit input. Required when default\_storage\_firewall\_enabled = true. | `string` | `"SystemAssigned"` | no |
+| <a name="input_access_connector_user_assigned_identity_id"></a> [access\_connector\_user\_assigned\_identity\_id](#input\_access\_connector\_user\_assigned\_identity\_id) | Resource ID of the user-assigned identity behind the Access Connector. Required only when access\_connector\_identity\_type = "UserAssigned". | `string` | `null` | no |
 | <a name="input_automatic_cluster_update_enabled"></a> [automatic\_cluster\_update\_enabled](#input\_automatic\_cluster\_update\_enabled) | Enable automatic cluster update. Part of the Enhanced Security and Compliance add-on. Requires compliance\_security\_profile\_enabled = true when the compliance profile is in use. | `bool` | `false` | no |
 | <a name="input_compliance_security_profile_enabled"></a> [compliance\_security\_profile\_enabled](#input\_compliance\_security\_profile\_enabled) | Enable the Compliance Security Profile. Permanent for a workspace — cannot be disabled once enabled. Requires the Enhanced Security and Compliance add-on and premium SKU. | `bool` | `false` | no |
 | <a name="input_compliance_security_profile_standards"></a> [compliance\_security\_profile\_standards](#input\_compliance\_security\_profile\_standards) | List of compliance standards to enable via the azurerm resource. This module's conservative set: "HIPAA", "PCI\_DSS", "NONE". Other standards (HITRUST, IRAP\_PROTECTED, UK\_CYBER\_ESSENTIALS\_PLUS, CANADA\_PROTECTED\_B) go via the azapi patch path (see extended\_compliance\_standards). Only meaningful when compliance\_security\_profile\_enabled = true. | `list(string)` | `[]` | no |
@@ -96,18 +107,15 @@ No modules.
 | <a name="input_extended_compliance_standards"></a> [extended\_compliance\_standards](#input\_extended\_compliance\_standards) | Additional compliance standards not supported by the azurerm provider: "HITRUST", "IRAP\_PROTECTED", "UK\_CYBER\_ESSENTIALS\_PLUS", "CANADA\_PROTECTED\_B". Applied via azapi\_update\_resource post-creation. Only meaningful when compliance\_security\_profile\_enabled = true. | `list(string)` | `[]` | no |
 | <a name="input_host_subnet_name"></a> [host\_subnet\_name](#input\_host\_subnet\_name) | Name of the public (host) subnet within the VNet for VNet injection. Required when virtual\_network\_id is set. | `string` | `null` | no |
 | <a name="input_infrastructure_encryption_enabled"></a> [infrastructure\_encryption\_enabled](#input\_infrastructure\_encryption\_enabled) | Enable a secondary layer of encryption for workspace data at rest. Requires premium SKU. Immutable after workspace creation. | `bool` | `false` | no |
-| <a name="input_location"></a> [location](#input\_location) | Azure region for the workspace (e.g., "eastus", "westeurope"). Must match the resource group region. | `string` | n/a | yes |
-| <a name="input_managed_disk_cmk_key_vault_key_id"></a> [managed\_disk\_cmk\_key\_vault\_key\_id](#input\_managed\_disk\_cmk\_key\_vault\_key\_id) | Key Vault key ID for managed disk encryption. Requires premium SKU. | `string` | `null` | no |
+| <a name="input_managed_disk_cmk_key_vault_key_id"></a> [managed\_disk\_cmk\_key\_vault\_key\_id](#input\_managed\_disk\_cmk\_key\_vault\_key\_id) | Key Vault key ID for managed disk encryption. Requires premium SKU. Must be the VERSIONED key id (https://<vault>/keys/<name>/<version>) — the ARM body needs the version split out. | `string` | `null` | no |
 | <a name="input_managed_disk_cmk_rotation_to_latest_version_enabled"></a> [managed\_disk\_cmk\_rotation\_to\_latest\_version\_enabled](#input\_managed\_disk\_cmk\_rotation\_to\_latest\_version\_enabled) | Automatically rotate managed disk CMK to the latest key version. Only relevant when managed\_disk\_cmk\_key\_vault\_key\_id is set. | `bool` | `false` | no |
 | <a name="input_managed_resource_group_name"></a> [managed\_resource\_group\_name](#input\_managed\_resource\_group\_name) | Optional name for the managed resource group that Azure Databricks creates for control-plane resources. If null, Azure generates a name automatically. | `string` | `null` | no |
-| <a name="input_managed_services_cmk_key_vault_key_id"></a> [managed\_services\_cmk\_key\_vault\_key\_id](#input\_managed\_services\_cmk\_key\_vault\_key\_id) | Key Vault key ID for managed services (notebooks, artifacts) encryption. Requires customer\_managed\_key\_enabled = true and premium SKU. | `string` | `null` | no |
-| <a name="input_name"></a> [name](#input\_name) | Name of the Azure Databricks workspace resource. Must be unique within the resource group. | `string` | n/a | yes |
+| <a name="input_managed_services_cmk_key_vault_key_id"></a> [managed\_services\_cmk\_key\_vault\_key\_id](#input\_managed\_services\_cmk\_key\_vault\_key\_id) | Key Vault key ID for managed services (notebooks, artifacts) encryption. Requires customer\_managed\_key\_enabled = true and premium SKU. Must be the VERSIONED key id (https://<vault>/keys/<name>/<version>) — the ARM body needs the version split out. | `string` | `null` | no |
 | <a name="input_network_security_group_rules_required"></a> [network\_security\_group\_rules\_required](#input\_network\_security\_group\_rules\_required) | Determines NSG rule enforcement. Valid values: "AllRules", "NoAzureDatabricksRules", "NoAzureServiceRules". Typically "AllRules" for VNet injection; null defers to Azure default. | `string` | `null` | no |
 | <a name="input_no_public_ip"></a> [no\_public\_ip](#input\_no\_public\_ip) | Enable Secure Cluster Connectivity (SCC / No Public IP). When true, cluster nodes have no public IPs. Recommended for production. Requires VNet injection. | `bool` | `false` | no |
 | <a name="input_private_subnet_network_security_group_association_id"></a> [private\_subnet\_network\_security\_group\_association\_id](#input\_private\_subnet\_network\_security\_group\_association\_id) | Resource ID of the NSG association for the private (container) subnet. Required when virtual\_network\_id is set. | `string` | `null` | no |
 | <a name="input_public_network_access_enabled"></a> [public\_network\_access\_enabled](#input\_public\_network\_access\_enabled) | Allow public network access to the workspace front-end. Set to false to require private connectivity only. | `bool` | `true` | no |
 | <a name="input_public_subnet_network_security_group_association_id"></a> [public\_subnet\_network\_security\_group\_association\_id](#input\_public\_subnet\_network\_security\_group\_association\_id) | Resource ID of the NSG association for the public (host) subnet. Required when virtual\_network\_id is set. | `string` | `null` | no |
-| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of the Azure resource group in which to create the Databricks workspace. | `string` | n/a | yes |
 | <a name="input_root_dbfs_cmk_key_vault_id"></a> [root\_dbfs\_cmk\_key\_vault\_id](#input\_root\_dbfs\_cmk\_key\_vault\_id) | Resource ID of the Key Vault containing root\_dbfs\_cmk\_key\_vault\_key\_id. Required only when the Key Vault is in a different subscription than the workspace. | `string` | `null` | no |
 | <a name="input_root_dbfs_cmk_key_vault_key_id"></a> [root\_dbfs\_cmk\_key\_vault\_key\_id](#input\_root\_dbfs\_cmk\_key\_vault\_key\_id) | Key Vault key ID for root DBFS encryption via azurerm\_databricks\_workspace\_root\_dbfs\_customer\_managed\_key. When set, root DBFS CMK is configured as a post-creation step. | `string` | `null` | no |
 | <a name="input_sku"></a> [sku](#input\_sku) | Databricks workspace SKU. Use "premium" for Unity Catalog, IP access lists, cluster policies with ACLs, and all Premium features. Use "standard" for basic workspaces only. | `string` | `"premium"` | no |
@@ -118,14 +126,15 @@ No modules.
 
 | Name | Description |
 | ---- | ----------- |
-| <a name="output_compute_mode"></a> [compute\_mode](#output\_compute\_mode) | The deployed ARM properties.computeMode ("Hybrid" for this module's classic workspace), read back from the ARM API on every plan/apply. Lets consumers assert the deployed workspace type rather than trusting the config. |
+| <a name="output_compute_mode"></a> [compute\_mode](#output\_compute\_mode) | The deployed ARM properties.computeMode ("Hybrid" for this module's classic workspace), read back from the ARM API. Lets consumers assert the deployed workspace type rather than trusting the config. |
 | <a name="output_disk_encryption_set_id"></a> [disk\_encryption\_set\_id](#output\_disk\_encryption\_set\_id) | Resource ID of the Managed Disk Encryption Set. Populated only when managed\_disk\_cmk\_key\_vault\_key\_id is set. |
+| <a name="output_is_uc_enabled"></a> [is\_uc\_enabled](#output\_is\_uc\_enabled) | The deployed ARM properties.isUcEnabled, read back from the ARM API. With defaultCatalog.initialType = "UnityCatalog" this should read true — the in-Terraform oracle that the workspace catalog posture took effect. |
 | <a name="output_managed_disk_identity"></a> [managed\_disk\_identity](#output\_managed\_disk\_identity) | Managed identity of the managed disk encryption set (principal\_id, tenant\_id, type). Used for Key Vault access policies when disk CMK is enabled. |
 | <a name="output_managed_resource_group_id"></a> [managed\_resource\_group\_id](#output\_managed\_resource\_group\_id) | Azure Resource Manager resource ID of the managed resource group created by Databricks for control-plane resources. |
 | <a name="output_storage_account_identity"></a> [storage\_account\_identity](#output\_storage\_account\_identity) | Managed identity of the default storage account (principal\_id, tenant\_id, type). Used for Key Vault access policies when CMK is enabled. |
-| <a name="output_workspace_id"></a> [workspace\_id](#output\_workspace\_id) | Databricks workspace ID (numeric). Used as the identifier within the Databricks control plane. |
+| <a name="output_workspace_id"></a> [workspace\_id](#output\_workspace\_id) | Databricks workspace ID (numeric string). Used as the identifier within the Databricks control plane. |
 | <a name="output_workspace_resource_id"></a> [workspace\_resource\_id](#output\_workspace\_resource\_id) | Azure Resource Manager resource ID of the Databricks workspace. Used for RBAC assignments, policy, and diagnostic settings. |
-| <a name="output_workspace_url"></a> [workspace\_url](#output\_workspace\_url) | Workspace URL in the format adb-{id}.{n}.azuredatabricks.net. Use as the host for the workspace-scoped Databricks provider. |
+| <a name="output_workspace_url"></a> [workspace\_url](#output\_workspace\_url) | Workspace URL in the format https://adb-{id}.{n}.azuredatabricks.net. Use as the host for the workspace-scoped Databricks provider. |
 <!-- END_TF_DOCS -->
 
 ## Example

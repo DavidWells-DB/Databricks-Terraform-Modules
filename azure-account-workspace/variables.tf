@@ -104,14 +104,22 @@ variable "network_security_group_rules_required" {
 
 variable "managed_services_cmk_key_vault_key_id" {
   type        = string
-  description = "Key Vault key ID for managed services (notebooks, artifacts) encryption. Requires customer_managed_key_enabled = true and premium SKU."
+  description = "Key Vault key ID for managed services (notebooks, artifacts) encryption. Requires customer_managed_key_enabled = true and premium SKU. Must be the VERSIONED key id (https://<vault>/keys/<name>/<version>) — the ARM body needs the version split out."
   default     = null
+  validation {
+    condition     = var.managed_services_cmk_key_vault_key_id == null || can(regex("^https://[^/]+/keys/[^/]+/[^/]+$", var.managed_services_cmk_key_vault_key_id))
+    error_message = "managed_services_cmk_key_vault_key_id must be a versioned Key Vault key id: https://<vault-host>/keys/<key-name>/<key-version>."
+  }
 }
 
 variable "managed_disk_cmk_key_vault_key_id" {
   type        = string
-  description = "Key Vault key ID for managed disk encryption. Requires premium SKU."
+  description = "Key Vault key ID for managed disk encryption. Requires premium SKU. Must be the VERSIONED key id (https://<vault>/keys/<name>/<version>) — the ARM body needs the version split out."
   default     = null
+  validation {
+    condition     = var.managed_disk_cmk_key_vault_key_id == null || can(regex("^https://[^/]+/keys/[^/]+/[^/]+$", var.managed_disk_cmk_key_vault_key_id))
+    error_message = "managed_disk_cmk_key_vault_key_id must be a versioned Key Vault key id: https://<vault-host>/keys/<key-name>/<key-version>."
+  }
 }
 
 variable "managed_disk_cmk_rotation_to_latest_version_enabled" {
@@ -155,6 +163,22 @@ variable "default_storage_firewall_enabled" {
 variable "access_connector_id" {
   type        = string
   description = "Resource ID of the Azure Databricks Access Connector. Required when default_storage_firewall_enabled = true."
+  default     = null
+}
+
+variable "access_connector_identity_type" {
+  type        = string
+  description = "Identity type of the Access Connector: \"SystemAssigned\" or \"UserAssigned\". azurerm looked this up via API; azapi cannot, so it is an explicit input. Required when default_storage_firewall_enabled = true."
+  default     = "SystemAssigned"
+  validation {
+    condition     = contains(["SystemAssigned", "UserAssigned"], var.access_connector_identity_type)
+    error_message = "access_connector_identity_type must be \"SystemAssigned\" or \"UserAssigned\"."
+  }
+}
+
+variable "access_connector_user_assigned_identity_id" {
+  type        = string
+  description = "Resource ID of the user-assigned identity behind the Access Connector. Required only when access_connector_identity_type = \"UserAssigned\"."
   default     = null
 }
 

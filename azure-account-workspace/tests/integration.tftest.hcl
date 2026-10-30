@@ -48,6 +48,11 @@ run "applies_and_produces_workspace_url" {
     condition     = output.compute_mode == "Hybrid"
     error_message = "Live workspace must report ARM computeMode == \"Hybrid\" (this module's classic type — anything else means the deployed workspace is not what the module promises)"
   }
+
+  assert {
+    condition     = output.is_uc_enabled == true
+    error_message = "Live workspace must report properties.isUcEnabled == true — with defaultCatalog.initialType = \"UnityCatalog\" the workspace should be UC-enabled at creation"
+  }
 }
 
 # Tier-gated failure test: enhanced security features require the Enhanced Security and
@@ -66,6 +71,7 @@ run "applies_and_produces_workspace_url" {
 #   }
 #
 #   expect_failures = [
-#     azurerm_databricks_workspace.this,
+#     azapi_resource.this,
 #   ]
 # }
+

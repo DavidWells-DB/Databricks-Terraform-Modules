@@ -3,13 +3,15 @@ terraform {
 
   required_providers {
     azurerm = {
-      # 3.76+: enhanced_security_compliance block with compliance_security_profile_standards
+      # Still required: the root-DBFS CMK post-creation resource and the parent
+      # resource-group lookup (parent_id / managed-resource-group scope).
+      # Workspace CREATION no longer uses azurerm — see main.tf for why.
       source  = "hashicorp/azurerm"
       version = ">= 3.76"
     }
     azapi = {
-      # 2.x: object-style `body` (the compliance azapi_update_resource already uses it)
-      # and the azapi_resource data source for the computeMode readback.
+      # 2.x: object-style `body`, `response_export_values` map form, and the
+      # 2026-01-01 workspace create with properties.defaultCatalog.
       source  = "Azure/azapi"
       version = ">= 2.0"
     }
