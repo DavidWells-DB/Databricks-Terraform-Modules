@@ -36,9 +36,12 @@ locals {
   managed_disk_cmk     = var.managed_disk_cmk_key_vault_key_id != null ? regex("^https://([^/]+)/keys/([^/]+)/([^/]+)$", var.managed_disk_cmk_key_vault_key_id) : null
 
   # ARM WorkspaceCustomParameters — every entry is a wrapped {type, value}
-  # object. Set entries are real objects; unset entries are null, which ARM
-  # treats as absent (the same pattern the live-verified serverless module
-  # uses for optional body parts). NOTE: deliberately NO `? {...} : {}`
+  # object. prepareEncryption / requireInfrastructureEncryption are ALWAYS sent
+  # with their real value (azurerm's expand sent them unconditionally; a body
+  # without them failed live with InvalidApplicationDefinition 2026-10-30 —
+  # the managed-app appliance behind the workspace expects them present).
+  # Null VNet entries are stripped from the payload by ignore_null_property.
+  # NOTE: deliberately NO `? {...} : {}`
   # conditionals or merge() here — unifying an object literal with the empty
   # object makes HCL collapse the values to map(string), silently stringifying
   # the enableNoPublicIp boolean.
@@ -47,12 +50,9 @@ locals {
     customPublicSubnetName          = local.vnet_injection_enabled ? { type = "String", value = var.host_subnet_name } : null
     customPrivateSubnetName         = local.vnet_injection_enabled ? { type = "String", value = var.container_subnet_name } : null
     enableNoPublicIp                = local.vnet_injection_enabled ? { type = "Bool", value = var.no_public_ip } : null
-    prepareEncryption               = var.customer_managed_key_enabled ? { type = "Bool", value = true } : null
-    requireInfrastructureEncryption = var.infrastructure_encryption_enabled ? { type = "Bool", value = true } : null
+    prepareEncryption               = { type = "Bool", value = var.customer_managed_key_enabled }
+    requireInfrastructureEncryption = { type = "Bool", value = var.infrastructure_encryption_enabled }
   }
-
-  # The whole parameters object is omitted (null in the body) when no entry is set.
-  parameters_needed = anytrue([for _, v in local.parameters : v != null])
 
   # Workspace-level encryption entities, built only from the two key-id
   # variables — exactly the fields azurerm's expand used.

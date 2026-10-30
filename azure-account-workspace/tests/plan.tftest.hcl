@@ -119,8 +119,8 @@ run "vnet_injection_disabled_when_no_vnet_id" {
   command = plan
 
   assert {
-    condition     = local.vnet_injection_enabled == false && azapi_resource.this.body.properties.parameters == null
-    error_message = "parameters should be omitted entirely when there is no VNet injection and no encryption prep"
+    condition     = local.vnet_injection_enabled == false && azapi_resource.this.body.properties.parameters.customVirtualNetworkId == null
+    error_message = "the VNet custom parameters must be null (stripped from the request payload) when virtual_network_id is not set"
   }
 }
 
@@ -176,6 +176,17 @@ run "prepare_encryption_sent_when_cmk_enabled" {
   }
 }
 
+run "prepare_encryption_always_present_with_real_value" {
+  command = plan
+
+  # azurerm sent these unconditionally; the managed-app appliance expects them
+  # (a body without them failed live with InvalidApplicationDefinition).
+  assert {
+    condition     = azapi_resource.this.body.properties.parameters.prepareEncryption.type == "Bool" && azapi_resource.this.body.properties.parameters.prepareEncryption.value == false && azapi_resource.this.body.properties.parameters.requireInfrastructureEncryption.value == false
+    error_message = "prepareEncryption / requireInfrastructureEncryption must always be present with their real value, even when false"
+  }
+}
+
 run "infrastructure_encryption_sent_when_enabled" {
   command = plan
 
@@ -224,7 +235,7 @@ run "encryption_block_omitted_without_keys" {
 
   assert {
     condition     = azapi_resource.this.body.properties.encryption == null
-    error_message = "the encryption entities block must be omitted when no key is supplied"
+    error_message = "the encryption entities block must be null (stripped from the request payload) when no key is supplied"
   }
 }
 
@@ -261,7 +272,7 @@ run "nsg_rules_omitted_when_null" {
 
   assert {
     condition     = azapi_resource.this.body.properties.requiredNsgRules == null
-    error_message = "requiredNsgRules must be omitted (ARM default AllRules) when the variable is null"
+    error_message = "requiredNsgRules must be null (stripped from the request payload; ARM default AllRules) when the variable is null"
   }
 }
 
@@ -272,7 +283,7 @@ run "esc_block_omitted_when_all_off" {
 
   assert {
     condition     = azapi_resource.this.body.properties.enhancedSecurityCompliance == null
-    error_message = "enhancedSecurityCompliance must be omitted when ESM, ACU and CSP are all off"
+    error_message = "enhancedSecurityCompliance must be null (stripped from the request payload) when ESM, ACU and CSP are all off"
   }
 }
 

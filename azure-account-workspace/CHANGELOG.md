@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-10-30
+
+### Fixed — first live apply of the azapi body (v0.3.0) was rejected by ARM
+- `InvalidApplicationDefinition — "The definition of application '<name>' cannot be null"`. Two azurerm-parity gaps fixed:
+  - `parameters.prepareEncryption` / `parameters.requireInfrastructureEncryption` are now ALWAYS sent with their real value (azurerm's expand sent both unconditionally; the managed-app appliance behind the ARM workspace expects them present).
+  - `ignore_null_property = true` on the `azapi_resource` — null-valued body properties are no longer included in the request payload. azurerm's SDK omitted them via omitempty marshaling; azapi sends explicit nulls by default, and the Databricks ARM resource rejects that body shape. (The plan representation still shows configured nulls — that is cosmetic; the payload is what changed.)
+- Found by the live verification run (2026-10-30, scratch workspace `wscat1030`); mock plan tests cannot see either difference.
+
 ## [0.3.0] - 2026-10-30
 
 ### Changed — BREAKING interface change

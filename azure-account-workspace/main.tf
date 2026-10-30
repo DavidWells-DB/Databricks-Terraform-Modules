@@ -22,6 +22,12 @@ resource "azapi_resource" "this" {
   # tests are the guardrail against body typos.
   schema_validation_enabled = false
 
+  # Strip null-valued properties from the request payload — azurerm's SDK did
+  # the same via omitempty marshaling, and the Databricks ARM resource rejected
+  # a body carrying explicit nulls (live 2026-10-30: InvalidApplicationDefinition
+  # "The definition of application '...' cannot be null" on the v0.3.0 create).
+  ignore_null_property = true
+
   body = {
     sku = {
       name = var.sku
@@ -55,10 +61,9 @@ resource "azapi_resource" "this" {
 
       # VNet injection + encryption-prep booleans — ARM's WorkspaceCustomParameters
       # are WRAPPED objects ({type, value}), unlike the azurerm arguments.
-      # Sent only when at least one is set; azurerm always sent prepareEncryption
-      # (with value true or false) — sending it only when true is equivalent,
-      # false being the API default.
-      parameters = local.parameters_needed ? local.parameters : null
+      # prepareEncryption / requireInfrastructureEncryption are always present
+      # with their real value (azurerm parity, see locals).
+      parameters = local.parameters
 
       # Managed-services / managed-disk CMK at the workspace level. Whole
       # entities block omitted when no key is supplied (identical to azurerm,
