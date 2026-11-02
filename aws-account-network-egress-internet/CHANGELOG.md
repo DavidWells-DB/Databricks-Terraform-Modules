@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-02
+
+### Fixed - E23 (live-confirmed break, break_aws NET-08)
+- The module now creates the 0.0.0.0/0 to IGW route on the VPC MAIN route table. Public subnets (where the NAT gateways live) ride the main table, and no layer owned that route - the egress chain blackholed at the NAT: workspaces deployed RUNNING and every cluster died with BOOTSTRAP_TIMEOUT. Previously fixed only out-of-band.
+
+
 ## [0.1.0] - 2026-06-23
 
 ### Added

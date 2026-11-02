@@ -38,6 +38,30 @@ resource "aws_nat_gateway" "this" {
   depends_on = [aws_internet_gateway.this]
 }
 
+# E23 FIX (live-confirmed 2026-10-23, break_aws NET-08): the PUBLIC side needs its
+# own default route. Public subnets ride the VPC MAIN route table, and no layer owned
+# the 0.0.0.0/0 → IGW route on it — so the egress chain was structurally complete only
+# to the NAT gateway and BLACKHOLED there: workspaces deployed RUNNING and every cluster
+# died with BOOTSTRAP_TIMEOUT ("check network connectivity from the data plane to the
+# control plane") while the NAT showed 'available'. This module owns the IGW, so it owns
+# this route.
+data "aws_route_table" "main" {
+  filter {
+    name   = "vpc-id"
+    values = [var.vpc_id]
+  }
+  filter {
+    name   = "association.main"
+    values = ["true"]
+  }
+}
+
+resource "aws_route" "public_igw" {
+  route_table_id         = data.aws_route_table.main.route_table_id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.this.id
+}
+
 # Default route on each private route table pointing 0.0.0.0/0 → NAT Gateway.
 # Route tables are mapped to NAT Gateways with modulo so a single NAT Gateway
 # can serve multiple route tables.
