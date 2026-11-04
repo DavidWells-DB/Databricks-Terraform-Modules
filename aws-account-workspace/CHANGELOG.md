@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-11-04
+
+### Fixed — external review finding (High): GovCloud regions rejected by validation
+- The region regex allowed only two-segment regions, rejecting `us-gov-west-1` while the error message cited it as valid. Now accepts the three-segment GovCloud forms (`us-gov-west-1`, `cn-north-1`). With the v0.2.1 token fix this closes both review Highs against this module.
+
+
 ## [0.2.1] - 2026-11-04
 
 ### Fixed — external review finding (High): stray PAT in state

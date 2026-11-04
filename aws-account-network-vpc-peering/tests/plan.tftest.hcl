@@ -1,6 +1,20 @@
 mock_provider "aws" {}
 
 # Default valid variables used across most test runs.
+
+run "govcloud_accepter_region_accepted" {
+  command = plan
+
+  variables {
+    accepter_region = "us-gov-west-1"
+  }
+
+  assert {
+    condition     = var.accepter_region == "us-gov-west-1"
+    error_message = "GovCloud region us-gov-west-1 must pass accepter_region validation"
+  }
+}
+
 variables {
   requester_vpc_id          = "vpc-0a1b2c3d4e5f6a7b8"
   accepter_vpc_id           = "vpc-0b2c3d4e5f6a7b8c9"

@@ -45,15 +45,15 @@ This module's `aws_vpc_peering_connection_accepter` resource uses `auto_accept =
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.0 |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.50.0 |
 
 ## Modules
 
@@ -62,7 +62,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [aws_route.accepter_to_requester](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.requester_to_accepter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_vpc_peering_connection.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection) | resource |
@@ -71,7 +71,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_accepter_account_id"></a> [accepter\_account\_id](#input\_accepter\_account\_id) | AWS account ID that owns the accepter VPC. Set to the same value as the requester's account ID for same-account peering, or a different account ID for cross-account peering. | `string` | n/a | yes |
 | <a name="input_accepter_region"></a> [accepter\_region](#input\_accepter\_region) | AWS region of the accepter VPC. For same-region peering, set this to the same region as the requester. For cross-region peering, set to the accepter's region. | `string` | n/a | yes |
 | <a name="input_accepter_route_table_ids"></a> [accepter\_route\_table\_ids](#input\_accepter\_route\_table\_ids) | Route table IDs in the accepter VPC that should receive a route back to the requester VPC's CIDR block. Typically includes all private route tables in the hub/shared-services VPC. | `list(string)` | n/a | yes |
@@ -86,7 +86,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_accepter_route_ids"></a> [accepter\_route\_ids](#output\_accepter\_route\_ids) | Map of accepter route table ID to the Terraform resource ID of the route added for the requester CIDR. Useful for debugging and dependency chaining. |
 | <a name="output_peering_connection_id"></a> [peering\_connection\_id](#output\_peering\_connection\_id) | ID of the AWS VPC peering connection. Pass to downstream route or security-group rules that reference the peering link. |
 | <a name="output_peering_connection_status"></a> [peering\_connection\_status](#output\_peering\_connection\_status) | Status of the VPC peering connection after acceptance (e.g., 'active'). Useful for verifying the connection is healthy. |

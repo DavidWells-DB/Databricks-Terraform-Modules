@@ -76,9 +76,10 @@ variable "accepter_region" {
   description = "AWS region of the accepter VPC. For same-region peering, set this to the same region as the requester. For cross-region peering, set to the accepter's region."
   nullable    = false
   validation {
-    # AWS region format: <area>-<direction>-<number>  (e.g., us-east-1, eu-west-2, ap-southeast-1)
-    condition     = can(regex("^[a-z]{2,}-[a-z]+-[0-9]+$", var.accepter_region))
-    error_message = "accepter_region must be a valid AWS region identifier (e.g., us-east-1, eu-west-2)."
+    # AWS region format: area, one or more word segments, ending in a digit — includes the
+    # three-segment GovCloud forms (us-gov-west-1) the old pattern rejected (review High).
+    condition     = can(regex("^[a-z]{2,}(-[a-z]+)+-[0-9]+$", var.accepter_region))
+    error_message = "accepter_region must be a valid AWS region identifier (e.g., us-east-1, eu-west-2, us-gov-west-1)."
   }
 }
 

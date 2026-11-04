@@ -20,6 +20,22 @@ mock_provider "databricks" {
 
 mock_provider "time" {}
 
+
+run "govcloud_region_accepted" {
+  command = plan
+
+  variables {
+    region = "us-gov-west-1"
+  }
+
+  # The old two-segment regex rejected us-gov-west-1 while citing it as valid in its own
+  # error message (review High). The three-segment GovCloud forms must plan cleanly.
+  assert {
+    condition     = var.region == "us-gov-west-1"
+    error_message = "GovCloud region us-gov-west-1 must pass variable validation"
+  }
+}
+
 variables {
   databricks_account_id    = "00000000-0000-0000-0000-000000000000"
   workspace_name           = "test-workspace"

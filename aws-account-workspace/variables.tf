@@ -20,9 +20,11 @@ variable "region" {
   description = "AWS region in which the workspace is deployed (e.g. \"us-east-1\")."
   nullable    = false
   validation {
-    # Standard AWS region pattern: 2-3 lowercase word segments separated by hyphens, ending in a digit.
-    condition     = can(regex("^[a-z]{2,}-[a-z]+-[0-9]$", var.region))
-    error_message = "region must be a valid AWS region string, e.g. \"us-east-1\", \"us-gov-west-1\"."
+    # AWS region pattern: area, one or more lowercase word segments, ending in a digit.
+    # Allows the three-segment GovCloud forms (us-gov-west-1) that the old two-segment
+    # pattern rejected while its own error message cited them as valid (review High).
+    condition     = can(regex("^[a-z]{2,}(-[a-z]+)+-[0-9]+$", var.region))
+    error_message = "region must be a valid AWS region string, e.g. \"us-east-1\", \"us-gov-west-1\", \"cn-north-1\"."
   }
 }
 
