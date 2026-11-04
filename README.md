@@ -18,7 +18,7 @@ docs/                          # Rules, catalog, and research documents
 
 ```hcl
 module "workspace_credentials" {
-  source = "git::https://github.com/<org>/Databricks-Terraform-Modules.git//aws-account-workspace-credentials?ref=v1.0.0"
+  source = "git::https://github.com/<org>/Databricks-Terraform-Modules.git//aws-account-workspace-credentials?ref=aws-account-workspace-credentials/v0.1.0"
 
   providers = {
     databricks.account = databricks.account
@@ -43,7 +43,7 @@ Each module's README documents inputs, outputs, minimum tier, provider configura
 | Account | GCP | 10 |
 | Unity Catalog | AWS / Azure / GCP / Agnostic | 8 |
 | Workspace | Agnostic | 8 |
-| **Total** | | **51** |
+| **Total** | | **55** |
 
 
 ## Testing

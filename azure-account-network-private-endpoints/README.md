@@ -57,15 +57,15 @@ When using a hub-and-spoke topology, pass hub VNet resource IDs to `hub_vnet_ids
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.63 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.63, < 5.0 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.63 |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.76.0 |
 
 ## Modules
 
@@ -74,29 +74,31 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_private_dns_zone.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
-| [azurerm_private_endpoint.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.back_end](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.browser_auth](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.front_end](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
-| <a name="input_enable_browser_auth_pe"></a> [enable\_browser\_auth\_pe](#input\_enable\_browser\_auth\_pe) | When true, creates a browser\_authentication private endpoint. Required for SSO callback flows (web browser authentication) when public network access is disabled. | `bool` | `false` | no |
-| <a name="input_enable_front_end_pe"></a> [enable\_front\_end\_pe](#input\_enable\_front\_end\_pe) | When true, creates an additional front-end private endpoint (sub-resource type `databricks_ui_api` on the `publicFrontEnd` group). Required when public network access is disabled and clients access Databricks from outside the injected VNet. | `bool` | `false` | no |
-| <a name="input_hub_vnet_ids"></a> [hub\_vnet\_ids](#input\_hub\_vnet\_ids) | Optional list of hub VNet resource IDs to also link to the private DNS zone. Use when the DNS zone lives in the spoke but hub VNets must resolve the workspace URL. Defaults to an empty list (no hub links). | `list(string)` | `[]` | no |
+|------|-------------|------|---------|:--------:|
 | <a name="input_location"></a> [location](#input\_location) | Azure region for private endpoint resources (e.g., "eastus", "westeurope"). Must match the region of the Databricks workspace. | `string` | n/a | yes |
 | <a name="input_pe_subnet_id"></a> [pe\_subnet\_id](#input\_pe\_subnet\_id) | Azure resource ID of the subnet in which to place private endpoint network interfaces. Private endpoint network policies must be disabled on this subnet. | `string` | n/a | yes |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of the Azure resource group in which to create private endpoint and DNS resources. | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to all resources created by this module. | `map(string)` | `{}` | no |
 | <a name="input_vnet_id"></a> [vnet\_id](#input\_vnet\_id) | Azure resource ID of the VNet to link to the private DNS zone. This is the spoke VNet that contains the Databricks subnets. | `string` | n/a | yes |
 | <a name="input_workspace_resource_id"></a> [workspace\_resource\_id](#input\_workspace\_resource\_id) | Azure resource ID of the Databricks workspace (e.g., /subscriptions/<sub>/resourceGroups/<rg>/providers/Microsoft.Databricks/workspaces/<name>). | `string` | n/a | yes |
+| <a name="input_enable_browser_auth_pe"></a> [enable\_browser\_auth\_pe](#input\_enable\_browser\_auth\_pe) | When true, creates a browser\_authentication private endpoint. Required for SSO callback flows (web browser authentication) when public network access is disabled. | `bool` | `false` | no |
+| <a name="input_enable_front_end_pe"></a> [enable\_front\_end\_pe](#input\_enable\_front\_end\_pe) | When true, creates an additional front-end private endpoint (sub-resource type `databricks_ui_api` on the `publicFrontEnd` group). Required when public network access is disabled and clients access Databricks from outside the injected VNet. | `bool` | `false` | no |
+| <a name="input_hub_vnet_ids"></a> [hub\_vnet\_ids](#input\_hub\_vnet\_ids) | Optional list of hub VNet resource IDs to also link to the private DNS zone. Use when the DNS zone lives in the spoke but hub VNets must resolve the workspace URL. Defaults to an empty list (no hub links). | `list(string)` | `[]` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to all resources created by this module. | `map(string)` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_back_end_pe_id"></a> [back\_end\_pe\_id](#output\_back\_end\_pe\_id) | Azure resource ID of the back-end private endpoint (databricks\_ui\_api sub-resource). Always created. |
 | <a name="output_back_end_pe_private_ip"></a> [back\_end\_pe\_private\_ip](#output\_back\_end\_pe\_private\_ip) | Private IP address allocated to the back-end private endpoint NIC. Useful for custom DNS or network ACL rules. |
 | <a name="output_browser_auth_pe_id"></a> [browser\_auth\_pe\_id](#output\_browser\_auth\_pe\_id) | Azure resource ID of the browser\_authentication private endpoint. null when enable\_browser\_auth\_pe is false. |

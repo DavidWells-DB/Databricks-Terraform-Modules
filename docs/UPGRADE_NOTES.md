@@ -16,7 +16,7 @@ which is why v1.0.0+ creates the workspace via the `azapi` provider.
 
 ### Step 1 — check what you actually deployed
 
-The v1.0.1+ module (and any config consuming it) exposes `deployed_compute_mode`.
+The v1.0.1+ module (and any config consuming it) exposes the `compute_mode` output (the deployed-type readback).
 Out-of-band equivalent:
 
 ```bash

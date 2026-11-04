@@ -46,15 +46,15 @@ The `google_network_security_firewall_endpoint` resource can take up to 60 minut
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 6.0 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_google"></a> [google](#provider\_google) | >= 6.0 |
+|------|---------|
+| <a name="provider_google"></a> [google](#provider\_google) | 7.37.0 |
 
 ## Modules
 
@@ -63,7 +63,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [google_network_security_firewall_endpoint.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/network_security_firewall_endpoint) | resource |
 | [google_network_security_firewall_endpoint_association.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/network_security_firewall_endpoint_association) | resource |
 | [google_network_security_security_profile.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/network_security_security_profile) | resource |
@@ -72,20 +72,20 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
-| <a name="input_labels"></a> [labels](#input\_labels) | Labels applied to all resources created by this module. | `map(string)` | `{}` | no |
+|------|-------------|------|---------|:--------:|
 | <a name="input_network_self_link"></a> [network\_self\_link](#input\_network\_self\_link) | Self-link of the VPC network to associate with the firewall endpoint. Format: "https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}". | `string` | n/a | yes |
 | <a name="input_organization_id"></a> [organization\_id](#input\_organization\_id) | GCP organization ID. Used as the parent for the security profile, security profile group, and firewall endpoint. Format: numeric organization ID (e.g. "123456789"). | `string` | n/a | yes |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | GCP project ID. Used as the billing project for firewall endpoint charges and as the parent for the firewall endpoint association. | `string` | n/a | yes |
 | <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | Prefix applied to all resource names created by this module (security profile, security profile group, firewall endpoint, association). Must be 1-30 characters, lowercase alphanumeric and hyphens. | `string` | n/a | yes |
+| <a name="input_zone"></a> [zone](#input\_zone) | GCP zone for the firewall endpoint and firewall endpoint association. Cloud NGFW firewall endpoints are zonal resources. Example: "us-central1-a". | `string` | n/a | yes |
+| <a name="input_labels"></a> [labels](#input\_labels) | Labels applied to all resources created by this module. | `map(string)` | `{}` | no |
 | <a name="input_severity_overrides"></a> [severity\_overrides](#input\_severity\_overrides) | List of threat-prevention severity overrides for the security profile. Each entry overrides the default action for a severity level. action must be one of ALERT, ALLOW, DEFAULT\_ACTION, DENY. severity must be one of CRITICAL, HIGH, INFORMATIONAL, LOW, MEDIUM. | <pre>list(object({<br/>    action   = string<br/>    severity = string<br/>  }))</pre> | `[]` | no |
 | <a name="input_threat_overrides"></a> [threat\_overrides](#input\_threat\_overrides) | List of threat-prevention threat-ID overrides for the security profile. action must be one of ALERT, ALLOW, DEFAULT\_ACTION, DENY. | <pre>list(object({<br/>    action    = string<br/>    threat_id = string<br/>  }))</pre> | `[]` | no |
-| <a name="input_zone"></a> [zone](#input\_zone) | GCP zone for the firewall endpoint and firewall endpoint association. Cloud NGFW firewall endpoints are zonal resources. Example: "us-central1-a". | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_firewall_endpoint_association_id"></a> [firewall\_endpoint\_association\_id](#output\_firewall\_endpoint\_association\_id) | Fully-qualified resource ID of the firewall endpoint association. Format: projects/{project}/locations/{zone}/firewallEndpointAssociations/{name}. |
 | <a name="output_firewall_endpoint_association_state"></a> [firewall\_endpoint\_association\_state](#output\_firewall\_endpoint\_association\_state) | Current state of the firewall endpoint association. Traffic steering is only active when this is ACTIVE. |
 | <a name="output_firewall_endpoint_id"></a> [firewall\_endpoint\_id](#output\_firewall\_endpoint\_id) | Fully-qualified resource ID of the Cloud NGFW firewall endpoint. Format: organizations/{org}/locations/{zone}/firewallEndpoints/{name}. |

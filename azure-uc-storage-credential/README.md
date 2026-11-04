@@ -36,7 +36,7 @@ The module declares `configuration_aliases = [databricks.workspace]` per the Dat
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.75 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.49 |
@@ -44,9 +44,9 @@ The module declares `configuration_aliases = [databricks.workspace]` per the Dat
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.75 |
-| <a name="provider_databricks.workspace"></a> [databricks.workspace](#provider\_databricks.workspace) | >= 1.49 |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.77.0 |
+| <a name="provider_databricks.workspace"></a> [databricks.workspace](#provider\_databricks.workspace) | 1.117.0 |
 
 ## Modules
 
@@ -55,7 +55,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_databricks_access_connector.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/databricks_access_connector) | resource |
 | [azurerm_role_assignment.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [databricks_storage_credential.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/storage_credential) | resource |
@@ -63,20 +63,21 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
-| <a name="input_access_connector_name"></a> [access\_connector\_name](#input\_access\_connector\_name) | Name of the Azure Databricks Access Connector resource. Defaults to "dbx-access-connector-<credential\_name>" when null. | `string` | `null` | no |
-| <a name="input_comment"></a> [comment](#input\_comment) | Human-readable comment attached to the databricks\_storage\_credential. Optional. | `string` | `null` | no |
+|------|-------------|------|---------|:--------:|
 | <a name="input_credential_name"></a> [credential\_name](#input\_credential\_name) | Name for the databricks\_storage\_credential registration. Must be unique within the Databricks workspace. | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | Azure region for the Access Connector (e.g. "eastus", "westeurope"). Must match the region of the storage account. | `string` | n/a | yes |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of the Azure resource group in which to create the Access Connector. | `string` | n/a | yes |
-| <a name="input_skip_validation"></a> [skip\_validation](#input\_skip\_validation) | When true, Databricks skips the automatic credential validation step during storage credential creation. Set to true in environments where validation cannot complete (e.g., locked-down VNets). | `bool` | `false` | no |
 | <a name="input_storage_account_id"></a> [storage\_account\_id](#input\_storage\_account\_id) | Full Azure resource ID of the ADLS Gen2 storage account to which Storage Blob Data Contributor will be assigned. Format: /subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.Storage/storageAccounts/{name}. | `string` | n/a | yes |
+| <a name="input_access_connector_name"></a> [access\_connector\_name](#input\_access\_connector\_name) | Name of the Azure Databricks Access Connector resource. Defaults to "dbx-access-connector-<credential\_name>" when null. | `string` | `null` | no |
+| <a name="input_comment"></a> [comment](#input\_comment) | Human-readable comment attached to the databricks\_storage\_credential. Optional. | `string` | `null` | no |
+| <a name="input_isolation_mode"></a> [isolation\_mode](#input\_isolation\_mode) | Isolation mode for the storage credential. Use ISOLATION\_MODE\_ISOLATED for regulated environments. | `string` | `null` | no |
+| <a name="input_skip_validation"></a> [skip\_validation](#input\_skip\_validation) | When true, Databricks skips the automatic credential validation step during storage credential creation. Set to true in environments where validation cannot complete (e.g., locked-down VNets). | `bool` | `false` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to the Azure Databricks Access Connector resource. | `map(string)` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_access_connector_id"></a> [access\_connector\_id](#output\_access\_connector\_id) | Full Azure resource ID of the Databricks Access Connector. Pass to other modules or external locations that reference this credential. |
 | <a name="output_access_connector_principal_id"></a> [access\_connector\_principal\_id](#output\_access\_connector\_principal\_id) | Object ID of the Access Connector's SystemAssigned managed identity. Useful for constructing additional Azure role assignments. |
 | <a name="output_storage_credential_id"></a> [storage\_credential\_id](#output\_storage\_credential\_id) | Databricks Unity Catalog storage credential ID. Pass to databricks\_external\_location or other UC resources that require a storage credential. |

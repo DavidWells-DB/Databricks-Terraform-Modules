@@ -38,15 +38,15 @@ This module requires only the `azurerm` provider. The caller must configure it w
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.0 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.0 |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.76.0 |
 
 ## Modules
 
@@ -55,29 +55,29 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_virtual_network_peering.local_to_remote](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network_peering) | resource |
 | [azurerm_virtual_network_peering.remote_to_local](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network_peering) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
-| <a name="input_allow_forwarded_traffic"></a> [allow\_forwarded\_traffic](#input\_allow\_forwarded\_traffic) | Allow forwarded traffic from VMs in the remote VNet into the local VNet and vice versa. Applies to both peering directions. | `bool` | `false` | no |
-| <a name="input_allow_gateway_transit"></a> [allow\_gateway\_transit](#input\_allow\_gateway\_transit) | Allow the local VNet to use the remote VNet's gateway or route server. Set to true on the hub VNet that owns the gateway. Applies to the local-to-remote peering only. | `bool` | `false` | no |
-| <a name="input_allow_virtual_network_access"></a> [allow\_virtual\_network\_access](#input\_allow\_virtual\_network\_access) | Allow VMs in the remote VNet to access VMs in the local VNet and vice versa. Applies to both peering directions. | `bool` | `true` | no |
+|------|-------------|------|---------|:--------:|
 | <a name="input_local_resource_group_name"></a> [local\_resource\_group\_name](#input\_local\_resource\_group\_name) | Name of the resource group containing the local virtual network. | `string` | n/a | yes |
 | <a name="input_local_vnet_id"></a> [local\_vnet\_id](#input\_local\_vnet\_id) | Full Azure resource ID of the local virtual network. | `string` | n/a | yes |
 | <a name="input_local_vnet_name"></a> [local\_vnet\_name](#input\_local\_vnet\_name) | Name of the local (initiating) virtual network. | `string` | n/a | yes |
 | <a name="input_remote_resource_group_name"></a> [remote\_resource\_group\_name](#input\_remote\_resource\_group\_name) | Name of the resource group containing the remote virtual network. | `string` | n/a | yes |
 | <a name="input_remote_vnet_id"></a> [remote\_vnet\_id](#input\_remote\_vnet\_id) | Full Azure resource ID of the remote virtual network. | `string` | n/a | yes |
 | <a name="input_remote_vnet_name"></a> [remote\_vnet\_name](#input\_remote\_vnet\_name) | Name of the remote (target) virtual network. | `string` | n/a | yes |
+| <a name="input_allow_forwarded_traffic"></a> [allow\_forwarded\_traffic](#input\_allow\_forwarded\_traffic) | Allow forwarded traffic from VMs in the remote VNet into the local VNet and vice versa. Applies to both peering directions. | `bool` | `false` | no |
+| <a name="input_allow_gateway_transit"></a> [allow\_gateway\_transit](#input\_allow\_gateway\_transit) | Allow the local VNet to use the remote VNet's gateway or route server. Set to true on the hub VNet that owns the gateway. Applies to the local-to-remote peering only. | `bool` | `false` | no |
+| <a name="input_allow_virtual_network_access"></a> [allow\_virtual\_network\_access](#input\_allow\_virtual\_network\_access) | Allow VMs in the remote VNet to access VMs in the local VNet and vice versa. Applies to both peering directions. | `bool` | `true` | no |
 | <a name="input_use_remote_gateways"></a> [use\_remote\_gateways](#input\_use\_remote\_gateways) | Allow the local VNet to use the remote VNet's gateway or route server. Cannot be set to true if allow\_gateway\_transit is also true. Applies to the local-to-remote peering only. | `bool` | `false` | no |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_local_peering_id"></a> [local\_peering\_id](#output\_local\_peering\_id) | Azure resource ID of the local-to-remote VNet peering object. |
 | <a name="output_local_peering_name"></a> [local\_peering\_name](#output\_local\_peering\_name) | Name of the local-to-remote VNet peering object (e.g. <local-vnet>-to-<remote-vnet>). |
 | <a name="output_remote_peering_id"></a> [remote\_peering\_id](#output\_remote\_peering\_id) | Azure resource ID of the remote-to-local VNet peering object. |

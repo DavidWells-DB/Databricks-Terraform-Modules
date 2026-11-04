@@ -50,15 +50,15 @@ This module uses only the `aws` provider. No Databricks provider is required —
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.0 |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.100.0 |
 
 ## Modules
 
@@ -67,7 +67,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [aws_vpc_endpoint.kinesis](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [aws_vpc_endpoint.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [aws_vpc_endpoint.sts](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
@@ -78,19 +78,19 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
-| <a name="input_databricks_gov_shard"></a> [databricks\_gov\_shard](#input\_databricks\_gov\_shard) | Databricks GovCloud shard. null for commercial; "civilian" for AWS GovCloud civilian (FedRAMP High); "dod" for IL5/DoD. Drives the AWS partition used in endpoint policy ARNs. | `string` | `null` | no |
+|------|-------------|------|---------|:--------:|
 | <a name="input_private_route_table_ids"></a> [private\_route\_table\_ids](#input\_private\_route\_table\_ids) | Route table IDs to associate with the S3 gateway endpoint. Typically one per private subnet / availability zone. | `list(string)` | n/a | yes |
 | <a name="input_private_subnet_ids"></a> [private\_subnet\_ids](#input\_private\_subnet\_ids) | List of private subnet IDs for the STS and Kinesis interface endpoints. Databricks compute nodes reside in these subnets. | `list(string)` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS region for endpoint service names (e.g., "us-east-1"). Must match the region of the VPC and subnets. | `string` | n/a | yes |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | Security group IDs to associate with the STS and Kinesis interface endpoints. Must allow HTTPS (443) from Databricks compute nodes. | `list(string)` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to all VPC endpoints created by this module. | `map(string)` | `{}` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC in which to create the VPC endpoints. | `string` | n/a | yes |
+| <a name="input_databricks_gov_shard"></a> [databricks\_gov\_shard](#input\_databricks\_gov\_shard) | Databricks GovCloud shard. null for commercial; "civilian" for AWS GovCloud civilian (FedRAMP High); "dod" for IL5/DoD. Drives the AWS partition used in endpoint policy ARNs. | `string` | `null` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to all VPC endpoints created by this module. | `map(string)` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_aws_partition"></a> [aws\_partition](#output\_aws\_partition) | AWS partition computed from databricks\_gov\_shard. "aws" for commercial; "aws-us-gov" for GovCloud. Useful for verification and downstream ARN construction. |
 | <a name="output_kinesis_dns_entries"></a> [kinesis\_dns\_entries](#output\_kinesis\_dns\_entries) | DNS entries for the Kinesis Streams interface endpoint. Each entry has dns\_name and hosted\_zone\_id attributes. |
 | <a name="output_kinesis_endpoint_arn"></a> [kinesis\_endpoint\_arn](#output\_kinesis\_endpoint\_arn) | ARN of the Kinesis Streams interface VPC endpoint. |

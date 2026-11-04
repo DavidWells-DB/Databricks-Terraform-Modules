@@ -33,15 +33,15 @@ No cloud (AWS/Azure/GCP) provider is required by this module — the cloud crede
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_databricks.workspace"></a> [databricks.workspace](#provider\_databricks.workspace) | >= 1.50 |
+|------|---------|
+| <a name="provider_databricks.workspace"></a> [databricks.workspace](#provider\_databricks.workspace) | 1.117.0 |
 
 ## Modules
 
@@ -50,20 +50,20 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_external_location.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/external_location) | resource |
 | [databricks_grants.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/grants) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
-| <a name="input_locations"></a> [locations](#input\_locations) | Map of external location name to configuration. Each key becomes the external location name<br/>registered in Unity Catalog.<br/><br/>Attributes:<br/>  url                   - Cloud storage path (e.g. s3://bucket/prefix, abfss://container@account.dfs.core.windows.net/prefix, gs://bucket/prefix).<br/>  storage\_credential\_id - ID of the databricks\_storage\_credential that grants access to this path.<br/>  comment               - Optional human-readable description attached to the external location.<br/>  read\_only             - When true, the external location is registered as read-only. Defaults to false.<br/>  skip\_validation       - When true, Databricks skips credential validation during creation. Set to true in locked-down environments. Defaults to false.<br/>  grants                - Map of principal → list of privileges. Example: { "data-eng@example.com" = ["READ\_FILES", "WRITE\_FILES"] }. | <pre>map(object({<br/>    url                   = string<br/>    storage_credential_id = string<br/>    comment               = optional(string)<br/>    read_only             = optional(bool, false)<br/>    skip_validation       = optional(bool, false)<br/>    grants                = optional(map(list(string)), {})<br/>  }))</pre> | n/a | yes |
+|------|-------------|------|---------|:--------:|
+| <a name="input_locations"></a> [locations](#input\_locations) | Map of external location name to configuration. Each key becomes the external location name<br/>registered in Unity Catalog.<br/><br/>Attributes:<br/>  url                   - Cloud storage path (e.g. s3://bucket/prefix, abfss://container@account.dfs.core.windows.net/prefix, gs://bucket/prefix).<br/>  storage\_credential\_name - NAME of the databricks\_storage\_credential that grants access to this path (the storage\_credential\_name output of the credential modules — NOT the UUID id).<br/>  comment               - Optional human-readable description attached to the external location.<br/>  read\_only             - When true, the external location is registered as read-only. Defaults to false.<br/>  skip\_validation       - When true, Databricks skips credential validation during creation. Set to true in locked-down environments. Defaults to false.<br/>  grants                - Map of principal → list of privileges. Example: { "data-eng@example.com" = ["READ\_FILES", "WRITE\_FILES"] }. | <pre>map(object({<br/>    url                     = string<br/>    storage_credential_name = string<br/>    comment                 = optional(string)<br/>    read_only               = optional(bool, false)<br/>    skip_validation         = optional(bool, false)<br/>    grants                  = optional(map(list(string)), {})<br/>  }))</pre> | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_external_location_ids"></a> [external\_location\_ids](#output\_external\_location\_ids) | Map of external location name to its Databricks resource ID. Useful for referencing locations in downstream resources. |
 | <a name="output_external_location_names"></a> [external\_location\_names](#output\_external\_location\_names) | Map of external location name to its registered name in Unity Catalog. Matches the input map keys. |
 | <a name="output_external_location_urls"></a> [external\_location\_urls](#output\_external\_location\_urls) | Map of external location name to its cloud storage URL. Useful for verification and downstream configuration. |

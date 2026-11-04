@@ -34,7 +34,7 @@ Premium (serverless network policies require Premium+).
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.81.0 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9 |
@@ -42,9 +42,9 @@ Premium (serverless network policies require Premium+).
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.122.0 |
-| <a name="provider_time"></a> [time](#provider\_time) | 0.14.0 |
+|------|---------|
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.81.0 |
+| <a name="provider_time"></a> [time](#provider\_time) | >= 0.9 |
 
 ## Modules
 
@@ -53,14 +53,14 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_workspace_network_option.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/workspace_network_option) | resource |
 | [time_sleep.unbind_settle](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_network_policy_id"></a> [network\_policy\_id](#input\_network\_policy\_id) | Account network policy ID to assign to the workspace via databricks\_workspace\_network\_option. This is the ID of a databricks\_account\_network\_policy (see the dbx-account-network-policy module). Pass "default-policy" to assign the account default policy. | `string` | n/a | yes |
 | <a name="input_workspace_id"></a> [workspace\_id](#input\_workspace\_id) | Databricks workspace ID to bind the network policy to. A workspace has exactly one network option; binding a different policy overwrites the previous assignment. | `number` | n/a | yes |
 | <a name="input_unbind_settle_duration"></a> [unbind\_settle\_duration](#input\_unbind\_settle\_duration) | How long to wait, on destroy, between unbinding the network policy from the workspace and allowing a dependent policy to be deleted. Fixes a delete-ordering race (open-item E12) where the policy delete fired before the unbind had propagated. Accepts Go duration syntax (e.g. "30s", "1m"). Applied on destroy only — no create delay. | `string` | `"30s"` | no |
@@ -68,7 +68,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_binding_id"></a> [binding\_id](#output\_binding\_id) | Composite binding identifier in the format <workspace\_id>\|<network\_policy\_id>. The databricks\_workspace\_network\_option resource exports no id, so this is synthesized for referencing the binding in downstream tooling or expressing explicit dependencies. |
 | <a name="output_network_policy_id"></a> [network\_policy\_id](#output\_network\_policy\_id) | Network policy ID bound to the workspace. Echoed for convenience when chaining module outputs. |
 | <a name="output_workspace_id"></a> [workspace\_id](#output\_workspace\_id) | Workspace ID the network policy is bound to. Echoed for convenience when chaining module outputs. |

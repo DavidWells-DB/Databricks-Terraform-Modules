@@ -58,15 +58,15 @@ The workspace provider must be authenticated as a workspace admin or account adm
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.73 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_databricks"></a> [databricks](#provider\_databricks) | >= 1.73 |
+|------|---------|
+| <a name="provider_databricks"></a> [databricks](#provider\_databricks) | 1.117.0 |
 
 ## Modules
 
@@ -75,7 +75,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_automatic_cluster_update_workspace_setting.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/automatic_cluster_update_workspace_setting) | resource |
 | [databricks_compliance_security_profile_workspace_setting.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/compliance_security_profile_workspace_setting) | resource |
 | [databricks_disable_legacy_access_setting.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/disable_legacy_access_setting) | resource |
@@ -85,7 +85,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_automatic_cluster_update_enabled"></a> [automatic\_cluster\_update\_enabled](#input\_automatic\_cluster\_update\_enabled) | Enable Automatic Cluster Update on the workspace. Keeps clusters patched during a maintenance window. | `bool` | `false` | no |
 | <a name="input_automatic_cluster_update_maintenance_window"></a> [automatic\_cluster\_update\_maintenance\_window](#input\_automatic\_cluster\_update\_maintenance\_window) | Optional maintenance window for automatic cluster updates. Only used when automatic\_cluster\_update\_enabled = true. day\_of\_week: MONDAY–SUNDAY (uppercase). frequency: EVERY\_WEEK, FIRST\_OF\_MONTH, SECOND\_OF\_MONTH, THIRD\_OF\_MONTH, FOURTH\_OF\_MONTH, FIRST\_AND\_THIRD\_OF\_MONTH, SECOND\_AND\_FOURTH\_OF\_MONTH. hours: 0–23 (UTC). minutes: 0–59. | <pre>object({<br/>    week_day_based_schedule = optional(object({<br/>      day_of_week = string<br/>      frequency   = string<br/>      window_start_time = object({<br/>        hours   = number<br/>        minutes = number<br/>      })<br/>    }))<br/>  })</pre> | `null` | no |
 | <a name="input_automatic_cluster_update_restart_even_if_no_updates_available"></a> [automatic\_cluster\_update\_restart\_even\_if\_no\_updates\_available](#input\_automatic\_cluster\_update\_restart\_even\_if\_no\_updates\_available) | When automatic\_cluster\_update\_enabled = true, force a restart during the maintenance window even if no updates are available. | `bool` | `false` | no |
@@ -98,7 +98,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_automatic_cluster_update_enabled"></a> [automatic\_cluster\_update\_enabled](#output\_automatic\_cluster\_update\_enabled) | Whether Automatic Cluster Update was applied by this module. |
 | <a name="output_compliance_security_profile_enabled"></a> [compliance\_security\_profile\_enabled](#output\_compliance\_security\_profile\_enabled) | Whether the Compliance Security Profile was applied by this module. True when compliance\_security\_profile\_enabled = true. Useful as a signal for downstream modules that need to know whether CSP is active. |
 | <a name="output_compliance_standards"></a> [compliance\_standards](#output\_compliance\_standards) | Compliance standards passed to the Compliance Security Profile. Empty list when compliance\_security\_profile\_enabled = false. |

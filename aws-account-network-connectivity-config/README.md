@@ -49,15 +49,15 @@ Databricks enforces a maximum of **10 NCCs per region per account**. Plan NCC al
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.50 |
+|------|---------|
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.117.0 |
 
 ## Modules
 
@@ -66,20 +66,20 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_mws_network_connectivity_config.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_network_connectivity_config) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | Name for the Network Connectivity Configuration. Must be 3-30 characters: alphanumeric, hyphens, or underscores. Forces replacement on change. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS region for the Network Connectivity Configuration. NCCs can only be referenced by workspaces in the same region. Forces replacement on change. | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_creation_time"></a> [creation\_time](#output\_creation\_time) | Epoch milliseconds timestamp when the NCC was created. Useful for auditing and ordering. |
 | <a name="output_name"></a> [name](#output\_name) | Name of the Network Connectivity Configuration as registered in Databricks. |
 | <a name="output_network_connectivity_config_id"></a> [network\_connectivity\_config\_id](#output\_network\_connectivity\_config\_id) | Databricks Network Connectivity Configuration ID. Pass to workspace binding modules (databricks\_mws\_ncc\_binding) as the network\_connectivity\_config\_id input. |

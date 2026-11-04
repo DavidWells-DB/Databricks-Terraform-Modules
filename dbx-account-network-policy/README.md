@@ -43,15 +43,15 @@ See [examples/basic](./examples/basic) for a complete working example.
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.60 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.122.0 |
+|------|---------|
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.117.0 |
 
 ## Modules
 
@@ -60,13 +60,13 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_account_network_policy.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/account_network_policy) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. Set explicitly on the policy so the provider does not treat it as computed (which forces replacement on every plan). | `string` | n/a | yes |
 | <a name="input_policy_name"></a> [policy\_name](#input\_policy\_name) | Name for the network policy. Must be unique within the Databricks account. | `string` | n/a | yes |
 | <a name="input_allowed_internet_destinations"></a> [allowed\_internet\_destinations](#input\_allowed\_internet\_destinations) | Internet destinations allowed when egress\_mode is RESTRICTED\_ACCESS. Each entry has a 'destination' (a domain name) and 'internet\_destination\_type' (only "DNS\_NAME" is currently supported by the provider; IP\_RANGE is planned but not yet available). | <pre>list(object({<br/>    destination               = string<br/>    internet_destination_type = optional(string, "DNS_NAME")<br/>  }))</pre> | `[]` | no |
@@ -77,7 +77,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_egress_mode"></a> [egress\_mode](#output\_egress\_mode) | Egress restriction mode configured for the policy (RESTRICTED\_ACCESS or FULL\_ACCESS). |
 | <a name="output_network_policy_id"></a> [network\_policy\_id](#output\_network\_policy\_id) | Databricks account-level network policy ID. Pass to workspace or serverless compute configuration as the network\_policy\_id input. |
 | <a name="output_policy_name"></a> [policy\_name](#output\_policy\_name) | Name of the network policy. |

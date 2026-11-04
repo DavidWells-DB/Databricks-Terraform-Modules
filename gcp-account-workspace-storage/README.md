@@ -48,7 +48,7 @@ Pass a fully-qualified KMS key resource name to `kms_key_name` to enable CMEK en
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 5.0 |
@@ -56,9 +56,9 @@ Pass a fully-qualified KMS key resource name to `kms_key_name` to enable CMEK en
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.50 |
-| <a name="provider_google"></a> [google](#provider\_google) | >= 5.0 |
+|------|---------|
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.117.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 7.37.0 |
 
 ## Modules
 
@@ -67,7 +67,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_mws_storage_configurations.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_storage_configurations) | resource |
 | [google_storage_bucket.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket) | resource |
 | [google_storage_bucket_iam_member.legacy_bucket_reader](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_member) | resource |
@@ -76,19 +76,20 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. Used in the databricks\_mws\_storage\_configurations registration. | `string` | n/a | yes |
 | <a name="input_databricks_service_account_email"></a> [databricks\_service\_account\_email](#input\_databricks\_service\_account\_email) | Email address of the Databricks-managed GCP service account that will be granted IAM access to the bucket. Provided by Databricks during workspace setup (format: service-account@<project>.iam.gserviceaccount.com). | `string` | n/a | yes |
-| <a name="input_kms_key_name"></a> [kms\_key\_name](#input\_kms\_key\_name) | Optional Cloud KMS key resource name for server-side encryption of bucket contents (format: projects/<project>/locations/<location>/keyRings/<keyRing>/cryptoKeys/<key>). null disables CMEK and uses Google-managed encryption. | `string` | `null` | no |
-| <a name="input_labels"></a> [labels](#input\_labels) | Labels applied to the GCS bucket. | `map(string)` | `{}` | no |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | GCP project ID in which the GCS bucket will be created. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | GCP region for the GCS bucket (e.g. "us-central1"). Must match the region of the Databricks workspace. | `string` | n/a | yes |
 | <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | Prefix applied to the GCS bucket name and the Databricks storage configuration name. Must be 1-38 characters; lowercase letters, digits, and hyphens only. GCS bucket names have a 63-character limit; the module appends "-root-storage" (13 chars), leaving 50 for the prefix. | `string` | n/a | yes |
+| <a name="input_force_destroy"></a> [force\_destroy](#input\_force\_destroy) | Allow the bucket to be destroyed even if it contains objects. Set to true for non-production environments. | `bool` | `false` | no |
+| <a name="input_kms_key_name"></a> [kms\_key\_name](#input\_kms\_key\_name) | Optional Cloud KMS key resource name for server-side encryption of bucket contents (format: projects/<project>/locations/<location>/keyRings/<keyRing>/cryptoKeys/<key>). null disables CMEK and uses Google-managed encryption. | `string` | `null` | no |
+| <a name="input_labels"></a> [labels](#input\_labels) | Labels applied to the GCS bucket. | `map(string)` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_bucket_name"></a> [bucket\_name](#output\_bucket\_name) | Name of the GCS bucket used as workspace root storage. |
 | <a name="output_bucket_self_link"></a> [bucket\_self\_link](#output\_bucket\_self\_link) | Self-link URI of the GCS bucket. Useful for referencing the bucket in other Google Cloud resources. |
 | <a name="output_bucket_url"></a> [bucket\_url](#output\_bucket\_url) | GCS URL of the root storage bucket (gs://<bucket-name>). |

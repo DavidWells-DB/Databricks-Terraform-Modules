@@ -36,15 +36,15 @@ The service account or user running Terraform must also have `compute.xpnAdmin` 
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 5.0 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_google"></a> [google](#provider\_google) | >= 5.0 |
+|------|---------|
+| <a name="provider_google"></a> [google](#provider\_google) | 7.37.0 |
 
 ## Modules
 
@@ -53,7 +53,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [google_compute_shared_vpc_host_project.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_shared_vpc_host_project) | resource |
 | [google_compute_shared_vpc_service_project.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_shared_vpc_service_project) | resource |
 | [google_compute_subnetwork_iam_member.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_subnetwork_iam_member) | resource |
@@ -61,7 +61,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_host_project_id"></a> [host\_project\_id](#input\_host\_project\_id) | GCP project ID of the Shared VPC host project. This project will be configured as the Shared VPC host. | `string` | n/a | yes |
 | <a name="input_service_project_ids"></a> [service\_project\_ids](#input\_service\_project\_ids) | List of GCP project IDs to attach as Shared VPC service projects. At least one service project is required. | `list(string)` | n/a | yes |
 | <a name="input_subnet_iam_grants"></a> [subnet\_iam\_grants](#input\_subnet\_iam\_grants) | Optional list of IAM bindings to add on specific subnetworks in the host project. Each entry grants a single member a single role on a single subnetwork. Useful for granting service-project service accounts access to Shared VPC subnets (e.g., roles/compute.networkUser). Leave empty to skip subnet-level IAM grants. | <pre>list(object({<br/>    subnetwork = string<br/>    region     = string<br/>    member     = string<br/>    role       = string<br/>  }))</pre> | `[]` | no |
@@ -69,7 +69,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_host_project_id"></a> [host\_project\_id](#output\_host\_project\_id) | GCP project ID of the Shared VPC host project. Pass to workspace or network modules that require the host project reference. |
 | <a name="output_service_project_attachment_ids"></a> [service\_project\_attachment\_ids](#output\_service\_project\_attachment\_ids) | Map of service project ID to the Terraform resource ID of its Shared VPC attachment (format: host\_project/service\_project). Useful for referencing or importing attachments. |
 | <a name="output_service_project_ids"></a> [service\_project\_ids](#output\_service\_project\_ids) | Set of GCP project IDs attached as Shared VPC service projects. |

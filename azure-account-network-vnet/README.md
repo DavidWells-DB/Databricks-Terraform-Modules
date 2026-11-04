@@ -42,15 +42,15 @@ The Databricks control plane injects NSG rules into the shared NSG after workspa
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.75 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.75 |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.76.0 |
 
 ## Modules
 
@@ -59,7 +59,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_network_security_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) | resource |
 | [azurerm_subnet.container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
 | [azurerm_subnet.host](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
@@ -71,28 +71,30 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_container_subnet_cidr"></a> [container\_subnet\_cidr](#input\_container\_subnet\_cidr) | CIDR block for the Databricks container subnet (e.g. "10.0.2.0/24"). Must be a subset of vnet\_cidr and at least /26. | `string` | n/a | yes |
 | <a name="input_container_subnet_name"></a> [container\_subnet\_name](#input\_container\_subnet\_name) | Name for the Databricks container subnet. | `string` | n/a | yes |
 | <a name="input_host_subnet_cidr"></a> [host\_subnet\_cidr](#input\_host\_subnet\_cidr) | CIDR block for the Databricks host subnet (e.g. "10.0.1.0/24"). Must be a subset of vnet\_cidr and at least /26. | `string` | n/a | yes |
 | <a name="input_host_subnet_name"></a> [host\_subnet\_name](#input\_host\_subnet\_name) | Name for the Databricks host (compute) subnet. Must not be "AzureBastionSubnet" or "GatewaySubnet" — those are reserved Azure names. | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | Azure region where the VNet and subnets are created (e.g. "eastus", "westeurope"). Must match the resource group's region. | `string` | n/a | yes |
 | <a name="input_nsg_name"></a> [nsg\_name](#input\_nsg\_name) | Name for the Network Security Group applied to both Databricks subnets. A single NSG is shared between host and container subnets as required by Databricks VNet injection. | `string` | n/a | yes |
-| <a name="input_pe_subnet_cidr"></a> [pe\_subnet\_cidr](#input\_pe\_subnet\_cidr) | CIDR block for the optional private endpoint subnet (e.g. "10.0.3.0/27"). Required when pe\_subnet\_name is set; ignored when pe\_subnet\_name is null. | `string` | `null` | no |
-| <a name="input_pe_subnet_name"></a> [pe\_subnet\_name](#input\_pe\_subnet\_name) | Name for the optional private endpoint subnet. Set to null to skip private endpoint subnet creation. | `string` | `null` | no |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of the Azure resource group in which to create the VNet and subnets. | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to all Azure resources created by this module. | `map(string)` | `{}` | no |
 | <a name="input_vnet_cidr"></a> [vnet\_cidr](#input\_vnet\_cidr) | CIDR block for the Virtual Network address space (e.g. "10.0.0.0/16"). Must be large enough to accommodate the host, container, and optional PE subnets. | `string` | n/a | yes |
 | <a name="input_vnet_name"></a> [vnet\_name](#input\_vnet\_name) | Name for the Azure Virtual Network. | `string` | n/a | yes |
+| <a name="input_pe_subnet_cidr"></a> [pe\_subnet\_cidr](#input\_pe\_subnet\_cidr) | CIDR block for the optional private endpoint subnet (e.g. "10.0.3.0/27"). Required when pe\_subnet\_name is set; ignored when pe\_subnet\_name is null. | `string` | `null` | no |
+| <a name="input_pe_subnet_name"></a> [pe\_subnet\_name](#input\_pe\_subnet\_name) | Name for the optional private endpoint subnet. Set to null to skip private endpoint subnet creation. | `string` | `null` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to all Azure resources created by this module. | `map(string)` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_container_subnet_id"></a> [container\_subnet\_id](#output\_container\_subnet\_id) | Resource ID of the Databricks container subnet. Pass to the workspace creation module's custom\_parameters as the private\_subnet\_network\_security\_group\_association\_id. |
 | <a name="output_container_subnet_name"></a> [container\_subnet\_name](#output\_container\_subnet\_name) | Name of the Databricks container subnet. Required by azurerm\_databricks\_workspace custom\_parameters. |
+| <a name="output_container_subnet_nsg_association_id"></a> [container\_subnet\_nsg\_association\_id](#output\_container\_subnet\_nsg\_association\_id) | Resource ID of the NSG association for the container (private) subnet. Required by azure-account-workspace as private\_subnet\_network\_security\_group\_association\_id when VNet injection is used. |
 | <a name="output_host_subnet_id"></a> [host\_subnet\_id](#output\_host\_subnet\_id) | Resource ID of the Databricks host subnet. Pass to the workspace creation module's custom\_parameters as the virtual\_network\_subnet\_id. |
 | <a name="output_host_subnet_name"></a> [host\_subnet\_name](#output\_host\_subnet\_name) | Name of the Databricks host subnet. Required by azurerm\_databricks\_workspace custom\_parameters. |
+| <a name="output_host_subnet_nsg_association_id"></a> [host\_subnet\_nsg\_association\_id](#output\_host\_subnet\_nsg\_association\_id) | Resource ID of the NSG association for the host (public) subnet. Required by azure-account-workspace as public\_subnet\_network\_security\_group\_association\_id when VNet injection is used — the workspace must not be created before the associations exist. |
 | <a name="output_nsg_id"></a> [nsg\_id](#output\_nsg\_id) | Resource ID of the Network Security Group associated with the Databricks subnets. Useful for additional rule management or cross-referencing. |
 | <a name="output_nsg_name"></a> [nsg\_name](#output\_nsg\_name) | Name of the Network Security Group associated with the Databricks subnets. |
 | <a name="output_pe_subnet_id"></a> [pe\_subnet\_id](#output\_pe\_subnet\_id) | Resource ID of the optional private endpoint subnet. Null when pe\_subnet\_name is not set. |

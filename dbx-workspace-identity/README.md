@@ -55,7 +55,7 @@ If you are assigning principals to an already-running workspace (not freshly cre
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.14 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9 |
@@ -63,9 +63,9 @@ If you are assigning principals to an already-running workspace (not freshly cre
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.14 |
-| <a name="provider_time"></a> [time](#provider\_time) | >= 0.9 |
+|------|---------|
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.117.0 |
+| <a name="provider_time"></a> [time](#provider\_time) | 0.14.0 |
 
 ## Modules
 
@@ -74,21 +74,21 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_mws_permission_assignment.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_permission_assignment) | resource |
 | [time_sleep.workspace_api_ready](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_assignments"></a> [assignments](#input\_assignments) | Map of workspace permission assignments. Each key is a human-readable label (used as the for\_each key).<br/>Each value contains:<br/>  - principal\_id: Databricks account-level principal ID (group, service principal, or user).<br/>  - roles: List of workspace roles to assign. Valid values are "USER" and "ADMIN".<br/>Example:<br/>  {<br/>    data\_eng\_group = { principal\_id = 123456789, roles = ["USER"] }<br/>    workspace\_admin = { principal\_id = 987654321, roles = ["ADMIN"] }<br/>  } | <pre>map(object({<br/>    principal_id = number<br/>    roles        = list(string)<br/>  }))</pre> | n/a | yes |
 | <a name="input_workspace_id"></a> [workspace\_id](#input\_workspace\_id) | Databricks workspace ID to assign principals to. Obtained from the workspace creation module or a data source. | `number` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_assignment_ids"></a> [assignment\_ids](#output\_assignment\_ids) | Map of assignment label to the Databricks permission assignment ID. Keyed by the same keys as the assignments input variable. |
 <!-- END_TF_DOCS -->
 

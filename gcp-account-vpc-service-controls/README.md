@@ -51,14 +51,14 @@ Typical required roles:
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 5.0 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="provider_google"></a> [google](#provider\_google) | 7.35.0 |
 
 ## Modules
@@ -68,26 +68,26 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [google_access_context_manager_service_perimeter.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/access_context_manager_service_perimeter) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
-| <a name="input_access_levels"></a> [access\_levels](#input\_access\_levels) | List of access level resource names to allow ingress. Format: accessPolicies/<policy\_id>/accessLevels/<level\_name>. | `list(string)` | `[]` | no |
+|------|-------------|------|---------|:--------:|
 | <a name="input_access_policy_id"></a> [access\_policy\_id](#input\_access\_policy\_id) | Existing Access Context Manager access policy ID (organization-level). Format: accessPolicies/<policy\_id> or <policy\_id>. | `string` | n/a | yes |
-| <a name="input_egress_policies"></a> [egress\_policies](#input\_egress\_policies) | Egress policy rules for the perimeter. See https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/access_context_manager_service_perimeter#egress_policies for structure. | <pre>list(object({<br/>    egress_from = optional(object({<br/>      identity_type = optional(string)<br/>      identities    = optional(list(string), [])<br/>    }))<br/>    egress_to = optional(object({<br/>      resources = optional(list(string), [])<br/>      operations = optional(list(object({<br/>        service_name = optional(string)<br/>        method_selectors = optional(list(object({<br/>          method     = optional(string)<br/>          permission = optional(string)<br/>        })), [])<br/>      })), [])<br/>    }))<br/>  }))</pre> | `[]` | no |
-| <a name="input_ingress_policies"></a> [ingress\_policies](#input\_ingress\_policies) | Ingress policy rules for the perimeter. See https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/access_context_manager_service_perimeter#ingress_policies for structure. | <pre>list(object({<br/>    ingress_from = optional(object({<br/>      sources = optional(list(object({<br/>        access_level = optional(string)<br/>        resource     = optional(string)<br/>      })), [])<br/>      identity_type = optional(string)<br/>      identities    = optional(list(string), [])<br/>    }))<br/>    ingress_to = optional(object({<br/>      resources = optional(list(string), [])<br/>      operations = optional(list(object({<br/>        service_name = optional(string)<br/>        method_selectors = optional(list(object({<br/>          method     = optional(string)<br/>          permission = optional(string)<br/>        })), [])<br/>      })), [])<br/>    }))<br/>  }))</pre> | `[]` | no |
 | <a name="input_perimeter_name"></a> [perimeter\_name](#input\_perimeter\_name) | Name of the service perimeter. Must be alphanumeric with underscores, max 50 chars. | `string` | n/a | yes |
 | <a name="input_perimeter_title"></a> [perimeter\_title](#input\_perimeter\_title) | Human-readable title for the service perimeter. | `string` | n/a | yes |
 | <a name="input_protected_project_numbers"></a> [protected\_project\_numbers](#input\_protected\_project\_numbers) | List of GCP project numbers to include in the perimeter. Format: "projects/<project\_number>" or "<project\_number>". | `list(string)` | n/a | yes |
-| <a name="input_restricted_services"></a> [restricted\_services](#input\_restricted\_services) | List of GCP services restricted by the perimeter (e.g., "storage.googleapis.com", "bigquery.googleapis.com"). | `list(string)` | <pre>[<br/>  "storage.googleapis.com",<br/>  "bigquery.googleapis.com"<br/>]</pre> | no |
+| <a name="input_restricted_services"></a> [restricted\_services](#input\_restricted\_services) | List of GCP services restricted by the perimeter (e.g., ["storage.googleapis.com", "bigquery.googleapis.com"]). Every service listed will deny access from outside the perimeter — callers must list only services they explicitly intend to restrict. | `list(string)` | n/a | yes |
+| <a name="input_access_levels"></a> [access\_levels](#input\_access\_levels) | List of access level resource names to allow ingress. Format: accessPolicies/<policy\_id>/accessLevels/<level\_name>. | `list(string)` | `[]` | no |
+| <a name="input_egress_policies"></a> [egress\_policies](#input\_egress\_policies) | Egress policy rules for the perimeter. See https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/access_context_manager_service_perimeter#egress_policies for structure. | <pre>list(object({<br/>    egress_from = optional(object({<br/>      identity_type = optional(string)<br/>      identities    = optional(list(string), [])<br/>    }))<br/>    egress_to = optional(object({<br/>      resources = optional(list(string), [])<br/>      operations = optional(list(object({<br/>        service_name = optional(string)<br/>        method_selectors = optional(list(object({<br/>          method     = optional(string)<br/>          permission = optional(string)<br/>        })), [])<br/>      })), [])<br/>    }))<br/>  }))</pre> | `[]` | no |
+| <a name="input_ingress_policies"></a> [ingress\_policies](#input\_ingress\_policies) | Ingress policy rules for the perimeter. See https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/access_context_manager_service_perimeter#ingress_policies for structure. | <pre>list(object({<br/>    ingress_from = optional(object({<br/>      sources = optional(list(object({<br/>        access_level = optional(string)<br/>        resource     = optional(string)<br/>      })), [])<br/>      identity_type = optional(string)<br/>      identities    = optional(list(string), [])<br/>    }))<br/>    ingress_to = optional(object({<br/>      resources = optional(list(string), [])<br/>      operations = optional(list(object({<br/>        service_name = optional(string)<br/>        method_selectors = optional(list(object({<br/>          method     = optional(string)<br/>          permission = optional(string)<br/>        })), [])<br/>      })), [])<br/>    }))<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_perimeter_id"></a> [perimeter\_id](#output\_perimeter\_id) | Full resource name of the VPC Service Controls perimeter. |
 | <a name="output_perimeter_name"></a> [perimeter\_name](#output\_perimeter\_name) | Name of the service perimeter. |
 | <a name="output_protected_projects"></a> [protected\_projects](#output\_protected\_projects) | List of GCP project numbers protected by the perimeter. |

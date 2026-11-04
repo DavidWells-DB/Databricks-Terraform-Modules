@@ -72,7 +72,7 @@ custom_service_attachment_uris = {
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
@@ -80,9 +80,9 @@ custom_service_attachment_uris = {
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.0 |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.50 |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.50.0 |
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.117.0 |
 
 ## Modules
 
@@ -91,7 +91,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [aws_security_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_vpc_endpoint.relay](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [aws_vpc_endpoint.service_direct](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
@@ -104,28 +104,29 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
+| <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. REQUIRED on databricks\_mws\_vpc\_endpoint: as of provider 1.122.0 the provider-level account\_id is NOT propagated into this resource's request path, producing POST /api/2.0/accounts//vpc-endpoints (empty id) and a misleading `400 Unable to load OAuth Config`. Setting it explicitly is the fix (verified by isolated repro). | `string` | n/a | yes |
+| <a name="input_private_access_settings_name"></a> [private\_access\_settings\_name](#input\_private\_access\_settings\_name) | Display name for the databricks\_mws\_private\_access\_settings object. Must be unique within the Databricks account. | `string` | n/a | yes |
+| <a name="input_privatelink_subnet_ids"></a> [privatelink\_subnet\_ids](#input\_privatelink\_subnet\_ids) | List of subnet IDs in which to place the PrivateLink interface endpoint ENIs. Must be in the same VPC as vpc\_id. At least one subnet is required; one per availability zone is recommended. | `list(string)` | n/a | yes |
+| <a name="input_region"></a> [region](#input\_region) | AWS region where the VPC and endpoints reside (e.g. "us-east-1"). Used to look up the Databricks endpoint service attachment URIs and to register endpoints with the Databricks account API. | `string` | n/a | yes |
+| <a name="input_relay_vpc_endpoint_name"></a> [relay\_vpc\_endpoint\_name](#input\_relay\_vpc\_endpoint\_name) | Display name for the SCC relay databricks\_mws\_vpc\_endpoint registration. Must be unique within the Databricks account. | `string` | n/a | yes |
+| <a name="input_security_group_ingress_cidr_blocks"></a> [security\_group\_ingress\_cidr\_blocks](#input\_security\_group\_ingress\_cidr\_blocks) | CIDR blocks permitted to reach the PrivateLink endpoints. Typically the VPC CIDR and any workspace subnet CIDRs. Ports 443, 2443 (FIPS/CSP), and 6666 (SCC relay) are opened for these blocks. | `list(string)` | n/a | yes |
+| <a name="input_security_group_name"></a> [security\_group\_name](#input\_security\_group\_name) | Name for the AWS security group created to control traffic to the PrivateLink interface endpoints. | `string` | n/a | yes |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the AWS VPC in which to create the PrivateLink interface endpoints. | `string` | n/a | yes |
+| <a name="input_workspace_vpc_endpoint_name"></a> [workspace\_vpc\_endpoint\_name](#input\_workspace\_vpc\_endpoint\_name) | Display name for the workspace (REST API) databricks\_mws\_vpc\_endpoint registration. Must be unique within the Databricks account. | `string` | n/a | yes |
 | <a name="input_allowed_vpc_endpoint_ids"></a> [allowed\_vpc\_endpoint\_ids](#input\_allowed\_vpc\_endpoint\_ids) | List of databricks\_mws\_vpc\_endpoint IDs allowed to connect when private\_access\_level = "ENDPOINT". Ignored when private\_access\_level = "ACCOUNT". | `list(string)` | `[]` | no |
 | <a name="input_custom_service_attachment_uris"></a> [custom\_service\_attachment\_uris](#input\_custom\_service\_attachment\_uris) | Override the module-computed Databricks endpoint service attachment URIs for the workspace, relay, and service-direct endpoints. Use when your region is not in the module's built-in map or when Databricks publishes updated URIs. | <pre>object({<br/>    workspace      = optional(string)<br/>    relay          = optional(string)<br/>    service_direct = optional(string)<br/>  })</pre> | `{}` | no |
 | <a name="input_databricks_gov_shard"></a> [databricks\_gov\_shard](#input\_databricks\_gov\_shard) | Databricks GovCloud shard. null for commercial; "civilian" for AWS GovCloud civilian (FedRAMP High); "dod" for IL5/DoD. Drives the endpoint service attachment URIs and account host URL. | `string` | `null` | no |
 | <a name="input_enable_service_direct"></a> [enable\_service\_direct](#input\_enable\_service\_direct) | Whether to create a third AWS VPC endpoint for the Databricks service-direct (frontend) PrivateLink service. Not available in GovCloud shards — set to false when databricks\_gov\_shard is non-null. | `bool` | `false` | no |
 | <a name="input_private_access_level"></a> [private\_access\_level](#input\_private\_access\_level) | Controls which VPC endpoints may connect to workspaces that use this Private Access Settings object. "ACCOUNT" (default) allows all VPC endpoints registered in the account; "ENDPOINT" restricts to the list in allowed\_vpc\_endpoint\_ids. | `string` | `"ACCOUNT"` | no |
-| <a name="input_private_access_settings_name"></a> [private\_access\_settings\_name](#input\_private\_access\_settings\_name) | Display name for the databricks\_mws\_private\_access\_settings object. Must be unique within the Databricks account. | `string` | n/a | yes |
-| <a name="input_privatelink_subnet_ids"></a> [privatelink\_subnet\_ids](#input\_privatelink\_subnet\_ids) | List of subnet IDs in which to place the PrivateLink interface endpoint ENIs. Must be in the same VPC as vpc\_id. At least one subnet is required; one per availability zone is recommended. | `list(string)` | n/a | yes |
 | <a name="input_public_access_enabled"></a> [public\_access\_enabled](#input\_public\_access\_enabled) | Whether the Databricks workspace can also be accessed over the public internet. true allows both public and PrivateLink access; false restricts access to PrivateLink only. Defaults to false (PrivateLink-only). | `bool` | `false` | no |
-| <a name="input_region"></a> [region](#input\_region) | AWS region where the VPC and endpoints reside (e.g. "us-east-1"). Used to look up the Databricks endpoint service attachment URIs and to register endpoints with the Databricks account API. | `string` | n/a | yes |
-| <a name="input_relay_vpc_endpoint_name"></a> [relay\_vpc\_endpoint\_name](#input\_relay\_vpc\_endpoint\_name) | Display name for the SCC relay databricks\_mws\_vpc\_endpoint registration. Must be unique within the Databricks account. | `string` | n/a | yes |
-| <a name="input_security_group_ingress_cidr_blocks"></a> [security\_group\_ingress\_cidr\_blocks](#input\_security\_group\_ingress\_cidr\_blocks) | CIDR blocks permitted to reach the PrivateLink endpoints. Typically the VPC CIDR and any workspace subnet CIDRs. Ports 443, 2443 (FIPS/CSP), and 6666 (SCC relay) are opened for these blocks. | `list(string)` | n/a | yes |
-| <a name="input_security_group_name"></a> [security\_group\_name](#input\_security\_group\_name) | Name for the AWS security group created to control traffic to the PrivateLink interface endpoints. | `string` | n/a | yes |
 | <a name="input_service_direct_vpc_endpoint_name"></a> [service\_direct\_vpc\_endpoint\_name](#input\_service\_direct\_vpc\_endpoint\_name) | Display name for the service-direct databricks\_mws\_vpc\_endpoint registration. Only used when enable\_service\_direct = true. | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to all AWS resources created by this module (security group and VPC endpoints). | `map(string)` | `{}` | no |
-| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the AWS VPC in which to create the PrivateLink interface endpoints. | `string` | n/a | yes |
-| <a name="input_workspace_vpc_endpoint_name"></a> [workspace\_vpc\_endpoint\_name](#input\_workspace\_vpc\_endpoint\_name) | Display name for the workspace (REST API) databricks\_mws\_vpc\_endpoint registration. Must be unique within the Databricks account. | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_private_access_settings_id"></a> [private\_access\_settings\_id](#output\_private\_access\_settings\_id) | Databricks private\_access\_settings\_id. Pass to aws-account-workspace's private\_access\_settings\_id input when creating a workspace with PrivateLink. |
 | <a name="output_relay_aws_vpc_endpoint_id"></a> [relay\_aws\_vpc\_endpoint\_id](#output\_relay\_aws\_vpc\_endpoint\_id) | AWS-side ID of the SCC relay interface endpoint (e.g. vpce-xxxxxxxx). |
 | <a name="output_relay_service_name"></a> [relay\_service\_name](#output\_relay\_service\_name) | Resolved AWS endpoint service attachment URI for the SCC relay endpoint. |

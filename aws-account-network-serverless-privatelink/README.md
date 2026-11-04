@@ -173,14 +173,14 @@ See the root repository LICENSE file.
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | 6.49.0 |
 
 ## Modules
@@ -190,7 +190,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [aws_lb.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb) | resource |
 | [aws_lb_listener.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
 | [aws_lb_target_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
@@ -202,22 +202,21 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_aws_partition"></a> [aws\_partition](#input\_aws\_partition) | AWS partition for ARN construction. Use "aws" for commercial; "aws-us-gov" for GovCloud (both civilian and DoD shards). | `string` | n/a | yes |
-| <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. Used to construct the AWS account principal ARN that is authorized to connect to the VPC endpoint service. | `string` | n/a | yes |
-| <a name="input_databricks_gov_shard"></a> [databricks\_gov\_shard](#input\_databricks\_gov\_shard) | Databricks GovCloud shard. null for commercial; "civilian" for AWS GovCloud civilian (FedRAMP High); "dod" for IL5/DoD. | `string` | `null` | no |
-| <a name="input_listener_port"></a> [listener\_port](#input\_listener\_port) | NLB listener port. Defaults to target\_port if not specified. | `number` | `null` | no |
 | <a name="input_name"></a> [name](#input\_name) | Resource naming prefix. Used to name the NLB, target group, security group, and VPC endpoint service. | `string` | n/a | yes |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | List of subnet IDs for the Network Load Balancer. Must be in the same VPC and across multiple AZs for high availability. At least 1 subnet is required. | `list(string)` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to all AWS resources (NLB, target group, security group, VPC endpoint service). | `map(string)` | `{}` | no |
 | <a name="input_target_ip"></a> [target\_ip](#input\_target\_ip) | IP address of the target resource (e.g., RDS endpoint IP, Redshift private IP). | `string` | n/a | yes |
 | <a name="input_target_port"></a> [target\_port](#input\_target\_port) | Port on the target resource. | `number` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC ID where the Network Load Balancer will be created. | `string` | n/a | yes |
+| <a name="input_databricks_gov_shard"></a> [databricks\_gov\_shard](#input\_databricks\_gov\_shard) | Databricks GovCloud shard. null for commercial; "civilian" for AWS GovCloud civilian (FedRAMP High); "dod" for IL5/DoD. | `string` | `null` | no |
+| <a name="input_listener_port"></a> [listener\_port](#input\_listener\_port) | NLB listener port. Defaults to target\_port if not specified. | `number` | `null` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to all AWS resources (NLB, target group, security group, VPC endpoint service). | `map(string)` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_databricks_aws_account_id"></a> [databricks\_aws\_account\_id](#output\_databricks\_aws\_account\_id) | Databricks control plane AWS account ID authorized to connect to the VPC endpoint service. Computed from databricks\_gov\_shard. Useful for verification. |
 | <a name="output_endpoint_service_id"></a> [endpoint\_service\_id](#output\_endpoint\_service\_id) | VPC endpoint service ID. |
 | <a name="output_endpoint_service_name"></a> [endpoint\_service\_name](#output\_endpoint\_service\_name) | VPC endpoint service name. Pass this to Databricks when configuring serverless PrivateLink. |

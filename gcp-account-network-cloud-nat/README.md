@@ -32,15 +32,15 @@ This module uses only the `google` provider. No Databricks provider is required 
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 5.0 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_google"></a> [google](#provider\_google) | >= 5.0 |
+|------|---------|
+| <a name="provider_google"></a> [google](#provider\_google) | 7.37.0 |
 
 ## Modules
 
@@ -49,27 +49,27 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [google_compute_router.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_router) | resource |
 | [google_compute_router_nat.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_router_nat) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
-| <a name="input_log_config_enable"></a> [log\_config\_enable](#input\_log\_config\_enable) | Whether to enable Cloud NAT logging. When true, NAT translations are logged to Cloud Logging. Useful for network troubleshooting and audit. Defaults to false. | `bool` | `false` | no |
-| <a name="input_log_config_filter"></a> [log\_config\_filter](#input\_log\_config\_filter) | Specifies what NAT events to log. Valid values: "ALL" (all NAT events), "ERRORS\_ONLY" (only errors), "TRANSLATIONS\_ONLY" (only successful translations). Only used when log\_config\_enable is true. | `string` | `"ERRORS_ONLY"` | no |
-| <a name="input_min_ports_per_vm"></a> [min\_ports\_per\_vm](#input\_min\_ports\_per\_vm) | Minimum number of ports allocated per VM instance for NAT. Higher values reduce port exhaustion risk for workloads with many outbound connections. Defaults to 64. | `number` | `64` | no |
+|------|-------------|------|---------|:--------:|
 | <a name="input_network_self_link"></a> [network\_self\_link](#input\_network\_self\_link) | Self-link URI of the VPC network to attach the Cloud Router to (format: https://www.googleapis.com/compute/v1/projects/<project>/global/networks/<name>). | `string` | n/a | yes |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | GCP project ID in which the Cloud Router and Cloud NAT will be created. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | GCP region for the Cloud Router and Cloud NAT (e.g. "us-central1"). Must match the region of the subnets that need egress. | `string` | n/a | yes |
 | <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | Prefix applied to the Cloud Router name and Cloud NAT name. Must be 1-50 characters; lowercase letters, digits, and hyphens only; must start with a letter. | `string` | n/a | yes |
 | <a name="input_subnetwork_self_link"></a> [subnetwork\_self\_link](#input\_subnetwork\_self\_link) | Self-link URI of the subnetwork whose primary and secondary IP ranges should be NAT-translated. The Cloud NAT is configured to cover this subnetwork only (LIST\_OF\_SUBNETWORKS mode). | `string` | n/a | yes |
+| <a name="input_log_config_enable"></a> [log\_config\_enable](#input\_log\_config\_enable) | Whether to enable Cloud NAT logging. When true, NAT translations are logged to Cloud Logging. Useful for network troubleshooting and audit. Defaults to false. | `bool` | `false` | no |
+| <a name="input_log_config_filter"></a> [log\_config\_filter](#input\_log\_config\_filter) | Specifies what NAT events to log. Valid values: "ALL" (all NAT events), "ERRORS\_ONLY" (only errors), "TRANSLATIONS\_ONLY" (only successful translations). Only used when log\_config\_enable is true. | `string` | `"ERRORS_ONLY"` | no |
+| <a name="input_min_ports_per_vm"></a> [min\_ports\_per\_vm](#input\_min\_ports\_per\_vm) | Minimum number of ports allocated per VM instance for NAT. Higher values reduce port exhaustion risk for workloads with many outbound connections. Defaults to 64. | `number` | `64` | no |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_nat_id"></a> [nat\_id](#output\_nat\_id) | Fully-qualified resource ID of the Cloud NAT (projects/<project>/regions/<region>/routers/<router>/nats/<name>). Useful for referencing the NAT configuration in monitoring or policy resources. |
 | <a name="output_nat_name"></a> [nat\_name](#output\_nat\_name) | Name of the Cloud NAT resource. |
 | <a name="output_router_id"></a> [router\_id](#output\_router\_id) | Fully-qualified resource ID of the Cloud Router (projects/<project>/regions/<region>/routers/<name>). Useful for referencing the router in other GCP resources such as BGP or VPN attachments. |

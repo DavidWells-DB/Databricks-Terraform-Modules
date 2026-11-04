@@ -44,15 +44,15 @@ This module creates no inline rule groups. Pass ARNs of externally-managed rule 
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.0 |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.50.0 |
 
 ## Modules
 
@@ -61,7 +61,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [aws_networkfirewall_firewall.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/networkfirewall_firewall) | resource |
 | [aws_networkfirewall_firewall_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/networkfirewall_firewall_policy) | resource |
 | [aws_route.private_firewall](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
@@ -69,21 +69,21 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_firewall_name"></a> [firewall\_name](#input\_firewall\_name) | Name for the AWS Network Firewall and its associated policy. Must be 1-128 characters, alphanumeric and hyphens only. | `string` | n/a | yes |
 | <a name="input_firewall_subnet_ids"></a> [firewall\_subnet\_ids](#input\_firewall\_subnet\_ids) | List of subnet IDs in which the Network Firewall endpoints are deployed. One firewall endpoint is created per subnet. Subnets must be in distinct AZs for HA. At least one subnet is required. | `list(string)` | n/a | yes |
 | <a name="input_private_route_table_ids"></a> [private\_route\_table\_ids](#input\_private\_route\_table\_ids) | List of private route table IDs to which the 0.0.0.0/0 route pointing to the firewall endpoint is added. Each route table receives a route to the firewall endpoint in the same AZ (by index). At least one route table ID is required. | `list(string)` | n/a | yes |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC in which the Network Firewall is deployed. | `string` | n/a | yes |
 | <a name="input_stateful_rule_group_arns"></a> [stateful\_rule\_group\_arns](#input\_stateful\_rule\_group\_arns) | List of ARNs of stateful rule groups to associate with the firewall policy. May be empty if all filtering is handled by stateless rule groups. | `list(string)` | `[]` | no |
 | <a name="input_stateless_default_actions"></a> [stateless\_default\_actions](#input\_stateless\_default\_actions) | Default actions for stateless packets not matching any stateless rule. Valid values: "aws:pass", "aws:drop", "aws:forward\_to\_sfe". At least one action is required. | `list(string)` | <pre>[<br/>  "aws:forward_to_sfe"<br/>]</pre> | no |
 | <a name="input_stateless_fragment_default_actions"></a> [stateless\_fragment\_default\_actions](#input\_stateless\_fragment\_default\_actions) | Default actions for fragmented stateless packets not matching any stateless rule. Valid values: "aws:pass", "aws:drop", "aws:forward\_to\_sfe". At least one action is required. | `list(string)` | <pre>[<br/>  "aws:forward_to_sfe"<br/>]</pre> | no |
 | <a name="input_stateless_rule_group_arns"></a> [stateless\_rule\_group\_arns](#input\_stateless\_rule\_group\_arns) | List of ARNs of stateless rule groups to associate with the firewall policy. May be empty. | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to all AWS resources created by this module (firewall, firewall policy, and routes). | `map(string)` | `{}` | no |
-| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC in which the Network Firewall is deployed. | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_firewall_arn"></a> [firewall\_arn](#output\_firewall\_arn) | ARN of the AWS Network Firewall. Use for IAM policies and CloudWatch log delivery configuration. |
 | <a name="output_firewall_endpoint_ids"></a> [firewall\_endpoint\_ids](#output\_firewall\_endpoint\_ids) | List of VPC endpoint IDs for the Network Firewall endpoints, one per firewall subnet. Route tables point to these endpoints. |
 | <a name="output_firewall_id"></a> [firewall\_id](#output\_firewall\_id) | ID of the AWS Network Firewall resource. |

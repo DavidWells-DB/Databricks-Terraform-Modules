@@ -35,7 +35,7 @@ The `google` provider must be configured with credentials that have `storage.buc
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 5.0 |
@@ -43,9 +43,9 @@ The `google` provider must be configured with credentials that have `storage.buc
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_databricks.workspace"></a> [databricks.workspace](#provider\_databricks.workspace) | >= 1.50 |
-| <a name="provider_google"></a> [google](#provider\_google) | >= 5.0 |
+|------|---------|
+| <a name="provider_databricks.workspace"></a> [databricks.workspace](#provider\_databricks.workspace) | 1.117.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 7.37.0 |
 
 ## Modules
 
@@ -54,7 +54,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_storage_credential.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/storage_credential) | resource |
 | [google_storage_bucket_iam_member.bucket_reader](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_member) | resource |
 | [google_storage_bucket_iam_member.object_admin](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_member) | resource |
@@ -62,15 +62,16 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | Name of the GCS bucket to which the Databricks-managed service account is granted storage access. Must be an existing bucket. | `string` | n/a | yes |
-| <a name="input_comment"></a> [comment](#input\_comment) | Optional free-text comment for the storage credential. Visible in the Databricks UI and API. | `string` | `null` | no |
 | <a name="input_credential_name"></a> [credential\_name](#input\_credential\_name) | Name of the Databricks Unity Catalog storage credential. Must be unique within the metastore. | `string` | n/a | yes |
+| <a name="input_comment"></a> [comment](#input\_comment) | Optional free-text comment for the storage credential. Visible in the Databricks UI and API. | `string` | `null` | no |
+| <a name="input_isolation_mode"></a> [isolation\_mode](#input\_isolation\_mode) | Isolation mode for the storage credential. Use ISOLATION\_MODE\_ISOLATED for regulated environments. | `string` | `null` | no |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_databricks_service_account_email"></a> [databricks\_service\_account\_email](#output\_databricks\_service\_account\_email) | Email address of the Databricks-managed GCP service account. Use this to grant additional GCP IAM permissions beyond the default bucket access. |
 | <a name="output_storage_credential_id"></a> [storage\_credential\_id](#output\_storage\_credential\_id) | Databricks Unity Catalog storage credential ID. Pass to databricks\_external\_location or databricks\_metastore\_data\_access as the storage\_credential\_name input. |
 | <a name="output_storage_credential_name"></a> [storage\_credential\_name](#output\_storage\_credential\_name) | Name of the Databricks Unity Catalog storage credential, as registered in the metastore. |

@@ -51,15 +51,15 @@ Azure Key Vault-backed scopes require that the workspace provider uses Azure-nat
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.14 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_databricks.workspace"></a> [databricks.workspace](#provider\_databricks.workspace) | >= 1.14 |
+|------|---------|
+| <a name="provider_databricks.workspace"></a> [databricks.workspace](#provider\_databricks.workspace) | 1.117.0 |
 
 ## Modules
 
@@ -68,19 +68,19 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_secret_scope.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/secret_scope) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_scopes"></a> [scopes](#input\_scopes) | Map of secret scope name to configuration. Each key is the scope name (must be unique within the workspace, max 128 chars, alphanumeric/dash/underscore/period). Set initial\_manage\_principal to "users" to grant all workspace users MANAGE on the scope; omit to grant only the calling principal. Provide keyvault\_metadata only for Azure Key Vault-backed scopes — resource\_id is the Azure KV resource ID and dns\_name is the vault URI. | <pre>map(object({<br/>    initial_manage_principal = optional(string, null)<br/>    keyvault_metadata = optional(object({<br/>      resource_id = string<br/>      dns_name    = string<br/>    }), null)<br/>  }))</pre> | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_scope_backend_types"></a> [scope\_backend\_types](#output\_scope\_backend\_types) | Map of scope name to backend type (DATABRICKS or AZURE\_KEYVAULT). Useful for verifying that Azure Key Vault-backed scopes were registered correctly. |
 | <a name="output_scope_ids"></a> [scope\_ids](#output\_scope\_ids) | Map of scope name to Databricks secret scope object ID. Useful for constructing ACL rules or debugging scope registration. |
 | <a name="output_scope_names"></a> [scope\_names](#output\_scope\_names) | Set of secret scope names created by this module. Useful for downstream modules or resources that reference these scopes by name. |

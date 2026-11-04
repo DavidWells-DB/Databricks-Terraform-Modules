@@ -60,15 +60,15 @@ module "catalogs" {
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.39 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_databricks.workspace"></a> [databricks.workspace](#provider\_databricks.workspace) | >= 1.39 |
+|------|---------|
+| <a name="provider_databricks.workspace"></a> [databricks.workspace](#provider\_databricks.workspace) | 1.117.0 |
 
 ## Modules
 
@@ -77,21 +77,21 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_catalog.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/catalog) | resource |
 | [databricks_grants.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/grants) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_catalogs"></a> [catalogs](#input\_catalogs) | Map of catalog names to catalog configuration. Each key becomes the catalog name in Unity Catalog.<br/><br/>- comment        : Human-readable description for the catalog. Null omits the field.<br/>- storage\_root   : Fully-qualified cloud storage path (e.g. s3://bucket/prefix) used as the<br/>                   managed storage root. Null uses the metastore default.<br/>- isolation\_mode : Unity Catalog isolation mode. "OPEN" (default) allows any workspace bound<br/>                   to the metastore to access the catalog. "ISOLATED" restricts access to<br/>                   workspaces explicitly bound to the catalog.<br/>- properties     : Arbitrary key-value metadata stored on the catalog object.<br/>- grants         : List of privilege assignments. Each entry specifies a principal (user,<br/>                   group, or service principal) and the list of UC privileges to grant. | <pre>map(object({<br/>    comment        = optional(string, null)<br/>    storage_root   = optional(string, null)<br/>    isolation_mode = optional(string, "OPEN")<br/>    properties     = optional(map(string), {})<br/>    grants = optional(list(object({<br/>      principal  = string<br/>      privileges = list(string)<br/>    })), [])<br/>  }))</pre> | n/a | yes |
 | <a name="input_metastore_id"></a> [metastore\_id](#input\_metastore\_id) | ID of the Unity Catalog metastore to which these catalogs belong. Required to scope catalog creation to the correct metastore. | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_catalog_ids"></a> [catalog\_ids](#output\_catalog\_ids) | Map of catalog name to the Databricks catalog ID (same as catalog name in UC; exposed for downstream reference and test assertions). |
 | <a name="output_catalog_metastore_ids"></a> [catalog\_metastore\_ids](#output\_catalog\_metastore\_ids) | Map of catalog name to the metastore ID the catalog belongs to. Useful for verification. |
 | <a name="output_catalog_names"></a> [catalog\_names](#output\_catalog\_names) | Set of catalog names created by this module. Useful for downstream modules that consume catalog names as inputs. |

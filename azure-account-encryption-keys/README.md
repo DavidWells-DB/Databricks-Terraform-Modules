@@ -48,15 +48,15 @@ The `databricks_service_principal_object_id` is the object ID of the `AzureDatab
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.75 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.75, < 5.0 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.75 |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.76.0 |
 
 ## Modules
 
@@ -65,7 +65,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_key_vault.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault) | resource |
 | [azurerm_key_vault_access_policy.databricks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.terraform](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
@@ -79,22 +79,22 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_azure_client_object_id"></a> [azure\_client\_object\_id](#input\_azure\_client\_object\_id) | Object ID of the Azure service principal or user running Terraform. Granted full key management permissions so that Terraform can create and manage keys. | `string` | n/a | yes |
 | <a name="input_databricks_service_principal_object_id"></a> [databricks\_service\_principal\_object\_id](#input\_databricks\_service\_principal\_object\_id) | Object ID of the AzureDatabricks enterprise application in your Azure AD tenant. Used in the Key Vault access policy granting Databricks permission to wrap/unwrap keys. | `string` | n/a | yes |
 | <a name="input_key_vault_name"></a> [key\_vault\_name](#input\_key\_vault\_name) | Name of the Azure Key Vault. Must be globally unique, 3-24 characters, alphanumeric and hyphens only, start with a letter. | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | Azure region for the Key Vault (e.g. "eastus", "westeurope"). | `string` | n/a | yes |
+| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of the Azure resource group where the Key Vault will be created. | `string` | n/a | yes |
+| <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | Azure Active Directory tenant ID. Must be a valid UUID. | `string` | n/a | yes |
 | <a name="input_network_acls"></a> [network\_acls](#input\_network\_acls) | Network ACL configuration for the Key Vault. default\_action must be "Allow" or "Deny"; bypass must be "AzureServices" or "None" (use "AzureServices" for Databricks control-plane access). The default restricts public access; supply ip\_rules or virtual\_network\_subnet\_ids to allow specific sources. | <pre>object({<br/>    default_action             = string<br/>    bypass                     = string<br/>    ip_rules                   = optional(set(string), [])<br/>    virtual_network_subnet_ids = optional(set(string), [])<br/>  })</pre> | <pre>{<br/>  "bypass": "AzureServices",<br/>  "default_action": "Deny",<br/>  "ip_rules": []<br/>}</pre> | no |
 | <a name="input_private_endpoint"></a> [private\_endpoint](#input\_private\_endpoint) | Optional private endpoint configuration for the Key Vault. When set, creates an azurerm\_private\_endpoint in the given subnet and a private DNS zone linked to the given VNet. Set to null to skip private endpoint creation. | <pre>object({<br/>    subnet_id           = string<br/>    vnet_id             = string<br/>    resource_group_name = optional(string)<br/>  })</pre> | `null` | no |
-| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of the Azure resource group where the Key Vault will be created. | `string` | n/a | yes |
 | <a name="input_soft_delete_retention_days"></a> [soft\_delete\_retention\_days](#input\_soft\_delete\_retention\_days) | Number of days to retain soft-deleted Key Vault objects. Must be between 7 and 90. Required for Premium SKU. | `number` | `7` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to all resources created by this module (Key Vault, keys, private endpoint). | `map(string)` | `{}` | no |
-| <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | Azure Active Directory tenant ID. Must be a valid UUID. | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_key_vault_id"></a> [key\_vault\_id](#output\_key\_vault\_id) | Resource ID of the Azure Key Vault. Pass to azurerm\_databricks\_workspace as managed\_services\_cmk\_key\_vault\_id and managed\_disk\_cmk\_key\_vault\_id. |
 | <a name="output_key_vault_name"></a> [key\_vault\_name](#output\_key\_vault\_name) | Name of the Azure Key Vault. |
 | <a name="output_key_vault_uri"></a> [key\_vault\_uri](#output\_key\_vault\_uri) | URI of the Azure Key Vault (e.g. https://<name>.vault.azure.net/). Used to construct key version URLs. |

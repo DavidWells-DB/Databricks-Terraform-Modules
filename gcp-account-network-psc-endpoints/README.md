@@ -47,7 +47,7 @@ The module creates a single private DNS managed zone for `gcp.databricks.com.` w
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 5.0 |
@@ -55,9 +55,9 @@ The module creates a single private DNS managed zone for `gcp.databricks.com.` w
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.117.0 |
-| <a name="provider_google"></a> [google](#provider\_google) | 7.35.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 7.37.0 |
 
 ## Modules
 
@@ -66,7 +66,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_mws_private_access_settings.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_private_access_settings) | resource |
 | [databricks_mws_vpc_endpoint.relay](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_vpc_endpoint) | resource |
 | [databricks_mws_vpc_endpoint.workspace](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_vpc_endpoint) | resource |
@@ -82,24 +82,24 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
-| <a name="input_allowed_vpc_endpoint_ids"></a> [allowed\_vpc\_endpoint\_ids](#input\_allowed\_vpc\_endpoint\_ids) | List of Databricks VPC endpoint IDs allowed to connect when private\_access\_level is ENDPOINT. Ignored when private\_access\_level is ACCOUNT. | `list(string)` | `[]` | no |
+|------|-------------|------|---------|:--------:|
 | <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. Used to register PSC endpoints via the account API. | `string` | n/a | yes |
 | <a name="input_network_self_link"></a> [network\_self\_link](#input\_network\_self\_link) | Self-link of the GCP VPC network in which the PSC forwarding rules are created. Example: projects/my-project/global/networks/my-vpc. | `string` | n/a | yes |
-| <a name="input_private_access_level"></a> [private\_access\_level](#input\_private\_access\_level) | The level of access allowed for the private access settings. ACCOUNT allows all VPC endpoints in the account; ENDPOINT restricts to var.allowed\_vpc\_endpoint\_ids. | `string` | `"ACCOUNT"` | no |
-| <a name="input_private_access_settings_name"></a> [private\_access\_settings\_name](#input\_private\_access\_settings\_name) | Descriptive name for the Databricks Private Access Settings object. Defaults to <resource\_prefix>-pas when null. | `string` | `null` | no |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | Google Cloud project ID in which the PSC compute addresses and forwarding rules are created. | `string` | n/a | yes |
 | <a name="input_psc_subnet_self_link"></a> [psc\_subnet\_self\_link](#input\_psc\_subnet\_self\_link) | Self-link of the subnet used for PSC endpoint IP address allocation. The subnet must be in the same region as var.region. Example: projects/my-project/regions/us-central1/subnetworks/my-psc-subnet. | `string` | n/a | yes |
-| <a name="input_public_access_enabled"></a> [public\_access\_enabled](#input\_public\_access\_enabled) | Whether public internet access to Databricks workspaces associated with this Private Access Settings object is allowed. Set to false to enforce private-only access. | `bool` | `true` | no |
 | <a name="input_region"></a> [region](#input\_region) | GCP region for PSC endpoints. Must match the region of the Databricks workspace VPC. Supported regions: asia-northeast1, asia-south1, asia-southeast1, australia-southeast1, europe-west1, europe-west2, europe-west3, me-central2, northamerica-northeast1, southamerica-east1, us-central1, us-east1, us-east4, us-west1, us-west4. | `string` | n/a | yes |
-| <a name="input_relay_psc_service_attachment"></a> [relay\_psc\_service\_attachment](#input\_relay\_psc\_service\_attachment) | Optional override for the Databricks SCC relay PSC service attachment URI. When null the module computes the correct URI from var.region using the documented Databricks PSC attachment map. Override only if Databricks has published an updated URI for your region. | `string` | `null` | no |
 | <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | Prefix applied to all GCP and Databricks resource names created by this module. Keep short (under 20 characters) to stay within GCP's 63-character name limits. | `string` | n/a | yes |
+| <a name="input_allowed_vpc_endpoint_ids"></a> [allowed\_vpc\_endpoint\_ids](#input\_allowed\_vpc\_endpoint\_ids) | List of Databricks VPC endpoint IDs allowed to connect when private\_access\_level is ENDPOINT. Ignored when private\_access\_level is ACCOUNT. | `list(string)` | `[]` | no |
+| <a name="input_private_access_level"></a> [private\_access\_level](#input\_private\_access\_level) | The level of access allowed for the private access settings. ACCOUNT allows all VPC endpoints in the account; ENDPOINT restricts to var.allowed\_vpc\_endpoint\_ids. | `string` | `"ACCOUNT"` | no |
+| <a name="input_private_access_settings_name"></a> [private\_access\_settings\_name](#input\_private\_access\_settings\_name) | Descriptive name for the Databricks Private Access Settings object. Defaults to <resource\_prefix>-pas when null. | `string` | `null` | no |
+| <a name="input_public_access_enabled"></a> [public\_access\_enabled](#input\_public\_access\_enabled) | Whether public internet access to Databricks workspaces associated with this Private Access Settings object is allowed. Set to false to enforce private-only access. | `bool` | `true` | no |
+| <a name="input_relay_psc_service_attachment"></a> [relay\_psc\_service\_attachment](#input\_relay\_psc\_service\_attachment) | Optional override for the Databricks SCC relay PSC service attachment URI. When null the module computes the correct URI from var.region using the documented Databricks PSC attachment map. Override only if Databricks has published an updated URI for your region. | `string` | `null` | no |
 | <a name="input_workspace_psc_service_attachment"></a> [workspace\_psc\_service\_attachment](#input\_workspace\_psc\_service\_attachment) | Optional override for the Databricks workspace PSC service attachment URI. When null the module computes the correct URI from var.region using the documented Databricks PSC attachment map. Override only if Databricks has published an updated URI for your region. | `string` | `null` | no |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_dns_zone_name"></a> [dns\_zone\_name](#output\_dns\_zone\_name) | GCP name of the private DNS managed zone created for gcp.databricks.com. |
 | <a name="output_private_access_settings_id"></a> [private\_access\_settings\_id](#output\_private\_access\_settings\_id) | Databricks Private Access Settings ID. Pass to workspace creation modules as private\_access\_settings\_id. |
 | <a name="output_relay_psc_endpoint_id"></a> [relay\_psc\_endpoint\_id](#output\_relay\_psc\_endpoint\_id) | Databricks VPC endpoint ID for the SCC relay PSC forwarding rule. |

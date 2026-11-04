@@ -62,7 +62,7 @@ This module routes only `HIPAA`, `PCI_DSS`, and `NONE` through the azurerm resou
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | >= 2.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.76 |
@@ -70,7 +70,7 @@ This module routes only `HIPAA`, `PCI_DSS`, and `NONE` through the azurerm resou
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 2.10.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.76.0 |
 
@@ -81,7 +81,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azapi_resource.this](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_update_resource.compliance_standards](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/update_resource) | resource |
 | [azurerm_databricks_workspace_root_dbfs_customer_managed_key.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/databricks_workspace_root_dbfs_customer_managed_key) | resource |
@@ -89,7 +89,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_location"></a> [location](#input\_location) | Azure region for the workspace (e.g., "eastus", "westeurope"). Must match the resource group region. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name of the Azure Databricks workspace resource. Must be unique within the resource group. | `string` | n/a | yes |
 | <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | Full ARM resource-group ID (/subscriptions/<sub>/resourceGroups/<rg>) in which to create the Databricks workspace. Pass the azurerm resource's id (NOT its name): a name-only interface would force an eager plan-time data-source read of a resource group that a fresh apply creates later in the SAME apply — the id composes cleanly. Same contract as azure-account-workspace-serverless. | `string` | n/a | yes |
@@ -124,7 +124,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_compute_mode"></a> [compute\_mode](#output\_compute\_mode) | The deployed ARM properties.computeMode ("Hybrid" for this module's classic workspace), read back from the ARM API. Lets consumers assert the deployed workspace type rather than trusting the config. |
 | <a name="output_disk_encryption_set_id"></a> [disk\_encryption\_set\_id](#output\_disk\_encryption\_set\_id) | Resource ID of the Managed Disk Encryption Set. Populated only when managed\_disk\_cmk\_key\_vault\_key\_id is set. |
 | <a name="output_is_uc_enabled"></a> [is\_uc\_enabled](#output\_is\_uc\_enabled) | The deployed ARM properties.isUcEnabled, read back from the ARM API. With defaultCatalog.initialType = "UnityCatalog" this should read true — the in-Terraform oracle that the workspace catalog posture took effect. |
