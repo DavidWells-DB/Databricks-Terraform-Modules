@@ -34,13 +34,13 @@ variable "block_list_cidrs" {
   default     = null
   nullable    = true
   validation {
-    condition = var.block_list_cidrs == null || (
+    condition = var.block_list_cidrs == null || try((
       length(var.block_list_cidrs) >= 1 &&
       alltrue([
         for cidr in var.block_list_cidrs :
         can(regex("^(\\d{1,3}\\.){3}\\d{1,3}(/\\d{1,2})?$", cidr))
       ])
-    )
+    ), true)
     error_message = "block_list_cidrs, when provided, must be a non-empty list and each entry must be a valid IPv4 address or CIDR (e.g. \"10.0.0.0/8\" or \"203.0.113.42\")."
   }
 }

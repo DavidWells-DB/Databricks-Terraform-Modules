@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-11-04
+
+### Fixed — external review finding (Med): null-guard validations broke on Terraform < 1.12
+- The `var.x == null || <checks>` validations relied on `||` short-circuiting, which landed in Terraform 1.12.0 (2025-05-14). On earlier versions the RHS evaluated eagerly and errored on null (trimspace/for-expression/attribute access), so a plan with the variable unset failed variable validation. The error-prone RHS is now wrapped in `try(..., true)` — the fallback fires only in the null case, so semantics are identical on every supported version and the `>= 1.7` floor is now honest.
+
+
 ## [0.1.1] - 2026-11-04
 
 ### Changed — external review finding (High): metastore force_destroy is now an explicit opt-in

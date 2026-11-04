@@ -39,7 +39,7 @@ variable "data_access_name" {
   default     = null
   nullable    = true
   validation {
-    condition     = var.data_access_name == null || (length(trimspace(var.data_access_name)) >= 1 && length(var.data_access_name) <= 255 && var.data_access_name == trimspace(var.data_access_name))
+    condition     = var.data_access_name == null || try(length(trimspace(var.data_access_name)) >= 1 && length(var.data_access_name) <= 255 && var.data_access_name == trimspace(var.data_access_name), true)
     error_message = "data_access_name must be null or 1-255 characters with no leading or trailing whitespace."
   }
 }
@@ -59,11 +59,14 @@ variable "storage_credential" {
   default     = null
   nullable    = true
   validation {
-    condition = var.storage_credential == null || (
+    # try(): attribute access on a null storage_credential errors under pre-1.12 eager
+    # evaluation of || (short-circuit landed in Terraform 1.12); the true fallback fires
+    # only in that null case, so semantics are identical on every supported version.
+    condition = var.storage_credential == null || try((
       (var.storage_credential.aws_iam_role != null ? 1 : 0) +
       (var.storage_credential.azure_managed_identity != null ? 1 : 0) +
       (var.storage_credential.databricks_gcp_service_account != null ? 1 : 0)
-    ) == 1
+    ) == 1, true)
     error_message = "When set, exactly one of storage_credential.aws_iam_role, storage_credential.azure_managed_identity, or storage_credential.databricks_gcp_service_account must be specified."
   }
 }
@@ -74,7 +77,7 @@ variable "owner_group" {
   default     = null
   nullable    = true
   validation {
-    condition     = var.owner_group == null || (length(trimspace(var.owner_group)) >= 1 && var.owner_group == trimspace(var.owner_group))
+    condition     = var.owner_group == null || try(length(trimspace(var.owner_group)) >= 1 && var.owner_group == trimspace(var.owner_group), true)
     error_message = "owner_group must be null or a non-empty string with no leading/trailing whitespace."
   }
 }

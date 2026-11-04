@@ -30,9 +30,9 @@ variable "allowed_internet_destinations" {
   default     = null
   nullable    = true
   validation {
-    condition = var.allowed_internet_destinations == null || alltrue([
+    condition = var.allowed_internet_destinations == null || try(alltrue([
       for d in var.allowed_internet_destinations : contains(["DNS_NAME"], d.internet_destination_type)
-    ])
+    ]), true)
     error_message = "Each allowed_internet_destinations entry must have internet_destination_type = \"DNS_NAME\"."
   }
 }

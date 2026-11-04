@@ -40,15 +40,15 @@ The block list is optional (`block_list_cidrs = null` by default). When provided
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.39 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_databricks.workspace"></a> [databricks.workspace](#provider\_databricks.workspace) | >= 1.39 |
+|------|---------|
+| <a name="provider_databricks.workspace"></a> [databricks.workspace](#provider\_databricks.workspace) | 1.117.0 |
 
 ## Modules
 
@@ -57,7 +57,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_ip_access_list.allow](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/ip_access_list) | resource |
 | [databricks_ip_access_list.block](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/ip_access_list) | resource |
 | [databricks_workspace_conf.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/workspace_conf) | resource |
@@ -65,7 +65,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_allow_list_cidrs"></a> [allow\_list\_cidrs](#input\_allow\_list\_cidrs) | List of IPv4 CIDR blocks or individual IP addresses permitted to reach the workspace. At least one entry is required. Example: ["10.0.0.0/8", "203.0.113.42"]. | `list(string)` | n/a | yes |
 | <a name="input_allow_list_label"></a> [allow\_list\_label](#input\_allow\_list\_label) | Human-readable label for the ALLOW IP access list entry. Displayed in the Databricks workspace security settings UI. | `string` | `"allow-list"` | no |
 | <a name="input_block_list_cidrs"></a> [block\_list\_cidrs](#input\_block\_list\_cidrs) | Optional list of IPv4 CIDR blocks or individual IP addresses explicitly denied workspace access. Entries in the block list take precedence over the allow list. null or empty list means no block list is created. | `list(string)` | `null` | no |
@@ -74,7 +74,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_allow_list_id"></a> [allow\_list\_id](#output\_allow\_list\_id) | Databricks IP access list ID for the ALLOW list. Use this to reference the list in downstream tooling or for audit purposes. |
 | <a name="output_allow_list_label"></a> [allow\_list\_label](#output\_allow\_list\_label) | Label of the ALLOW IP access list as registered in Databricks. |
 | <a name="output_block_list_id"></a> [block\_list\_id](#output\_block\_list\_id) | Databricks IP access list ID for the BLOCK list. null when no block list was configured. |

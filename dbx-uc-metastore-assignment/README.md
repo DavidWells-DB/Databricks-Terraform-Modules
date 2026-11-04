@@ -45,16 +45,16 @@ Even when `default_catalog_name = null`, the caller must still pass both provide
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.50 |
-| <a name="provider_databricks.workspace"></a> [databricks.workspace](#provider\_databricks.workspace) | >= 1.50 |
+|------|---------|
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.117.0 |
+| <a name="provider_databricks.workspace"></a> [databricks.workspace](#provider\_databricks.workspace) | 1.117.0 |
 
 ## Modules
 
@@ -63,22 +63,22 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_default_namespace_setting.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/default_namespace_setting) | resource |
 | [databricks_metastore_assignment.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/metastore_assignment) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
-| <a name="input_default_catalog_name"></a> [default\_catalog\_name](#input\_default\_catalog\_name) | Catalog to set as the default namespace for the workspace configured in the<br/>databricks.workspace provider alias. When set, a databricks\_default\_namespace\_setting<br/>resource is created for that workspace. When null, no default catalog is configured.<br/>Requires the databricks.workspace provider alias to be configured against the target<br/>workspace URL. | `string` | `null` | no |
-| <a name="input_metastore_id"></a> [metastore\_id](#input\_metastore\_id) | ID of the Unity Catalog metastore to assign. Obtain from the databricks\_metastore resource or a data source. | `string` | n/a | yes |
+|------|-------------|------|---------|:--------:|
 | <a name="input_workspace_ids"></a> [workspace\_ids](#input\_workspace\_ids) | Map of workspace assignments. Keys are human-readable labels; values are numeric Databricks<br/>workspace IDs. The metastore will be assigned to every workspace in this map.<br/><br/>Example:<br/>  workspace\_ids = {<br/>    prod = "123456789012345"<br/>    dev  = "234567890123456"<br/>  } | `map(string)` | n/a | yes |
+| <a name="input_default_catalog_name"></a> [default\_catalog\_name](#input\_default\_catalog\_name) | Catalog to set as the default namespace for the workspace configured in the<br/>databricks.workspace provider alias. When set, a databricks\_default\_namespace\_setting<br/>resource is created for that workspace. When null, no default catalog is configured.<br/>Requires the databricks.workspace provider alias to be configured against the target<br/>workspace URL. | `string` | `null` | no |
+| <a name="input_metastore_id"></a> [metastore\_id](#input\_metastore\_id) | ID of the Unity Catalog metastore to assign. OPTIONAL: leave null to create no assignment at all — Databricks auto-assigns the region's DEFAULT metastore to a new workspace, so an explicit assignment is only needed to override that (e.g. multiple metastores in the region with no default). When null, pass workspace\_ids = {} as well; the default\_catalog\_name resource still works independently. | `string` | `null` | no |
 
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_assigned_workspace_ids"></a> [assigned\_workspace\_ids](#output\_assigned\_workspace\_ids) | Map of assignment labels to the numeric workspace IDs that were assigned the metastore. Mirrors var.workspace\_ids; useful for downstream references. |
 | <a name="output_assignment_ids"></a> [assignment\_ids](#output\_assignment\_ids) | Map of assignment labels to metastore assignment IDs (format: <workspace\_id>\|<metastore\_id>). Keys match the keys of var.workspace\_ids. |
 | <a name="output_default_catalog_name"></a> [default\_catalog\_name](#output\_default\_catalog\_name) | Default catalog name configured via databricks\_default\_namespace\_setting, or null if not set. |

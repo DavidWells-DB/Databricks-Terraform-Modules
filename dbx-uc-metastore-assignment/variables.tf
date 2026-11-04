@@ -55,7 +55,7 @@ variable "default_catalog_name" {
   default     = null
   nullable    = true
   validation {
-    condition     = var.default_catalog_name == null || (length(trimspace(var.default_catalog_name)) >= 1 && var.default_catalog_name == trimspace(var.default_catalog_name))
+    condition     = var.default_catalog_name == null || try(length(trimspace(var.default_catalog_name)) >= 1 && var.default_catalog_name == trimspace(var.default_catalog_name), true)
     error_message = "default_catalog_name must be null or a non-empty string with no leading or trailing whitespace."
   }
 }
