@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-20 (entry added late 2026-11-04 — this version shipped without a CHANGELOG entry; recorded retroactively from the commit history)
+
+### Changed — fixed a real apply-breaking interface defect (E23-class, found by the live burn-in)
+- `spoke_subnet_ids` (list) replaced by `spoke_subnets` (map of caller-chosen NAME to subnet ID). The list form failed at apply when the spoke subnets were created in the SAME run ("Invalid for_each argument" — for_each keys must be plan-time known). The map form is the twice-proven pattern (also in aws-account-network-vpc v0.3.0); the re-run of the exact failing composition now applies, is idempotent (exit 0), and destroys clean.
+
 ## [0.1.0] - 2026-06-23
 
 ### Added

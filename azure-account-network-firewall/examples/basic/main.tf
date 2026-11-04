@@ -20,7 +20,7 @@ module "network_firewall" {
   location            = var.location
   firewall_name       = "hub-databricks-firewall"
   firewall_subnet_id  = var.firewall_subnet_id
-  spoke_subnet_ids    = var.spoke_subnet_ids
+  spoke_subnets       = var.spoke_subnets
 
   allowed_spoke_cidr_ranges = var.allowed_spoke_cidr_ranges
 
@@ -83,9 +83,9 @@ variable "firewall_subnet_id" {
   description = "Resource ID of the AzureFirewallSubnet (must be named exactly \"AzureFirewallSubnet\", minimum /26). Typically from the hub VNet created by azure-account-network-vnet."
 }
 
-variable "spoke_subnet_ids" {
-  type        = list(string)
-  description = "List of spoke subnet resource IDs to force-tunnel through the firewall (e.g., Databricks host and container subnets)."
+variable "spoke_subnets" {
+  type        = map(string)
+  description = "Map of spoke subnet name to subnet resource ID, forced-tunnelled through the firewall. Keys are caller-chosen plan-time constants."
 }
 
 variable "allowed_spoke_cidr_ranges" {
