@@ -21,7 +21,6 @@ resource "databricks_mws_workspaces" "this" {
     ignore_changes = [custom_tags]
   }
 
-  token {}
 }
 
 # DNS propagation: workspace_url returned by databricks_mws_workspaces is not immediately

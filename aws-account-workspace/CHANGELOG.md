@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-04
+
+### Fixed — external review finding (High): stray PAT in state
+- Removed the `token {}` block from `databricks_mws_workspaces`. It minted a PAT with no expiry
+  that was stored in state and never used. **AUDIT NOTE (needs live credentials):** any workspace
+  deployed with v0.2.0 may have such a PAT — the live audit (list tokens via the workspace
+  token-management API, revoke the unused one) is queued separately; agents can't run it.
+
+
 ## [0.2.0] - 2026-08-03
 
 ### Added
