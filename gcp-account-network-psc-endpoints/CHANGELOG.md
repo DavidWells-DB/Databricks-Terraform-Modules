@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-04
+
+### Fixed — external review finding (Med): deprecated resource-level account_id
+- Removed `account_id` from `databricks_mws_private_access_settings` (deprecated; the account is configured on the provider). The two `databricks_mws_vpc_endpoint` resources KEEP their explicit `account_id` deliberately — the provider does not propagate the provider-level account to that resource (live 2026-08-03 empty-account-path bug).
+
+
 ## [0.1.0] - 2026-06-23
 
 ### Added

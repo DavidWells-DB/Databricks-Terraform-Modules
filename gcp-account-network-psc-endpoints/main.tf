@@ -127,8 +127,13 @@ resource "databricks_mws_vpc_endpoint" "relay" {
 }
 
 resource "databricks_mws_private_access_settings" "this" {
-  provider                     = databricks.account
-  account_id                   = var.databricks_account_id
+  provider = databricks.account
+
+  # account_id removed (deprecated at the resource level since provider 1.121+; the
+  # account is configured on the provider). The mws_vpc_endpoint resources below KEEP
+  # their explicit account_id on purpose: the provider does not propagate the
+  # provider-level account to that resource (the live 2026-08-03
+  # "POST /api/2.0/accounts//vpc-endpoints" 400 Unable to load OAuth Config bug).
   private_access_settings_name = local.pas_name
   region                       = var.region
   public_access_enabled        = var.public_access_enabled
