@@ -18,6 +18,15 @@ Creates Unity Catalog catalogs in a Databricks workspace, with optional managed 
 - You want to manage grants on securables that already exist and were not created by this module — manage those grants directly at the root composition.
 - The catalog already exists and you want to import it — import first, then adopt this module.
 
+## Grants semantics (important)
+
+`databricks_grants` is authoritative WHILE PRESENT, but its destroy is a no-op in the
+provider: **emptying a grants list does not revoke existing grants** — the grants
+resource is removed from configuration and the privileges persist on the securable
+(stale grants). To revoke, keep the entry present with the reduced privilege set you
+want (grants are replaced wholesale on apply), or revoke out-of-band. Removing the
+module/grants block entirely likewise leaves privileges in place.
+
 ## Minimum platform tier
 
 **Premium.** Unity Catalog requires a Premium or higher Databricks platform tier. The Databricks Terraform provider does not check tier at plan time; if applied against a Standard-tier workspace, the API will reject the request and apply will fail. See the Databricks module rules Rules 2.3 and 4.1.

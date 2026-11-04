@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Documented (external review finding, Med)
+- Grants semantics: emptying a grants list does NOT revoke existing grants (databricks_grants destroy is a no-op) — README now states this explicitly with the revoke path.
+
 ## [0.1.0] - 2026-06-23
 
 ### Added
