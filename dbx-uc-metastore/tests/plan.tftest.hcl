@@ -14,6 +14,29 @@ mock_provider "databricks" {
   }
 }
 
+
+run "force_destroy_defaults_false" {
+  command = plan
+
+  assert {
+    condition     = databricks_metastore.this.force_destroy == false
+    error_message = "force_destroy must default to FALSE - metastore deletion is region-wide and catastrophic"
+  }
+}
+
+run "force_destroy_opt_in_true" {
+  command = plan
+
+  variables {
+    force_destroy = true
+  }
+
+  assert {
+    condition     = databricks_metastore.this.force_destroy == true
+    error_message = "force_destroy must be settable by the scratch/journey harnesses"
+  }
+}
+
 variables {
   metastore_name   = "test-metastore"
   region           = "us-east-1"

@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-04
+
+### Changed — external review finding (High): metastore force_destroy is now an explicit opt-in
+- `force_destroy` was hard-coded `true` on `databricks_metastore`. Destroying a metastore is a region-wide catastrophic action (every catalog/table under it loses its metadata); it is now an input defaulting to `false`. Scratch/journey harnesses pass `force_destroy = true` explicitly.
+
+
 ## [0.1.0] - 2026-06-23
 
 ### Changed

@@ -4,7 +4,7 @@ resource "databricks_metastore" "this" {
   region        = var.region
   storage_root  = var.storage_root_url
   owner         = var.owner_group
-  force_destroy = true
+  force_destroy = var.force_destroy
 }
 
 resource "databricks_metastore_data_access" "this" {

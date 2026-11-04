@@ -78,3 +78,9 @@ variable "owner_group" {
     error_message = "owner_group must be null or a non-empty string with no leading/trailing whitespace."
   }
 }
+
+variable "force_destroy" {
+  type        = bool
+  description = "Allow terraform destroy to delete the metastore and ALL managed data in it. Default false: destroying a metastore is a region-wide catastrophic action (every catalog/table under it loses its metadata) and must be a deliberate choice. The scratch/journey harnesses set it true."
+  default     = false
+}
