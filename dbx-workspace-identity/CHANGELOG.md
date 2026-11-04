@@ -5,6 +5,11 @@ All notable changes to the `dbx-workspace-identity` module are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this module adheres to [Semantic Versioning](https://semver.org/)
 
 ## [Unreleased]
+## [0.1.1] - 2026-11-04
+
+### Fixed — external review finding (Med): time_sleep re-fires on change
+- The propagation/readiness sleep had no `triggers`, so it existed once and never waited again for a changed context. It now triggers on the value whose change re-opens the readiness window (the workspace id).
+
 
 ## [0.1.0] - 2026-06-23
 

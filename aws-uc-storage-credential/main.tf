@@ -70,6 +70,13 @@ resource "aws_iam_role_policy" "this" {
 # check runs. 30 s is the documented minimum for IAM propagation.
 # Per the Databricks module rules Rule 3.1.
 resource "time_sleep" "iam_propagation" {
-  depends_on      = [aws_iam_role_policy.this]
+  depends_on = [aws_iam_role_policy.this]
+
+  # Trigger on the role so the wait re-fires when the role (and therefore its
+  # propagation window) changes (review Med).
+  triggers = {
+    role_name = var.role_name
+  }
+
   create_duration = "30s"
 }

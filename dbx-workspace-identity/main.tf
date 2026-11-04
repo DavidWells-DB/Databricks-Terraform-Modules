@@ -2,6 +2,13 @@
 # for ~20s after a workspace becomes reachable. time_sleep is the sanctioned
 # workaround per the Databricks module rules Rule 3.1.
 resource "time_sleep" "workspace_api_ready" {
+  # Trigger on the workspace so the wait re-fires for a DIFFERENT workspace (a new
+  # workspace needs its own API-readiness window); without it the sleep exists once
+  # and never waits again (review Med: "time_sleep that waits for nothing").
+  triggers = {
+    workspace_id = var.workspace_id
+  }
+
   create_duration = "20s"
 }
 
