@@ -14,7 +14,7 @@ Registers one or more cloud storage paths as Unity Catalog external locations, o
 
 ## When NOT to use
 
-- You need to create the storage credential itself — use `azure-uc-storage-credential`, `gcp-uc-storage-credential`, or an equivalent AWS module, then pass the resulting `storage_credential_id` to this module.
+- You need to create the storage credential itself — use `azure-uc-storage-credential`, `gcp-uc-storage-credential`, or an equivalent AWS module, then pass the resulting `storage_credential_name` to this module.
 - You need to create managed tables inside the location — that is a workspace-layer concern (`dbx-uc-catalog`, `dbx-uc-schema`).
 
 ## Minimum platform tier
@@ -25,7 +25,7 @@ Registers one or more cloud storage paths as Unity Catalog external locations, o
 
 This module uses `databricks.workspace` only (cloud-agnostic). It declares `configuration_aliases = [databricks.workspace]` per the Databricks module rules Rule 2.2. The caller must supply a `databricks.workspace` provider configured for the workspace where external locations are registered.
 
-No cloud (AWS/Azure/GCP) provider is required by this module — the cloud credential is already encapsulated in the `storage_credential_id` input.
+No cloud (AWS/Azure/GCP) provider is required by this module — the cloud credential is already encapsulated in the `storage_credential_name` input.
 
 ## Generated reference
 
@@ -79,7 +79,7 @@ See [`examples/basic/`](./examples/basic/).
 - Single and multi-location inputs are planned with expected attributes.
 - Invalid location URL scheme is rejected by variable validation.
 - Invalid location name characters are rejected by variable validation.
-- Empty `storage_credential_id` is rejected by variable validation.
+- Empty `storage_credential_name` is rejected by variable validation.
 - Grant blocks are included when grants map is non-empty; omitted when empty.
 - `read_only` and `skip_validation` defaults and overrides are verified.
 

@@ -16,7 +16,7 @@ Minimum invocation of the `dbx-uc-external-location` module. Registers two S3-ba
 ## Prerequisites
 
 - A Databricks workspace running at Premium tier or higher with Unity Catalog enabled.
-- An existing `databricks_storage_credential` that authorizes access to the S3 locations (e.g., from the `aws-uc-storage-credential` module or created directly). Pass its ID as `aws_storage_credential_id`.
+- An existing `databricks_storage_credential` that authorizes access to the S3 locations (e.g., from the `aws-uc-storage-credential` module or created directly). Pass its NAME as `aws_storage_credential_name` (the storage_credential_name output).
 
 ## What this example demonstrates
 

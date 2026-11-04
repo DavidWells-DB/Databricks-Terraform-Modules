@@ -24,19 +24,19 @@ module "external_locations" {
 
   locations = {
     raw_data = {
-      url                   = "s3://my-databricks-bucket/raw"
-      storage_credential_id = var.aws_storage_credential_id
-      comment               = "Raw ingestion landing zone"
+      url                     = "s3://my-databricks-bucket/raw"
+      storage_credential_name = var.aws_storage_credential_name
+      comment                 = "Raw ingestion landing zone"
       grants = {
         "data-engineers" = ["READ_FILES", "WRITE_FILES"]
       }
     }
 
     curated_data = {
-      url                   = "s3://my-databricks-bucket/curated"
-      storage_credential_id = var.aws_storage_credential_id
-      comment               = "Curated / processed data zone"
-      read_only             = false
+      url                     = "s3://my-databricks-bucket/curated"
+      storage_credential_name = var.aws_storage_credential_name
+      comment                 = "Curated / processed data zone"
+      read_only               = false
       grants = {
         "data-engineers" = ["READ_FILES", "WRITE_FILES"]
         "data-analysts"  = ["READ_FILES"]
@@ -61,9 +61,9 @@ variable "databricks_client_secret" {
   sensitive   = true
 }
 
-variable "aws_storage_credential_id" {
+variable "aws_storage_credential_name" {
   type        = string
-  description = "ID of an existing databricks_storage_credential that grants access to the S3 locations."
+  description = "NAME of an existing databricks_storage_credential that grants access to the S3 locations (the storage_credential_name output — not the UUID id)."
 }
 
 output "external_location_ids" {

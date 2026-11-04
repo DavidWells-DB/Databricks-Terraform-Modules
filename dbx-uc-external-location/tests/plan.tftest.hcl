@@ -6,8 +6,8 @@ mock_provider "databricks" {
 variables {
   locations = {
     raw_data = {
-      url                   = "s3://my-bucket/raw"
-      storage_credential_id = "cred-abc123"
+      url                     = "s3://my-bucket/raw"
+      storage_credential_name = "cred-abc123"
     }
   }
 }
@@ -37,7 +37,7 @@ run "external_location_credential_matches_input" {
 
   assert {
     condition     = databricks_external_location.this["raw_data"].credential_name == "cred-abc123"
-    error_message = "External location credential_name should match the storage_credential_id input"
+    error_message = "External location credential_name should match the storage_credential_name input"
   }
 }
 
@@ -65,9 +65,9 @@ run "read_only_can_be_set_true" {
   variables {
     locations = {
       archive = {
-        url                   = "s3://my-bucket/archive"
-        storage_credential_id = "cred-abc123"
-        read_only             = true
+        url                     = "s3://my-bucket/archive"
+        storage_credential_name = "cred-abc123"
+        read_only               = true
       }
     }
   }
@@ -84,9 +84,9 @@ run "skip_validation_can_be_set_true" {
   variables {
     locations = {
       raw_data = {
-        url                   = "s3://my-bucket/raw"
-        storage_credential_id = "cred-abc123"
-        skip_validation       = true
+        url                     = "s3://my-bucket/raw"
+        storage_credential_name = "cred-abc123"
+        skip_validation         = true
       }
     }
   }
@@ -115,8 +115,8 @@ run "grants_resource_created_when_grants_provided" {
   variables {
     locations = {
       raw_data = {
-        url                   = "s3://my-bucket/raw"
-        storage_credential_id = "cred-abc123"
+        url                     = "s3://my-bucket/raw"
+        storage_credential_name = "cred-abc123"
         grants = {
           "data-engineers" = ["READ_FILES", "WRITE_FILES"]
         }
@@ -136,12 +136,12 @@ run "multiple_locations_planned_correctly" {
   variables {
     locations = {
       raw_data = {
-        url                   = "s3://my-bucket/raw"
-        storage_credential_id = "cred-abc123"
+        url                     = "s3://my-bucket/raw"
+        storage_credential_name = "cred-abc123"
       }
       curated = {
-        url                   = "gs://my-gcs-bucket/curated"
-        storage_credential_id = "cred-gcs456"
+        url                     = "gs://my-gcs-bucket/curated"
+        storage_credential_name = "cred-gcs456"
       }
     }
   }
@@ -160,8 +160,8 @@ run "invalid_url_scheme_rejected" {
   variables {
     locations = {
       bad_loc = {
-        url                   = "https://my-bucket/raw"
-        storage_credential_id = "cred-abc123"
+        url                     = "https://my-bucket/raw"
+        storage_credential_name = "cred-abc123"
       }
     }
   }
@@ -175,8 +175,8 @@ run "invalid_location_name_with_spaces_rejected" {
   variables {
     locations = {
       "invalid name" = {
-        url                   = "s3://my-bucket/raw"
-        storage_credential_id = "cred-abc123"
+        url                     = "s3://my-bucket/raw"
+        storage_credential_name = "cred-abc123"
       }
     }
   }
@@ -190,8 +190,8 @@ run "invalid_location_name_with_special_chars_rejected" {
   variables {
     locations = {
       "invalid!name" = {
-        url                   = "s3://my-bucket/raw"
-        storage_credential_id = "cred-abc123"
+        url                     = "s3://my-bucket/raw"
+        storage_credential_name = "cred-abc123"
       }
     }
   }
@@ -199,14 +199,14 @@ run "invalid_location_name_with_special_chars_rejected" {
   expect_failures = [var.locations]
 }
 
-run "empty_storage_credential_id_rejected" {
+run "empty_storage_credential_name_rejected" {
   command = plan
 
   variables {
     locations = {
       raw_data = {
-        url                   = "s3://my-bucket/raw"
-        storage_credential_id = ""
+        url                     = "s3://my-bucket/raw"
+        storage_credential_name = ""
       }
     }
   }
@@ -220,8 +220,8 @@ run "abfss_url_accepted" {
   variables {
     locations = {
       azure_loc = {
-        url                   = "abfss://container@account.dfs.core.windows.net/path"
-        storage_credential_id = "cred-azure789"
+        url                     = "abfss://container@account.dfs.core.windows.net/path"
+        storage_credential_name = "cred-azure789"
       }
     }
   }
@@ -238,8 +238,8 @@ run "gcs_url_accepted" {
   variables {
     locations = {
       gcs_loc = {
-        url                   = "gs://my-gcs-bucket/path"
-        storage_credential_id = "cred-gcs456"
+        url                     = "gs://my-gcs-bucket/path"
+        storage_credential_name = "cred-gcs456"
       }
     }
   }

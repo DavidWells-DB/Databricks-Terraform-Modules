@@ -2,7 +2,7 @@
 #
 # Credential-gated. Requires:
 #   - DATABRICKS_HOST, DATABRICKS_CLIENT_ID, DATABRICKS_CLIENT_SECRET env vars (workspace-scoped)
-#   - An existing storage credential ID in the workspace (TF_VAR_storage_credential_id or .tfvars)
+#   - An existing storage credential NAME in the workspace (set locations.<name>.storage_credential_name)
 #
 # Run with: terraform test -filter=tests/integration.tftest.hcl
 #
@@ -16,12 +16,12 @@
 # the integration cases that require real credentials.
 
 variables {
-  # storage_credential_id supplied via TF_VAR_storage_credential_id or .tfvars
+  # storage_credential_name (the credential NAME, not its UUID id) supplied via tfvars
   locations = {
     tftest_raw = {
-      url                   = "s3://tftest-dbx-external-location/raw"
-      storage_credential_id = "REPLACE_WITH_TF_VAR"
-      comment               = "Created by integration test — safe to delete"
+      url                     = "s3://tftest-dbx-external-location/raw"
+      storage_credential_name = "REPLACE_WITH_TF_VAR"
+      comment                 = "Created by integration test — safe to delete"
     }
   }
 }

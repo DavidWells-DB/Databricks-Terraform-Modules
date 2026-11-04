@@ -1,11 +1,11 @@
 variable "locations" {
   type = map(object({
-    url                   = string
-    storage_credential_id = string
-    comment               = optional(string)
-    read_only             = optional(bool, false)
-    skip_validation       = optional(bool, false)
-    grants                = optional(map(list(string)), {})
+    url                     = string
+    storage_credential_name = string
+    comment                 = optional(string)
+    read_only               = optional(bool, false)
+    skip_validation         = optional(bool, false)
+    grants                  = optional(map(list(string)), {})
   }))
   description = <<-EOT
     Map of external location name to configuration. Each key becomes the external location name
@@ -13,7 +13,7 @@ variable "locations" {
 
     Attributes:
       url                   - Cloud storage path (e.g. s3://bucket/prefix, abfss://container@account.dfs.core.windows.net/prefix, gs://bucket/prefix).
-      storage_credential_id - ID of the databricks_storage_credential that grants access to this path.
+      storage_credential_name - NAME of the databricks_storage_credential that grants access to this path (the storage_credential_name output of the credential modules — NOT the UUID id).
       comment               - Optional human-readable description attached to the external location.
       read_only             - When true, the external location is registered as read-only. Defaults to false.
       skip_validation       - When true, Databricks skips credential validation during creation. Set to true in locked-down environments. Defaults to false.
@@ -37,11 +37,11 @@ variable "locations" {
     error_message = "Every location name (map key) must be 1+ characters and contain only alphanumeric characters, underscores, or hyphens."
   }
   validation {
-    # storage_credential_id must be non-empty for every entry.
+    # storage_credential_name must be non-empty for every entry.
     condition = alltrue([
       for name, loc in var.locations :
-      length(trimspace(loc.storage_credential_id)) >= 1
+      length(trimspace(loc.storage_credential_name)) >= 1
     ])
-    error_message = "storage_credential_id must be a non-empty string for every location."
+    error_message = "storage_credential_name must be a non-empty string for every location."
   }
 }

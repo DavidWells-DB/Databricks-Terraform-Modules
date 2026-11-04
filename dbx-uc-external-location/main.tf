@@ -5,7 +5,7 @@ resource "databricks_external_location" "this" {
 
   name            = each.key
   url             = each.value.url
-  credential_name = each.value.storage_credential_id
+  credential_name = each.value.storage_credential_name
   comment         = each.value.comment
   read_only       = each.value.read_only
   skip_validation = each.value.skip_validation

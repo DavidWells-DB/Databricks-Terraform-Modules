@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-04
+
+### Fixed — external review finding (High): credential NAME vs UUID wiring
+- `locations.*.storage_credential_id` renamed to `storage_credential_name`: the provider's
+  `credential_name` field takes the credential NAME, but the old field was documented and
+  consumed as the UUID id (the credential modules' `storage_credential_id` output), so every
+  external location created through this module was wired to a non-existent credential.
+  Callers must now pass `storage_credential_name` (the `storage_credential_name` output of
+  the `*-uc-storage-credential` modules). The plan test that asserted the wrong mapping is
+  corrected.
+
+
 ## [0.1.0] - 2026-06-23
 
 ### Added
