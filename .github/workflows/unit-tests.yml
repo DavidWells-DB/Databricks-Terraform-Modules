@@ -109,13 +109,32 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: install tflint + tfsec
+        # Pinned versions (feedback H3): tflint v0.65.0, tfsec v1.28.14 — latest was
+        # an unpinned supply-chain + breakage risk. Bump deliberately, with a re-run.
         run: |
           # (the raw install_linux.sh URL 404s and its error page got piped to bash)
-          curl -sSLo tflint.zip https://github.com/terraform-linters/tflint/releases/latest/download/tflint_linux_amd64.zip
+          curl -sSLo tflint.zip https://github.com/terraform-linters/tflint/releases/download/v0.65.0/tflint_linux_amd64.zip
           unzip -q tflint.zip && sudo mv tflint /usr/local/bin/tflint
-          curl -sSL https://github.com/aquasecurity/tfsec/releases/latest/download/tfsec-linux-amd64 \
+          curl -sSL https://github.com/aquasecurity/tfsec/releases/download/v1.28.14/tfsec-linux-amd64 \
             -o /usr/local/bin/tfsec && chmod +x /usr/local/bin/tfsec
       - name: tflint (recursive, no plugins)
         run: tflint --recursive --chdir=.
       - name: tfsec
         run: tfsec --no-guide 2>/dev/null || tfsec
+
+  # Generated module README fences must never drift (feedback H3): re-render with the
+  # PINNED terraform-docs and fail if anything changes. v0.20.0 is the canonical
+  # formatter — newer binaries emit different table separators and every README drifts.
+  docs-gate:
+    name: generated docs up to date
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: install terraform-docs (pinned v0.20.0)
+        run: |
+          # (terraform-docs.io/dl/ serves an HTML landing page — use the release asset)
+          curl -sSLo /tmp/terraform-docs.tar.gz \
+            https://github.com/terraform-docs/terraform-docs/releases/download/v0.20.0/terraform-docs-v0.20.0-linux-amd64.tar.gz
+          tar -xzf /tmp/terraform-docs.tar.gz -C /usr/local/bin terraform-docs
+      - name: gen-docs --check
+        run: scripts/gen-docs.sh --check

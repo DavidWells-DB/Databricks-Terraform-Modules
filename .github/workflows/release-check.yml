@@ -44,14 +44,20 @@ jobs:
           bash scripts/check-release-tag.sh "${{ steps.tag.outputs.tag }}"
 
       - name: Check tag is not a force-move
-        # ls-remote the tag against origin; if it already exists with a
-        # *different* commit than the one we just pushed, this is a force-move.
+        # Compare the PEELED commit SHAs on both sides. For an ANNOTATED tag push,
+        # github.sha is the tag-object SHA while an unpeeled `ls-remote` also returns
+        # the tag-object SHA — but the two can disagree on peeled vs unpeeled across
+        # paths, and any tag-object/commit mismatch false-fails every annotated
+        # release (found in review, feedback H3 item 10). Peeling both sides to the
+        # commit makes the comparison exact.
         run: |
           TAG="${{ steps.tag.outputs.tag }}"
-          PUSHED_SHA="${{ github.sha }}"
-          EXISTING=$(git ls-remote origin "refs/tags/${TAG}" | awk '{print $1}')
-          if [[ -n "$EXISTING" && "$EXISTING" != "$PUSHED_SHA" ]]; then
-            echo "ERROR: Tag '${TAG}' already existed at ${EXISTING}." >&2
+          LOCAL_COMMIT=$(git rev-list -n 1 "${TAG}")
+          REMOTE_COMMIT=$(git ls-remote origin "refs/tags/${TAG}^{}" | awk '{print $1}')
+          echo "local (peeled) : ${LOCAL_COMMIT}"
+          echo "remote (peeled): ${REMOTE_COMMIT}"
+          if [[ -n "$REMOTE_COMMIT" && "$REMOTE_COMMIT" != "$LOCAL_COMMIT" ]]; then
+            echo "ERROR: Tag '${TAG}' already existed at ${REMOTE_COMMIT}." >&2
             echo "       Force-moving published tags is prohibited (docs/RELEASING.md)." >&2
             echo "       Cut a new version instead." >&2
             exit 3
