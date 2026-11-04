@@ -1,0 +1,7 @@
+# Fill the project and the globally unique bucket name. Everything else has a
+# safe default.
+project_id  = "my-gcp-project"
+bucket_name = "my-catalog-uc"
+
+# Optional: bucket location (default "US" multi-region).
+# location = "us-central1"

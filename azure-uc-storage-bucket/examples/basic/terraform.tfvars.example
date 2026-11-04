@@ -1,0 +1,8 @@
+# Fill the resource group and location (pre-existing group), plus the globally
+# unique storage account name (3-24 chars, lowercase alphanumeric only).
+resource_group_name = "rg-my-uc-storage"
+location            = "eastus"
+storage_account_name = "mycatalogucst"
+
+# Optional: container name (default "catalog").
+# container_name = "data"

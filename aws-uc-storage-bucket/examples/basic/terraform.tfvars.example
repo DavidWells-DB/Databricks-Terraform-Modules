@@ -1,0 +1,6 @@
+# Fill the bucket name (globally unique across AWS; a common convention is
+# "<catalog-name>-uc" with an org suffix). Everything else has a safe default.
+bucket_name = "my-catalog-uc"
+
+# Optional: KMS encryption for the bucket. Null (default) = SSE-S3 (AES256).
+# kms_key_arn = "arn:aws:kms:us-east-1:111122223333:key/abcd1234-..."
