@@ -47,3 +47,8 @@ output "relay_service_name" {
   description = "Resolved AWS endpoint service attachment URI for the SCC relay endpoint."
   value       = local.relay_service_name
 }
+
+output "allowed_vpc_endpoint_ids" {
+  description = "The EFFECTIVE allowed VPC endpoint list on the Private Access Settings object (empty unless private_access_level = ENDPOINT). Readback oracle for the N4 allowlist pass-through."
+  value       = var.private_access_level == "ENDPOINT" ? var.allowed_vpc_endpoint_ids : []
+}

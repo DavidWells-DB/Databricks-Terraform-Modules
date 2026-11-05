@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [v0.1.2] - 2026-11-05
+
+### Added - N4 allowlist readback
+- `allowed_vpc_endpoint_ids` output: the EFFECTIVE list on the PAS object (empty unless private_access_level = ENDPOINT) — the readback oracle for the blueprint-level pass-through (WebUI gap report N4).
+
+
 ## [0.1.1] - 2026-11-04
 
 ### Fixed — external review finding (Med): deprecated resource-level account_id

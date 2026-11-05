@@ -47,3 +47,8 @@ output "relay_psc_service_attachment" {
   description = "Effective SCC relay PSC service attachment URI used for the forwarding rule. Reflects the computed-or-overridden value. Useful for audit and debugging."
   value       = local.relay_psc_attachment
 }
+
+output "allowed_vpc_endpoint_ids" {
+  description = "The EFFECTIVE allowed VPC endpoint list on the Private Access Settings object (empty unless private_access_level = ENDPOINT). Readback oracle for the N4 allowlist pass-through."
+  value       = var.private_access_level == "ENDPOINT" ? var.allowed_vpc_endpoint_ids : []
+}
