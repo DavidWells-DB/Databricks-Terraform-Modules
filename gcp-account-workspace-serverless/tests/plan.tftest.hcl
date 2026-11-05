@@ -40,12 +40,14 @@ run "workspace_resource_uses_input_name" {
   }
 }
 
-run "workspace_deployment_name_uses_resource_prefix" {
+run "workspace_deployment_name_not_requested" {
   command = plan
 
+  # The platform assigns its own deployment name (<workspace-id>.9) — requesting one
+  # caused idempotency false positives (the matrix w5 class). The OUTPUT is the readback.
   assert {
-    condition     = databricks_mws_workspaces.this.deployment_name == "example-serverless"
-    error_message = "deployment_name should be <resource_prefix>-serverless"
+    condition     = databricks_mws_workspaces.this.deployment_name == null
+    error_message = "deployment_name must NOT be requested; the platform assigns its own (output = readback)"
   }
 }
 

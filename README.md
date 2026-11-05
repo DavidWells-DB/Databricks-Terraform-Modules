@@ -41,7 +41,8 @@ Each module's README documents inputs, outputs, minimum tier, provider configura
 | Account | AWS | 16 |
 | Account | Azure | 9 |
 | Account | GCP | 10 |
-| Unity Catalog | AWS / Azure / GCP / Agnostic | 8 |
+| Account | Agnostic | 1 |
+| Unity Catalog | AWS / Azure / GCP / Agnostic | 11 |
 | Workspace | Agnostic | 8 |
 | **Total** | | **55** |
 

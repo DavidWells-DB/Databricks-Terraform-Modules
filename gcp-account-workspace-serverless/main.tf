@@ -15,7 +15,10 @@ resource "databricks_mws_workspaces" "this" {
   # required (and not valid) when compute_mode = "SERVERLESS".
   compute_mode = "SERVERLESS"
 
-  deployment_name = "${var.resource_prefix}-serverless"
+  # deployment_name is NOT requested on GCP — the platform assigns its own
+  # (<workspace-id>.9). Requesting it caused an idempotency false positive on every
+  # fresh deployment's first re-plan (same class as gcp-account-workspace v0.2.0,
+  # live 2026-10-20 matrix w5). The deployment_name OUTPUT below is the readback.
 
   # NOTE: NO managed_services_customer_managed_key_id here — LIVE 2026-10-19
   # (readiness campaign, rc-g2): the account API rejects the combination outright

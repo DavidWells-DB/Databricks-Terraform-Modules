@@ -5,6 +5,11 @@ All notable changes to the `gcp-account-workspace-serverless` module are documen
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this module adheres to [Semantic Versioning](https://semver.org/)
 
 ## [Unreleased]
+## [0.2.1] - 2026-11-04
+
+### Fixed
+- `deployment_name` is no longer REQUESTED (the platform assigns its own, `<workspace-id>.9`) — requesting it caused an idempotency false positive on every fresh deployment's first re-plan (the same class as gcp-account-workspace v0.2.0, matrix w5 2026-10-20). The `deployment_name` OUTPUT remains the platform readback. The plan test that asserted the requested value was updated to assert the non-request (gap report note #51).
+
 
 ## [0.2.0] - 2026-10-19
 
