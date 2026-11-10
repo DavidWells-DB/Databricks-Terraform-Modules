@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-10
+
+### Changed — the three-piece split (internal composition; same variables/outputs)
+- aws-account-network-vpc is now the COMPOSITION of aws-account-vpc (pure cloud: VPC/subnets/route tables/SG, no Databricks provider) and dbx-account-mws-networks (pure Databricks-side registration, the BYO-VPC entry point). Interface unchanged; moved blocks carry pre-v0.4.0 state (including pre-v0.3.0 unkeyed registrations) to the new addresses with no destroy/create. BYO-VPC consumers can now take either half alone.
+- Registration semantics (base/privatelink keying, in-place PL cutover with base retained) carried verbatim — the 2026-08-03 live-verified behavior; the live PL regression test is owned by the consuming composition.
+
+
 ## [0.3.0] - 2026-09-29
 
 ### Changed
