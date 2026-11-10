@@ -26,20 +26,22 @@ variable "allowed_internet_destinations" {
     destination               = string
     internet_destination_type = string
   }))
-  description = "List of internet destinations to allow when the account network policy is in RESTRICTED_ACCESS mode. Each entry requires a destination (DNS name) and internet_destination_type (currently only \"DNS_NAME\" is supported). When null, no account network policy is created and no internet restrictions are applied."
+  description = "REMOVED in v0.2.0 (single-owner consolidation): the account network policy is owned solely by dbx-account-network-policy (or the azure-account-network-foundation composition). Keep null; create the policy there and pass its ID to the binding module."
   default     = null
   nullable    = true
   validation {
-    condition = var.allowed_internet_destinations == null || try(alltrue([
-      for d in var.allowed_internet_destinations : contains(["DNS_NAME"], d.internet_destination_type)
-    ]), true)
-    error_message = "Each allowed_internet_destinations entry must have internet_destination_type = \"DNS_NAME\"."
+    condition     = var.allowed_internet_destinations == null
+    error_message = "allowed_internet_destinations is no longer accepted here: the account network policy is owned by dbx-account-network-policy (see also azure-account-network-foundation for the one-call NCC+policy surface)."
   }
 }
 
 variable "network_policy_id" {
   type        = string
-  description = "ID for the account network policy. Required when allowed_internet_destinations is set. Must be unique within the Databricks account."
+  description = "REMOVED in v0.2.0 (single-owner consolidation, see allowed_internet_destinations). Keep null."
   default     = null
   nullable    = true
+  validation {
+    condition     = var.network_policy_id == null
+    error_message = "network_policy_id is no longer accepted here: the account network policy is owned by dbx-account-network-policy (see also azure-account-network-foundation)."
+  }
 }

@@ -88,34 +88,20 @@ run "pe_rule_aws_attributes_set_correctly" {
   }
 }
 
-# --- Conditional workspace_network_option ---
-
-run "network_policy_null_creates_no_workspace_network_option" {
-  command = plan
-
-  assert {
-    condition     = length(databricks_workspace_network_option.this) == 0
-    error_message = "databricks_workspace_network_option should not be created when network_policy_id is null"
-  }
-}
-
-run "network_policy_provided_creates_workspace_network_option" {
+# --- network_policy_id guard (single-owner consolidation, v0.3.0) -----------
+# The variable is a guarded pointer: non-null fails at plan with the migration path.
+run "network_policy_id_rejected" {
   command = plan
 
   variables {
-    network_policy_id = "default-policy"
+    workspace_id                   = 123456789
+    network_connectivity_config_id = "01234567-89ab-cdef-0123-456789abcdef"
+    network_policy_id              = "default-policy"
   }
 
-  assert {
-    condition     = length(databricks_workspace_network_option.this) == 1
-    error_message = "databricks_workspace_network_option should be created when network_policy_id is provided"
-  }
-
-  assert {
-    condition     = databricks_workspace_network_option.this[0].network_policy_id == "default-policy"
-    error_message = "workspace_network_option.network_policy_id should match the input"
-  }
+  expect_failures = [var.network_policy_id]
 }
+
 
 # --- Variable validations ---
 

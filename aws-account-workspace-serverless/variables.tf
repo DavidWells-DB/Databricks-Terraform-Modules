@@ -41,8 +41,13 @@ variable "databricks_gov_shard" {
 
 variable "network_connectivity_config_id" {
   type        = string
-  description = "Optional. Network Connectivity Config (NCC) ID to bind to the workspace, enabling serverless private connectivity to data sources. Leave null if no NCC is required."
+  description = "REMOVED in v0.5.0 (single-owner consolidation): NCC binding is owned solely by dbx-workspace-network-serverless. Keep null; bind the NCC there instead."
   default     = null
+  nullable    = true
+  validation {
+    condition     = var.network_connectivity_config_id == null
+    error_message = "network_connectivity_config_id is no longer accepted here: bind the NCC via the dbx-workspace-network-serverless module (the sole owner of databricks_mws_ncc_binding)."
+  }
 }
 
 variable "deployment_name" {

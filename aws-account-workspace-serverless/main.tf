@@ -26,12 +26,6 @@ resource "databricks_mws_workspaces" "this" {
   }
 }
 
-resource "databricks_mws_ncc_binding" "this" {
-  provider = databricks.account
-
-  # Only created when a network_connectivity_config_id is supplied.
-  count = var.network_connectivity_config_id != null ? 1 : 0
-
-  network_connectivity_config_id = var.network_connectivity_config_id
-  workspace_id                   = databricks_mws_workspaces.this.workspace_id
-}
+# SINGLE-OWNER CONSOLIDATION (2026-11-10, H5-1): databricks_mws_ncc_binding is owned solely by
+# dbx-workspace-network-serverless (binding + private-endpoint rules together). The input stays
+# as a guarded pointer — see the variable validation for the migration path.

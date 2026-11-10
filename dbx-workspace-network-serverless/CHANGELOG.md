@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-10
+
+### Changed — single-owner consolidation (databricks_workspace_network_option)
+- The workspace network-option binding is REMOVED from this module; its sole owner is now `dbx-workspace-network-policy-binding`, which also carries the E12 destroy-settle guard this copy lacked. `network_policy_id` stays as a guarded pointer: non-null fails at plan with the migration path. The `network_policy_id` output is removed.
+- `databricks_mws_ncc_binding` + private-endpoint rules remain this module's unchanged surface (the NCC-binding owner).
+
 ## [0.2.0] - 2026-08-02
 
 ### Fixed

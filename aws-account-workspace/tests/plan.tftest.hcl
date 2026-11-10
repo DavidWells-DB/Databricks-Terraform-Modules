@@ -10,14 +10,7 @@ mock_provider "databricks" {
     }
   }
 
-  override_resource {
-    target = databricks_mws_ncc_binding.this
-    values = {
-      binding_id = "mock-binding-id"
-    }
-  }
 }
-
 mock_provider "time" {}
 
 
@@ -149,28 +142,13 @@ run "workspace_resource_uses_input_region" {
   }
 }
 
-run "ncc_binding_not_created_when_null" {
+# --- network_connectivity_config_id guard (single-owner consolidation, v0.3.0) -----------
+run "network_connectivity_config_id_rejected" {
   command = plan
 
   variables {
-    network_connectivity_config_id = null
+    network_connectivity_config_id = "01234567-89ab-cdef-0123-456789abcdef"
   }
 
-  assert {
-    condition     = length(databricks_mws_ncc_binding.this) == 0
-    error_message = "NCC binding should not be created when network_connectivity_config_id is null"
-  }
-}
-
-run "ncc_binding_created_when_provided" {
-  command = plan
-
-  variables {
-    network_connectivity_config_id = "mock-ncc-id"
-  }
-
-  assert {
-    condition     = length(databricks_mws_ncc_binding.this) == 1
-    error_message = "NCC binding should be created when network_connectivity_config_id is provided"
-  }
+  expect_failures = [var.network_connectivity_config_id]
 }

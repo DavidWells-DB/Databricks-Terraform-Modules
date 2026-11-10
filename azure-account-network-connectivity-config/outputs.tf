@@ -13,7 +13,5 @@ output "region" {
   value       = databricks_mws_network_connectivity_config.this.region
 }
 
-output "network_policy_id" {
-  description = "ID of the account network policy, or null when no policy was created (allowed_internet_destinations was not set)."
-  value       = var.allowed_internet_destinations != null ? databricks_account_network_policy.this[0].network_policy_id : null
-}
+# (network_policy_id output removed in v0.2.0 — the policy is owned by
+#  dbx-account-network-policy / azure-account-network-foundation.)

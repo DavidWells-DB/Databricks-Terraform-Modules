@@ -26,14 +26,8 @@ resource "databricks_mws_ncc_private_endpoint_rule" "this" {
   depends_on = [databricks_mws_ncc_binding.this]
 }
 
-# Assign a network policy to the workspace for serverless compute access control.
-# Created only when network_policy_id is provided (non-null).
-# databricks_workspace_network_option is an ACCOUNT-surface resource ("can only be used with
-# an account-level provider" — provider docs). Using databricks.workspace fails with "Not Found".
-resource "databricks_workspace_network_option" "this" {
-  provider = databricks.account
-  count    = var.network_policy_id != null ? 1 : 0
-
-  workspace_id      = var.workspace_id
-  network_policy_id = var.network_policy_id
-}
+# SINGLE-OWNER CONSOLIDATION (2026-11-10, H5-1): databricks_workspace_network_option now has
+# exactly one owning module — dbx-workspace-network-policy-binding — which also carries the E12
+# destroy-settle guard this copy lacked (tearing the binding + policy together races the account
+# API's unbind propagation). The network_policy_id input is retained as a guarded pointer so
+# existing callers fail at PLAN time with the migration path instead of silently misbehaving.

@@ -31,11 +31,7 @@ resource "time_sleep" "dns_propagation" {
   create_duration = "30s"
 }
 
-# NCC binding is optional and only created when network_connectivity_config_id is provided.
-resource "databricks_mws_ncc_binding" "this" {
-  count = var.network_connectivity_config_id != null ? 1 : 0
-
-  provider                       = databricks.account
-  network_connectivity_config_id = var.network_connectivity_config_id
-  workspace_id                   = databricks_mws_workspaces.this.workspace_id
-}
+# SINGLE-OWNER CONSOLIDATION (2026-11-10, H5-1): databricks_mws_ncc_binding now has exactly one
+# owning module — dbx-workspace-network-serverless (NCC binding + private-endpoint rules as one
+# governed unit). The network_connectivity_config_id input stays as a guarded pointer so existing
+# callers fail at PLAN time with the migration path instead of silently losing their binding.

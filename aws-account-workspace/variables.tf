@@ -76,8 +76,13 @@ variable "workspace_storage_key_id" {
 
 variable "network_connectivity_config_id" {
   type        = string
-  description = "Databricks network connectivity configuration (NCC) ID. When set, binds the NCC to this workspace for serverless or Databricks-managed network egress. null skips NCC binding."
+  description = "REMOVED in v0.3.0 (single-owner consolidation): NCC binding is owned solely by dbx-workspace-network-serverless (binding + private-endpoint rules together). Keep null; bind the NCC there instead, after this module returns the workspace_id."
   default     = null
+  nullable    = true
+  validation {
+    condition     = var.network_connectivity_config_id == null
+    error_message = "network_connectivity_config_id is no longer accepted here: bind the NCC via the dbx-workspace-network-serverless module (the sole owner of databricks_mws_ncc_binding, which also owns the private-endpoint rules)."
+  }
 }
 
 variable "custom_tags" {

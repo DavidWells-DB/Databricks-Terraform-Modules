@@ -52,7 +52,11 @@ variable "private_endpoint_rules" {
 
 variable "network_policy_id" {
   type        = string
-  description = "Network policy ID to assign to the workspace via databricks_workspace_network_option. Controls network access for all serverless compute in the workspace. If null, the workspace_network_option resource is not created and the workspace retains its existing policy (or the Databricks default). Pass \"default-policy\" to explicitly assign the account default."
+  description = "REMOVED in v0.3.0 (single-owner consolidation): databricks_workspace_network_option is owned solely by dbx-workspace-network-policy-binding. Keep null; pass the policy binding there instead."
   default     = null
   nullable    = true
+  validation {
+    condition     = var.network_policy_id == null
+    error_message = "network_policy_id is no longer accepted here: bind the policy via the dbx-workspace-network-policy-binding module (the sole owner of databricks_workspace_network_option, with the E12 destroy-settle guard)."
+  }
 }

@@ -18,7 +18,5 @@ output "private_endpoint_rule_ids" {
   value       = { for k, r in databricks_mws_ncc_private_endpoint_rule.this : k => r.rule_id }
 }
 
-output "network_policy_id" {
-  description = "Network policy ID assigned to the workspace. Null when network_policy_id was not provided and databricks_workspace_network_option was not created."
-  value       = var.network_policy_id != null ? databricks_workspace_network_option.this[0].network_policy_id : null
-}
+# (network_policy_id output removed in v0.3.0 — the policy binding is owned by
+#  dbx-workspace-network-policy-binding; consume its outputs there.)

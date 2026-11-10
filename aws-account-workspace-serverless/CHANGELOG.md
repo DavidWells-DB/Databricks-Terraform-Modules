@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-11-10
+
+### Changed — single-owner consolidation (databricks_mws_ncc_binding)
+- The embedded NCC binding resource is REMOVED; its sole owner is `dbx-workspace-network-serverless` (binding + private-endpoint rules as one governed unit). `network_connectivity_config_id` stays as a guarded pointer: non-null fails at plan with the migration path. The `ncc_binding_id` output is removed.
+
 ## [0.4.0] - 2026-10-19
 
 ### Removed (mechanism corrected — the definitive answer)

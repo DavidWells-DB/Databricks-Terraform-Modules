@@ -28,10 +28,8 @@ output "databricks_account_host" {
   value       = local.databricks_account_host
 }
 
-output "ncc_binding_id" {
-  description = "ID of the NCC binding resource, or null if no network_connectivity_config_id was provided."
-  value       = length(databricks_mws_ncc_binding.this) > 0 ? databricks_mws_ncc_binding.this[0].id : null
-}
+# (ncc_binding_id output removed in v0.5.0 — the binding is owned by
+#  dbx-workspace-network-serverless; consume its ncc_binding_id output there.)
 
 output "compute_mode" {
   description = "The deployed workspace compute mode (\"SERVERLESS\"), refreshed from the account API on every plan/apply. Lets consumers assert the deployed workspace type — a value other than SERVERLESS here would mean the workspace is not what this module promises."

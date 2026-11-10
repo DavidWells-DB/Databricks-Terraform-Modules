@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-10
+
+### Changed — single-owner consolidation (databricks_account_network_policy)
+- The embedded account network policy is REMOVED; its sole owner is `dbx-account-network-policy` (full mode/enforcement/destination surface + the E11 idempotency fix). `allowed_internet_destinations` and `network_policy_id` stay as guarded pointers: non-null fails at plan with the migration path. The `network_policy_id` output is removed. The module is now the pure Azure NCC owner, and composes into `azure-account-network-foundation` (new, ADR-0007).
+
 ## [0.1.1] - 2026-11-04
 
 ### Fixed — external review finding (Med): null-guard validations broke on Terraform < 1.12

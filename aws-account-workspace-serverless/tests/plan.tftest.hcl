@@ -11,11 +11,6 @@ mock_provider "databricks" {
     }
   }
 
-  mock_resource "databricks_mws_ncc_binding" {
-    defaults = {
-      id = "mock-ncc-binding-id"
-    }
-  }
 }
 
 variables {
@@ -177,36 +172,9 @@ run "workspace_resource_uses_input_region" {
 # NCC binding conditional — no NCC when not supplied
 # ---------------------------------------------------------------------------
 
-run "no_ncc_binding_without_config_id" {
-  command = plan
-
-  assert {
-    condition     = length(databricks_mws_ncc_binding.this) == 0
-    error_message = "databricks_mws_ncc_binding should not be created when network_connectivity_config_id is null"
-  }
-}
-
 # ---------------------------------------------------------------------------
 # NCC binding conditional — NCC created when supplied
 # ---------------------------------------------------------------------------
-
-run "ncc_binding_created_with_config_id" {
-  command = plan
-
-  variables {
-    network_connectivity_config_id = "mock-ncc-id-abc123"
-  }
-
-  assert {
-    condition     = length(databricks_mws_ncc_binding.this) == 1
-    error_message = "databricks_mws_ncc_binding should be created when network_connectivity_config_id is set"
-  }
-
-  assert {
-    condition     = databricks_mws_ncc_binding.this[0].network_connectivity_config_id == "mock-ncc-id-abc123"
-    error_message = "NCC binding should reference the provided network_connectivity_config_id"
-  }
-}
 
 # --- Deployed-type readback ----------------------------------------------------
 
@@ -217,4 +185,15 @@ run "compute_mode_output_reports_serverless" {
     condition     = output.compute_mode == "SERVERLESS"
     error_message = "compute_mode output must report SERVERLESS (the deployed workspace type, refreshed from the account API)"
   }
+}
+
+# --- network_connectivity_config_id guard (single-owner consolidation, v0.5.0) -----------
+run "network_connectivity_config_id_rejected" {
+  command = plan
+
+  variables {
+    network_connectivity_config_id = "01234567-89ab-cdef-0123-456789abcdef"
+  }
+
+  expect_failures = [var.network_connectivity_config_id]
 }
