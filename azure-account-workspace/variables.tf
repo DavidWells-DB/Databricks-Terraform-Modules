@@ -150,6 +150,13 @@ variable "root_dbfs_cmk_key_vault_key_id" {
   default     = null
 }
 
+variable "root_dbfs_cmk_enabled" {
+  type        = bool
+  description = "Optional plan-time switch for the root DBFS CMK attachment. Set when the key ID is an output of a key created in the same apply; null preserves the legacy key-ID-presence behavior."
+  default     = null
+  nullable    = true
+}
+
 variable "root_dbfs_cmk_key_vault_id" {
   type        = string
   description = "Resource ID of the Key Vault containing root_dbfs_cmk_key_vault_key_id. Required only when the Key Vault is in a different subscription than the workspace."

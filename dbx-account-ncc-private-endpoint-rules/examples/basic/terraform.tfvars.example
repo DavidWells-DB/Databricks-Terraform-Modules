@@ -1,0 +1,6 @@
+network_connectivity_config_id = "00000000-0000-0000-0000-000000000000"
+private_endpoint_rules = [{
+  key              = "artifacts"
+  endpoint_service = "com.amazonaws.us-east-1.s3"
+  resource_names   = ["acme-artifacts"]
+}]

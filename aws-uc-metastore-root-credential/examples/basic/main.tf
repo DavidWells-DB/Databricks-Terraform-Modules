@@ -1,4 +1,6 @@
 terraform {
+  required_version = ">= 1.7.0"
+
   required_providers {
     databricks = {
       source  = "databricks/databricks"
@@ -26,7 +28,7 @@ variable "metastore_id" { type = string }
 variable "aws_account_id" { type = string }
 
 module "root_credential" {
-  source = ".."
+  source = "../.."
 
   providers = { databricks.account = databricks.account }
 

@@ -1,4 +1,6 @@
 terraform {
+  required_version = ">= 1.7.0"
+
   required_providers {
     databricks = {
       source  = "databricks/databricks"
@@ -19,7 +21,7 @@ variable "private_subnet_ids" { type = list(string) }
 variable "security_group_ids" { type = list(string) }
 
 module "registration" {
-  source = ".."
+  source = "../.."
 
   providers = { databricks.account = databricks.account }
 

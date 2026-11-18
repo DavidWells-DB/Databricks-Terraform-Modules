@@ -35,6 +35,36 @@ variable "resource_prefix" {
   }
 }
 
+variable "bucket_name" {
+  type        = string
+  description = "Optional log-bucket creation name. Null derives '<resource_prefix>-log-delivery'."
+  default     = null
+}
+
+variable "role_name" {
+  type        = string
+  description = "Optional log-delivery IAM role creation name. Null derives '<resource_prefix>-log-delivery'."
+  default     = null
+}
+
+variable "credentials_name" {
+  type        = string
+  description = "Optional Databricks credentials registration name. Null derives '<resource_prefix>-log-delivery'."
+  default     = null
+}
+
+variable "storage_configuration_name" {
+  type        = string
+  description = "Optional Databricks storage registration name. Null derives '<resource_prefix>-log-delivery'."
+  default     = null
+}
+
+variable "log_delivery_name_prefix" {
+  type        = string
+  description = "Optional prefix for log-delivery configuration names. Null uses resource_prefix."
+  default     = null
+}
+
 variable "log_types" {
   type        = list(string)
   description = "Log types to configure delivery for. Valid values: \"AUDIT_LOGS\" (workspace audit events), \"BILLABLE_USAGE\" (DBU consumption). Defaults to both. Each value creates one databricks_mws_log_delivery configuration."

@@ -89,3 +89,27 @@ variable "tags" {
   description = "Tags applied to all resources created by this module."
   default     = {}
 }
+
+variable "back_end_pe_name" {
+  type        = string
+  description = "Optional back-end private endpoint and private-service-connection name. Null derives '<workspace>-be-pe'."
+  default     = null
+}
+
+variable "front_end_pe_name" {
+  type        = string
+  description = "Optional front-end private endpoint and private-service-connection name. Null derives '<workspace>-fe-pe'."
+  default     = null
+}
+
+variable "browser_auth_pe_name" {
+  type        = string
+  description = "Optional browser-authentication private endpoint and private-service-connection name. Null derives '<workspace>-browser-auth-pe'."
+  default     = null
+}
+
+variable "dns_link_name_prefix" {
+  type        = string
+  description = "Optional prefix for spoke/hub DNS-link names. Null uses the workspace name. The private DNS zone name itself is fixed by Databricks."
+  default     = null
+}

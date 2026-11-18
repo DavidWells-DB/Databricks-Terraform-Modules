@@ -26,6 +26,23 @@ variable "resource_prefix" {
   }
 }
 
+variable "bucket_name" {
+  type        = string
+  description = "Optional root-bucket creation name. Null derives '<resource_prefix>-root-storage'."
+  default     = null
+
+  validation {
+    condition     = var.bucket_name == null || (length(var.bucket_name) >= 3 && length(var.bucket_name) <= 63 && can(regex("^[a-z0-9][a-z0-9._-]*[a-z0-9]$", var.bucket_name)))
+    error_message = "bucket_name must be a valid GCS bucket name of 3-63 characters."
+  }
+}
+
+variable "storage_configuration_name" {
+  type        = string
+  description = "Optional Databricks storage registration name. Null derives '<resource_prefix>-storage'."
+  default     = null
+}
+
 variable "databricks_service_account_email" {
   type        = string
   description = "Email address of the Databricks-managed GCP service account that will be granted IAM access to the bucket. Provided by Databricks during workspace setup (format: service-account@<project>.iam.gserviceaccount.com)."

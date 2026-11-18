@@ -10,7 +10,7 @@ resource "aws_vpc" "this" { #tfsec:ignore:aws-ec2-require-vpc-flow-logs-for-all-
   enable_dns_support   = true
 
   tags = merge(var.tags, {
-    Name = var.resource_prefix
+    Name = coalesce(var.vpc_name, var.resource_prefix)
   })
 
   #checkov:skip=CKV2_AWS_11: VPC flow log delivery is an operational concern managed by a separate module.
@@ -80,7 +80,7 @@ resource "aws_route_table_association" "private" {
 # Rules are exactly as specified in:
 # https://docs.databricks.com/aws/en/security/network/classic/security-group
 resource "aws_security_group" "this" {
-  name        = "${var.resource_prefix}-databricks"
+  name        = coalesce(var.security_group_name, "${var.resource_prefix}-databricks")
   description = "Databricks workspace compute security group - allows all internal VPC traffic and all egress."
   vpc_id      = aws_vpc.this.id
 
@@ -105,7 +105,7 @@ resource "aws_security_group" "this" {
   }
 
   tags = merge(var.tags, {
-    Name = "${var.resource_prefix}-databricks"
+    Name = coalesce(var.security_group_name, "${var.resource_prefix}-databricks")
   })
 
   #checkov:skip=CKV_AWS_382: Open egress is a Databricks requirement per https://docs.databricks.com/aws/en/security/network/classic/security-group

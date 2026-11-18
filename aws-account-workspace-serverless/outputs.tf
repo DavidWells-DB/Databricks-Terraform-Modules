@@ -35,3 +35,8 @@ output "compute_mode" {
   description = "The deployed workspace compute mode (\"SERVERLESS\"), refreshed from the account API on every plan/apply. Lets consumers assert the deployed workspace type — a value other than SERVERLESS here would mean the workspace is not what this module promises."
   value       = databricks_mws_workspaces.this.compute_mode
 }
+
+output "managed_services_key_id" {
+  description = "Managed-services key configuration ID applied by post-create update, or null."
+  value       = databricks_mws_workspaces.this.managed_services_customer_managed_key_id
+}

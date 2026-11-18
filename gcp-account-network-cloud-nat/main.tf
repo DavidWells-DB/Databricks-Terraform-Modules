@@ -1,12 +1,12 @@
 resource "google_compute_router" "this" {
-  name    = "${var.resource_prefix}-router"
+  name    = coalesce(var.router_name, "${var.resource_prefix}-router")
   project = var.project_id
   region  = var.region
   network = var.network_self_link
 }
 
 resource "google_compute_router_nat" "this" {
-  name                               = "${var.resource_prefix}-nat"
+  name                               = coalesce(var.nat_name, "${var.resource_prefix}-nat")
   project                            = var.project_id
   region                             = var.region
   router                             = google_compute_router.this.name

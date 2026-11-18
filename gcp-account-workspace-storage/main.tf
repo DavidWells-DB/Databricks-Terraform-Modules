@@ -38,6 +38,6 @@ resource "google_storage_bucket_iam_member" "legacy_bucket_reader" {
 resource "databricks_mws_storage_configurations" "this" {
   provider                   = databricks.account
   account_id                 = var.databricks_account_id
-  storage_configuration_name = "${var.resource_prefix}-storage"
+  storage_configuration_name = coalesce(var.storage_configuration_name, "${var.resource_prefix}-storage")
   bucket_name                = google_storage_bucket.this.name
 }

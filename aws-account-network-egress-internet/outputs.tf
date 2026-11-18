@@ -22,3 +22,18 @@ output "nat_public_ip" {
   description = "Public Elastic IP of the first (or sole) NAT Gateway. Convenience alias for nat_public_ips[0] when nat_gateway_count = 1."
   value       = aws_eip.nat[0].public_ip
 }
+
+output "internet_gateway_name" {
+  description = "Name tag of the Internet Gateway."
+  value       = aws_internet_gateway.this.tags.Name
+}
+
+output "nat_gateway_names" {
+  description = "Name tags of the NAT Gateways in creation order."
+  value       = aws_nat_gateway.this[*].tags.Name
+}
+
+output "nat_eip_names" {
+  description = "Name tags of the NAT Elastic IPs in creation order."
+  value       = aws_eip.nat[*].tags.Name
+}

@@ -3,7 +3,7 @@ resource "aws_internet_gateway" "this" {
   vpc_id = var.vpc_id
 
   tags = merge(var.tags, {
-    Name = "igw"
+    Name = var.internet_gateway_name
   })
 }
 
@@ -15,7 +15,7 @@ resource "aws_eip" "nat" {
   domain = "vpc"
 
   tags = merge(var.tags, {
-    Name = "nat-eip-${count.index + 1}"
+    Name = "${var.nat_eip_name_prefix}-${count.index + 1}"
   })
 
   # EIP must be created after the IGW so that the VPC has internet access
@@ -32,7 +32,7 @@ resource "aws_nat_gateway" "this" {
   subnet_id     = var.public_subnet_ids[count.index % length(var.public_subnet_ids)]
 
   tags = merge(var.tags, {
-    Name = "nat-${count.index + 1}"
+    Name = "${var.nat_gateway_name_prefix}-${count.index + 1}"
   })
 
   depends_on = [aws_internet_gateway.this]

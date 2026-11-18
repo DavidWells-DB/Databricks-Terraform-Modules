@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-11-18
+
+### Added
+- `root_dbfs_cmk_enabled` as a plan-time switch for root DBFS CMK when a key is created in the same apply. Null preserves key-ID-presence behavior; callers no longer need a known-after-apply value for `count`.
+
 ## [0.3.1] - 2026-10-30
 
 ### Fixed — first live apply of the azapi body (v0.3.0) was rejected by ARM

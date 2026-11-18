@@ -12,13 +12,18 @@
 module "vpc" {
   source = "../aws-account-vpc"
 
-  resource_prefix          = var.resource_prefix
-  vpc_cidr                 = var.vpc_cidr
-  private_subnet_cidrs     = var.private_subnet_cidrs
-  public_subnet_cidrs      = var.public_subnet_cidrs
-  privatelink_subnet_cidrs = var.privatelink_subnet_cidrs
-  azs                      = var.azs
-  tags                     = var.tags
+  resource_prefix                = var.resource_prefix
+  vpc_name                       = var.vpc_name
+  security_group_name            = var.security_group_name
+  private_subnet_name_prefix     = var.private_subnet_name_prefix
+  public_subnet_name_prefix      = var.public_subnet_name_prefix
+  privatelink_subnet_name_prefix = var.privatelink_subnet_name_prefix
+  vpc_cidr                       = var.vpc_cidr
+  private_subnet_cidrs           = var.private_subnet_cidrs
+  public_subnet_cidrs            = var.public_subnet_cidrs
+  privatelink_subnet_cidrs       = var.privatelink_subnet_cidrs
+  azs                            = var.azs
+  tags                           = var.tags
 }
 
 module "registration" {

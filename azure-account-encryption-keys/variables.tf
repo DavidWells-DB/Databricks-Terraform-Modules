@@ -22,6 +22,42 @@ variable "key_vault_name" {
   }
 }
 
+variable "managed_services_key_name" {
+  type        = string
+  description = "Name of the managed-services key. Defaults to databricks-managed-services for backward compatibility."
+  default     = "databricks-managed-services"
+  nullable    = false
+
+  validation {
+    condition     = length(var.managed_services_key_name) >= 1 && length(var.managed_services_key_name) <= 127 && can(regex("^[A-Za-z0-9-]+$", var.managed_services_key_name))
+    error_message = "managed_services_key_name must contain 1-127 alphanumeric or hyphen characters."
+  }
+}
+
+variable "workspace_storage_key_name" {
+  type        = string
+  description = "Name of the root-storage key. Defaults to databricks-workspace-storage for backward compatibility."
+  default     = "databricks-workspace-storage"
+  nullable    = false
+
+  validation {
+    condition     = length(var.workspace_storage_key_name) >= 1 && length(var.workspace_storage_key_name) <= 127 && can(regex("^[A-Za-z0-9-]+$", var.workspace_storage_key_name))
+    error_message = "workspace_storage_key_name must contain 1-127 alphanumeric or hyphen characters."
+  }
+}
+
+variable "managed_disk_key_name" {
+  type        = string
+  description = "Name of the managed-disk key. Defaults to databricks-managed-disk for backward compatibility."
+  default     = "databricks-managed-disk"
+  nullable    = false
+
+  validation {
+    condition     = length(var.managed_disk_key_name) >= 1 && length(var.managed_disk_key_name) <= 127 && can(regex("^[A-Za-z0-9-]+$", var.managed_disk_key_name))
+    error_message = "managed_disk_key_name must contain 1-127 alphanumeric or hyphen characters."
+  }
+}
+
 variable "tenant_id" {
   type        = string
   description = "Azure Active Directory tenant ID. Must be a valid UUID."

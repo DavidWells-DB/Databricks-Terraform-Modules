@@ -1,4 +1,6 @@
 terraform {
+  required_version = ">= 1.7.0"
+
   required_providers {
     databricks = {
       source  = "databricks/databricks"
@@ -16,7 +18,7 @@ provider "databricks" {
 variable "token" { type = string }
 
 module "bindings" {
-  source = ".."
+  source = "../.."
 
   providers = { databricks.workspace = databricks.workspace }
 

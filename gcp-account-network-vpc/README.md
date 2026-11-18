@@ -51,7 +51,7 @@ These names are exposed as outputs (`pod_secondary_range_name`, `service_seconda
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 5.0 |
@@ -59,9 +59,9 @@ These names are exposed as outputs (`pod_secondary_range_name`, `service_seconda
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.117.0 |
-| <a name="provider_google"></a> [google](#provider\_google) | 7.37.0 |
+| ---- | ------- |
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.142.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 7.46.2 |
 
 ## Modules
 
@@ -70,7 +70,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [databricks_mws_networks.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_networks) | resource |
 | [google_compute_firewall.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
 | [google_compute_network.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_network) | resource |
@@ -79,7 +79,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. Used to register the network configuration with the Databricks account API. | `string` | n/a | yes |
 | <a name="input_network_cidr"></a> [network\_cidr](#input\_network\_cidr) | Primary CIDR block for the VPC subnetwork. Databricks requires a subnet between /9 and /29 (e.g. "10.0.0.0/16"). | `string` | n/a | yes |
 | <a name="input_network_name"></a> [network\_name](#input\_network\_name) | Name for the databricks\_mws\_networks registration. Should be descriptive and unique within the Databricks account. | `string` | n/a | yes |
@@ -88,12 +88,17 @@ No modules.
 | <a name="input_region"></a> [region](#input\_region) | GCP region for the subnetwork and Databricks workspace data plane (e.g. "us-central1"). Must match the region used by the Databricks workspace. | `string` | n/a | yes |
 | <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | Prefix applied to the VPC, subnetwork, and firewall resource names. Must be 1-20 characters, lowercase letters, digits, or hyphens, starting with a letter. | `string` | n/a | yes |
 | <a name="input_service_secondary_range_cidr"></a> [service\_secondary\_range\_cidr](#input\_service\_secondary\_range\_cidr) | CIDR for the secondary IP range used by GKE services. Required by Databricks GCP workspaces for cluster service networking (e.g. "10.2.0.0/20"). | `string` | n/a | yes |
+| <a name="input_firewall_rule_name"></a> [firewall\_rule\_name](#input\_firewall\_rule\_name) | Optional Databricks ingress firewall-rule name. Null derives 'db-<subnetwork\_name>-ingress'. | `string` | `null` | no |
+| <a name="input_pod_secondary_range_name"></a> [pod\_secondary\_range\_name](#input\_pod\_secondary\_range\_name) | Optional pod secondary-range creation name. Null derives '<resource\_prefix>-pods'. | `string` | `null` | no |
+| <a name="input_service_secondary_range_name"></a> [service\_secondary\_range\_name](#input\_service\_secondary\_range\_name) | Optional service secondary-range creation name. Null derives '<resource\_prefix>-services'. | `string` | `null` | no |
+| <a name="input_subnetwork_name"></a> [subnetwork\_name](#input\_subnetwork\_name) | Optional subnetwork creation name. Null derives '<resource\_prefix>-subnet'. | `string` | `null` | no |
 | <a name="input_vpc_endpoint_ids"></a> [vpc\_endpoint\_ids](#input\_vpc\_endpoint\_ids) | Optional PSC (Private Service Connect) endpoint IDs from gcp-account-network-psc-endpoints. When provided, wired into the databricks\_mws\_networks registration to enable PSC connectivity. Set to null to skip PSC wiring. | <pre>object({<br/>    dataplane_relay = optional(list(string))<br/>    rest_api        = optional(list(string))<br/>  })</pre> | `null` | no |
+| <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | Optional VPC creation name. Null derives '<resource\_prefix>-vpc'. | `string` | `null` | no |
 
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_databricks_network_id"></a> [databricks\_network\_id](#output\_databricks\_network\_id) | Databricks network configuration ID from databricks\_mws\_networks. Pass to workspace creation modules as their network\_id input. |
 | <a name="output_network_cidr"></a> [network\_cidr](#output\_network\_cidr) | Primary CIDR block of the subnetwork. Useful for constructing downstream firewall rules that reference the workspace subnet range. |
 | <a name="output_network_name"></a> [network\_name](#output\_network\_name) | Name of the created VPC network. Useful for firewall rules or Shared VPC host configurations. |

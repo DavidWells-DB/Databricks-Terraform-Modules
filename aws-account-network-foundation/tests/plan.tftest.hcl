@@ -4,7 +4,7 @@ mock_provider "databricks" {
   mock_resource "databricks_mws_network_connectivity_config" {
     defaults = {
       network_connectivity_config_id = "01234567-89ab-cdef-0123-456789abcdef"
-      name                          = "ncc-test"
+      name                           = "ncc-test"
     }
   }
 
@@ -20,8 +20,8 @@ mock_provider "databricks" {
 # assert through the composition's outputs, the module-output oracle.
 variables {
   databricks_account_id = "743862e4-fdac-4504-a9cc-2d69bd1605e8"
-  region               = "us-east-1"
-  ncc_name             = "ncc-test"
+  region                = "us-east-1"
+  ncc_name              = "ncc-test"
 }
 
 run "ncc_id_passes_through_by_default" {
@@ -42,8 +42,8 @@ run "policy_id_passes_through_when_enabled" {
   command = apply
 
   variables {
-    create_policy                 = true
-    policy_name                   = "egress"
+    create_policy = true
+    policy_name   = "egress"
     allowed_internet_destinations = [
       {
         destination               = "pypi.org"

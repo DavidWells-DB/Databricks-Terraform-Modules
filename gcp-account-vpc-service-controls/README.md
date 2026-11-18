@@ -51,15 +51,15 @@ Typical required roles:
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 5.0 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 7.35.0 |
+| ---- | ------- |
+| <a name="provider_google"></a> [google](#provider\_google) | >= 5.0 |
 
 ## Modules
 
@@ -68,13 +68,13 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [google_access_context_manager_service_perimeter.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/access_context_manager_service_perimeter) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_access_policy_id"></a> [access\_policy\_id](#input\_access\_policy\_id) | Existing Access Context Manager access policy ID (organization-level). Format: accessPolicies/<policy\_id> or <policy\_id>. | `string` | n/a | yes |
 | <a name="input_perimeter_name"></a> [perimeter\_name](#input\_perimeter\_name) | Name of the service perimeter. Must be alphanumeric with underscores, max 50 chars. | `string` | n/a | yes |
 | <a name="input_perimeter_title"></a> [perimeter\_title](#input\_perimeter\_title) | Human-readable title for the service perimeter. | `string` | n/a | yes |
@@ -87,7 +87,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_perimeter_id"></a> [perimeter\_id](#output\_perimeter\_id) | Full resource name of the VPC Service Controls perimeter. |
 | <a name="output_perimeter_name"></a> [perimeter\_name](#output\_perimeter\_name) | Name of the service perimeter. |
 | <a name="output_protected_projects"></a> [protected\_projects](#output\_protected\_projects) | List of GCP project numbers protected by the perimeter. |

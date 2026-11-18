@@ -67,7 +67,7 @@ Both keys have automatic rotation enabled and a 7-day deletion window.
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
@@ -75,9 +75,9 @@ Both keys have automatic rotation enabled and a 7-day deletion window.
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.50.0 |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.117.0 |
+| ---- | ------- |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.0 |
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.50 |
 
 ## Modules
 
@@ -86,7 +86,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [aws_kms_alias.managed_services](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
 | [aws_kms_alias.workspace_storage](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
 | [aws_kms_key.managed_services](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
@@ -99,7 +99,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_aws_account_id"></a> [aws\_account\_id](#input\_aws\_account\_id) | AWS account ID of the customer account. Used in KMS key policies to grant the account root full key administration. | `string` | n/a | yes |
 | <a name="input_aws_partition"></a> [aws\_partition](#input\_aws\_partition) | AWS partition for ARN construction. Use "aws" for commercial; "aws-us-gov" for GovCloud (both civilian and DoD shards). | `string` | n/a | yes |
 | <a name="input_cross_account_role_arn"></a> [cross\_account\_role\_arn](#input\_cross\_account\_role\_arn) | ARN of the Databricks cross-account IAM role. Added to the storage key policy so EBS volumes on workspace clusters can use the key. | `string` | n/a | yes |
@@ -112,7 +112,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_databricks_control_plane_aws_account_id"></a> [databricks\_control\_plane\_aws\_account\_id](#output\_databricks\_control\_plane\_aws\_account\_id) | Databricks control plane AWS account ID used in KMS key policies. Derived from databricks\_gov\_shard. Useful for verification and downstream policy construction. |
 | <a name="output_managed_services_key_alias"></a> [managed\_services\_key\_alias](#output\_managed\_services\_key\_alias) | Name of the AWS KMS alias for the managed-services key. |
 | <a name="output_managed_services_key_arn"></a> [managed\_services\_key\_arn](#output\_managed\_services\_key\_arn) | ARN of the AWS KMS key used for managed-services encryption. |

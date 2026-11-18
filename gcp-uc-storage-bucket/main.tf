@@ -13,6 +13,10 @@
 # module) — never public. Uniform bucket-level access with public-access
 # prevention is enforced here.
 
+# Google-managed encryption is sufficient for the platform-managed UC data in
+# this intentionally lean module; organization-specific CMEK belongs to the
+# adopting root composition.
+# tfsec:ignore:google-storage-bucket-encryption-customer-key
 resource "google_storage_bucket" "this" {
   name          = var.bucket_name
   location      = var.location

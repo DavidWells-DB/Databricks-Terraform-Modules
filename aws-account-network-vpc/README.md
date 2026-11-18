@@ -64,39 +64,30 @@ To restrict egress, use `aws-account-network-firewall` instead of this module's 
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.50.0 |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.117.0 |
+No providers.
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+| ---- | ------ | ------- |
+| <a name="module_registration"></a> [registration](#module\_registration) | ../dbx-account-mws-networks | n/a |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | ../aws-account-vpc | n/a |
 
 ## Resources
 
-| Name | Type |
-|------|------|
-| [aws_route_table.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
-| [aws_route_table_association.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | resource |
-| [aws_security_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
-| [aws_subnet.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
-| [aws_subnet.privatelink](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
-| [aws_subnet.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
-| [aws_vpc.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
-| [databricks_mws_networks.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_networks) | resource |
+No resources.
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_azs"></a> [azs](#input\_azs) | List of availability zone names (e.g. ["us-east-1a", "us-east-1b"]). Must have the same length as private\_subnet\_cidrs. Also used for public and PrivateLink subnets when those lists are non-empty. | `list(string)` | n/a | yes |
 | <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. Used to register the network configuration with the Databricks account API. | `string` | n/a | yes |
 | <a name="input_network_name"></a> [network\_name](#input\_network\_name) | Base name for the databricks\_mws\_networks registration(s). Should be descriptive and unique within the Databricks account. When PrivateLink is enabled a second registration named "<network\_name>-privatelink" is created alongside it, so this is capped to leave room for that 12-char suffix. | `string` | n/a | yes |
@@ -105,15 +96,20 @@ No modules.
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | CIDR block for the VPC. Must be a valid IPv4 CIDR (e.g. "10.0.0.0/16"). Databricks requires a minimum /16 for the workspace VPC. | `string` | n/a | yes |
 | <a name="input_databricks_gov_shard"></a> [databricks\_gov\_shard](#input\_databricks\_gov\_shard) | Databricks GovCloud shard. null for commercial; "civilian" for AWS GovCloud civilian (FedRAMP High); "dod" for IL5/DoD. | `string` | `null` | no |
 | <a name="input_enable_privatelink"></a> [enable\_privatelink](#input\_enable\_privatelink) | Whether to register the additional back-end PrivateLink network config (named "<network\_name>-privatelink") alongside the retained base config. This is the PLAN-TIME-KNOWN switch that decides the set of network registrations; keep it separate from vpc\_endpoint\_ids, whose values are typically known only after apply (they come from endpoints created in the same run). Setting it true without vpc\_endpoint\_ids registers the PrivateLink config without the vpc\_endpoints block. | `bool` | `false` | no |
+| <a name="input_private_subnet_name_prefix"></a> [private\_subnet\_name\_prefix](#input\_private\_subnet\_name\_prefix) | Optional private-subnet name prefix. | `string` | `null` | no |
 | <a name="input_privatelink_subnet_cidrs"></a> [privatelink\_subnet\_cidrs](#input\_privatelink\_subnet\_cidrs) | Optional list of CIDR blocks for PrivateLink-dedicated subnets. Leave empty to skip PrivateLink subnet creation. Required when deploying aws-account-network-privatelink-endpoints. | `list(string)` | `[]` | no |
+| <a name="input_privatelink_subnet_name_prefix"></a> [privatelink\_subnet\_name\_prefix](#input\_privatelink\_subnet\_name\_prefix) | Optional PrivateLink-subnet name prefix. | `string` | `null` | no |
 | <a name="input_public_subnet_cidrs"></a> [public\_subnet\_cidrs](#input\_public\_subnet\_cidrs) | Optional list of CIDR blocks for public subnets. Leave empty to skip public subnet creation. Required if deploying NAT gateways or internet-facing resources. | `list(string)` | `[]` | no |
+| <a name="input_public_subnet_name_prefix"></a> [public\_subnet\_name\_prefix](#input\_public\_subnet\_name\_prefix) | Optional public-subnet name prefix. | `string` | `null` | no |
+| <a name="input_security_group_name"></a> [security\_group\_name](#input\_security\_group\_name) | Optional Databricks security-group name. | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to all AWS resources created by this module. | `map(string)` | `{}` | no |
 | <a name="input_vpc_endpoint_ids"></a> [vpc\_endpoint\_ids](#input\_vpc\_endpoint\_ids) | Optional PrivateLink VPC endpoint IDs from aws-account-network-privatelink-endpoints. Supplies the vpc\_endpoints block ON the PrivateLink registration (see enable\_privatelink). Values may be known only after apply; that is fine because enable\_privatelink — not this — determines the resource key set. Set to null to omit the vpc\_endpoints block. | <pre>object({<br/>    rest_api_id = optional(string)<br/>    relay_id    = optional(string)<br/>  })</pre> | `null` | no |
+| <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | Optional VPC Name tag. Null uses resource\_prefix. | `string` | `null` | no |
 
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_databricks_account_host"></a> [databricks\_account\_host](#output\_databricks\_account\_host) | Databricks account host URL derived from databricks\_gov\_shard. Useful for root composition validation that the databricks.account provider is configured against the correct host. |
 | <a name="output_databricks_network_id"></a> [databricks\_network\_id](#output\_databricks\_network\_id) | Databricks network configuration ID the workspace should use: the PrivateLink registration when vpc\_endpoint\_ids are set, otherwise the base registration. Pass to workspace creation modules as their network\_id input. |
 | <a name="output_network_ids"></a> [network\_ids](#output\_network\_ids) | Map of network config role (base / privatelink) to Databricks network ID. When PrivateLink is enabled both exist; the 'base' entry is the retained, now-detached config left behind by the in-place cutover. It is harmless (metadata-only, no documented account limit); delete it deliberately later if you want to tidy up — safe once no workspace references it. |

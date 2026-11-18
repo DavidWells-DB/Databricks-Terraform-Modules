@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-18
+
+### Added
+- Optional provisioning service-account ID/display name and custom-role ID/title while retaining the previous derived values.
+
 ## [0.1.0] - 2026-06-23
 
 ### Added

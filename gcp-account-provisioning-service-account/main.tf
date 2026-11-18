@@ -13,7 +13,7 @@ resource "google_service_account" "this" {
 resource "google_project_iam_custom_role" "this" {
   project     = var.project_id
   role_id     = local.custom_role_id
-  title       = "Databricks Workspace Provisioner (${var.resource_prefix})"
+  title       = local.custom_role_title
   description = "Minimum permissions for the Databricks control plane to provision GKE-based workspaces."
   permissions = [
     # Compute — manage instances, disks, firewalls, networks needed by workspace nodes.

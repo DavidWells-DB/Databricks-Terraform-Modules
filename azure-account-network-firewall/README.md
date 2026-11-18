@@ -42,15 +42,15 @@ Pass Databricks-specific service tag rules via `service_tag_rules`. Each rule sp
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.75 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.76.0 |
+| ---- | ------- |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 5.13.0 |
 
 ## Modules
 
@@ -59,7 +59,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [azurerm_firewall.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/firewall) | resource |
 | [azurerm_firewall_policy.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/firewall_policy) | resource |
 | [azurerm_firewall_policy_rule_collection_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/firewall_policy_rule_collection_group) | resource |
@@ -72,7 +72,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_allowed_spoke_cidr_ranges"></a> [allowed\_spoke\_cidr\_ranges](#input\_allowed\_spoke\_cidr\_ranges) | List of CIDR ranges for spoke VNet subnets. Used to populate the source IP group in the firewall network rules that permit spoke egress traffic through the firewall. | `list(string)` | n/a | yes |
 | <a name="input_firewall_name"></a> [firewall\_name](#input\_firewall\_name) | Name for the Azure Firewall. Used as the base name for the firewall, policy, IP group, public IP, and route table resources. | `string` | n/a | yes |
 | <a name="input_firewall_subnet_id"></a> [firewall\_subnet\_id](#input\_firewall\_subnet\_id) | Resource ID of the AzureFirewallSubnet into which the firewall is deployed. The subnet must be named exactly "AzureFirewallSubnet" and be at least /26. | `string` | n/a | yes |
@@ -86,7 +86,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_firewall_id"></a> [firewall\_id](#output\_firewall\_id) | Resource ID of the Azure Firewall. Useful for cross-referencing in diagnostic settings, monitoring, or policy assignments. |
 | <a name="output_firewall_policy_id"></a> [firewall\_policy\_id](#output\_firewall\_policy\_id) | Resource ID of the Azure Firewall Policy. Pass to additional azurerm\_firewall\_policy\_rule\_collection\_group resources that extend rule collections post-deployment. |
 | <a name="output_firewall_private_ip"></a> [firewall\_private\_ip](#output\_firewall\_private\_ip) | Private IP address of the Azure Firewall front-end interface. Used as the next-hop in forced-tunnel routes and for verifying traffic flow. |

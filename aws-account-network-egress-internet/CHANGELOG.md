@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-18
+
+### Added
+- Optional Internet Gateway, NAT Gateway, and NAT Elastic-IP names, with resolved name outputs and naming passthroughs for the network Component.
+
 ## [0.2.0] - 2026-11-02
 
 ### Fixed - E23 (live-confirmed break, break_aws NET-08)

@@ -41,6 +41,28 @@ run "back_end_pe_always_planned" {
   }
 }
 
+run "private_endpoint_names_are_explicitly_configurable" {
+  command = plan
+
+  variables {
+    back_end_pe_name       = "customer-be"
+    front_end_pe_name      = "customer-fe"
+    browser_auth_pe_name   = "customer-auth"
+    dns_link_name_prefix   = "customer-dns"
+    enable_front_end_pe    = true
+    enable_browser_auth_pe = true
+  }
+
+  assert {
+    condition     = azurerm_private_endpoint.back_end.name == "customer-be" && azurerm_private_endpoint.front_end[0].name == "customer-fe" && azurerm_private_endpoint.browser_auth[0].name == "customer-auth"
+    error_message = "Every private endpoint must accept an exact creation name"
+  }
+  assert {
+    condition     = azurerm_private_dns_zone_virtual_network_link.this["spoke"].name == "customer-dns-spoke-dns-link" && azurerm_private_dns_zone.this.name == "privatelink.azuredatabricks.net"
+    error_message = "DNS-link names must be configurable while the required zone name stays fixed"
+  }
+}
+
 run "back_end_pe_subresource_is_databricks_ui_api" {
   command = plan
 

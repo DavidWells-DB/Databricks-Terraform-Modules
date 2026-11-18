@@ -1,4 +1,6 @@
 terraform {
+  required_version = ">= 1.7.0"
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -12,7 +14,7 @@ provider "aws" {
 }
 
 module "vpc" {
-  source = ".."
+  source = "../.."
 
   resource_prefix      = "my-workspace"
   vpc_cidr             = "10.0.0.0/16"

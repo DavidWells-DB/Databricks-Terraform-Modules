@@ -47,6 +47,21 @@ run "managed_services_key_is_rsa_2048" {
   }
 }
 
+run "key_names_are_explicitly_configurable" {
+  command = plan
+
+  variables {
+    managed_services_key_name  = "customer-managed"
+    workspace_storage_key_name = "customer-storage"
+    managed_disk_key_name      = "customer-disk"
+  }
+
+  assert {
+    condition     = azurerm_key_vault_key.managed_services.name == "customer-managed" && azurerm_key_vault_key.workspace_storage.name == "customer-storage" && azurerm_key_vault_key.managed_disk.name == "customer-disk"
+    error_message = "All three key names must accept exact customer-supplied values"
+  }
+}
+
 run "workspace_storage_key_is_rsa_2048" {
   command = plan
 

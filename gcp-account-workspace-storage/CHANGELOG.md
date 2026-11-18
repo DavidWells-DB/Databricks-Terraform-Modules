@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-18
+
+### Added
+- Optional root-bucket and Databricks storage-configuration creation names with backward-compatible derived defaults.
+
 ## [0.1.0] - 2026-06-23
 
 ### Added

@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-18
+
+### Added
+- Exact creation names for back-end, front-end, and browser-auth private endpoints and their private service connections, plus a configurable DNS-link prefix.
+
 ## [0.2.0] - 2026-10-27
 
 ### Fixed — BREAKING (resource restructure; state migration required)

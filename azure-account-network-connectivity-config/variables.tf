@@ -21,6 +21,8 @@ variable "region" {
   nullable    = false
 }
 
+# Retained to reject the removed input with a useful migration error.
+# tflint-ignore: terraform_unused_declarations
 variable "allowed_internet_destinations" {
   type = list(object({
     destination               = string
@@ -35,6 +37,8 @@ variable "allowed_internet_destinations" {
   }
 }
 
+# Retained to reject the removed input with a useful migration error.
+# tflint-ignore: terraform_unused_declarations
 variable "network_policy_id" {
   type        = string
   description = "REMOVED in v0.2.0 (single-owner consolidation, see allowed_internet_destinations). Keep null."

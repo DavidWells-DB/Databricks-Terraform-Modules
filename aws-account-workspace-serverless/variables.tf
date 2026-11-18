@@ -39,6 +39,8 @@ variable "databricks_gov_shard" {
 }
 
 
+# Retained to reject the removed input with a useful migration error.
+# tflint-ignore: terraform_unused_declarations
 variable "network_connectivity_config_id" {
   type        = string
   description = "REMOVED in v0.5.0 (single-owner consolidation): NCC binding is owned solely by dbx-workspace-network-serverless. Keep null; bind the NCC there instead."
@@ -53,6 +55,12 @@ variable "network_connectivity_config_id" {
 variable "deployment_name" {
   type        = string
   description = "Optional. URL prefix component for the workspace host (e.g. \"my-ws\" produces \"my-ws.cloud.databricks.com\"). Leave null to let Databricks auto-assign."
+  default     = null
+}
+
+variable "managed_services_key_id" {
+  type        = string
+  description = "Databricks customer-managed-key configuration ID for managed services. Do not set during the workspace's first apply: the account API accepts this field only as a post-create update, not in the SERVERLESS create body. Use the key configuration ID, not the KMS ARN."
   default     = null
 }
 

@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-18
+
+### Added
+- Optional exact creation names for the log bucket, IAM role, Databricks registrations, and delivery configurations.
+- Empty lifecycle filter required by current AWS provider validation; named-creation plan coverage.
+
 ## [0.2.0] - 2026-08-01
 
 ### Fixed

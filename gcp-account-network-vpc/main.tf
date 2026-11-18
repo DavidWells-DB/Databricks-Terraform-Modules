@@ -1,7 +1,7 @@
 # VPC — custom mode so subnetwork CIDRs are fully under caller control.
 resource "google_compute_network" "this" {
   project                 = var.project_id
-  name                    = "${var.resource_prefix}-vpc"
+  name                    = coalesce(var.vpc_name, "${var.resource_prefix}-vpc")
   auto_create_subnetworks = false
   description             = "Databricks workspace VPC (${var.resource_prefix})"
 }
@@ -36,7 +36,7 @@ resource "google_compute_subnetwork" "this" { #tfsec:ignore:google-compute-enabl
 # Source: https://docs.databricks.com/gcp/en/administration-guide/cloud-configurations/gcp/customer-managed-vpc.html
 resource "google_compute_firewall" "this" {
   project     = var.project_id
-  name        = "db-${local.subnetwork_name}-ingress"
+  name        = local.firewall_rule_name
   network     = google_compute_network.this.id
   description = "Databricks-required ingress: allow all intra-subnet traffic for cluster node communication."
   direction   = "INGRESS"

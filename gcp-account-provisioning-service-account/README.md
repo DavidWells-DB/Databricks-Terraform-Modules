@@ -47,7 +47,7 @@ The custom role grants the service account these permission groups:
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 5.0 |
@@ -55,9 +55,9 @@ The custom role grants the service account these permission groups:
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.117.0 |
-| <a name="provider_google"></a> [google](#provider\_google) | 7.37.0 |
+| ---- | ------- |
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.142.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 7.46.2 |
 
 ## Modules
 
@@ -66,7 +66,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [databricks_user.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/user) | resource |
 | [databricks_user_role.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/user_role) | resource |
 | [google_project_iam_custom_role.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_custom_role) | resource |
@@ -77,15 +77,19 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | GCP project ID in which the service account and custom IAM role are created. | `string` | n/a | yes |
 | <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | Prefix applied to the GCP service account ID and custom role ID. Must be lowercase letters, digits, or hyphens, 1-20 characters. | `string` | n/a | yes |
+| <a name="input_custom_role_id"></a> [custom\_role\_id](#input\_custom\_role\_id) | Optional custom IAM role ID. Null preserves the normalized prefix-derived role ID. | `string` | `null` | no |
+| <a name="input_custom_role_title"></a> [custom\_role\_title](#input\_custom\_role\_title) | Optional custom IAM role title. Null preserves the prefix-derived title. | `string` | `null` | no |
 | <a name="input_delegate_emails"></a> [delegate\_emails](#input\_delegate\_emails) | List of user or service account emails that may impersonate this service account (roles/iam.serviceAccountTokenCreator). Provide fully-qualified emails; service accounts should be prefixed with 'serviceAccount:'. | `list(string)` | `[]` | no |
+| <a name="input_service_account_display_name"></a> [service\_account\_display\_name](#input\_service\_account\_display\_name) | Optional service-account display name. Null preserves the prefix-derived display name. | `string` | `null` | no |
+| <a name="input_service_account_id"></a> [service\_account\_id](#input\_service\_account\_id) | Optional provisioning service-account ID. Null derives '<resource\_prefix>-dbx-provisioner'. | `string` | `null` | no |
 
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_custom_role_id"></a> [custom\_role\_id](#output\_custom\_role\_id) | Fully-qualified custom IAM role name (projects/<project>/roles/<role\_id>). Pass to downstream IAM bindings if the role is reused. |
 | <a name="output_databricks_user_id"></a> [databricks\_user\_id](#output\_databricks\_user\_id) | Databricks account-level user ID of the registered service account. Useful for constructing additional Databricks grants. |
 | <a name="output_service_account_email"></a> [service\_account\_email](#output\_service\_account\_email) | Email address of the GCP service account. Used as the Databricks user identity and in IAM bindings. |

@@ -1,5 +1,9 @@
+terraform {
+  required_version = ">= 1.7.0"
+}
+
 module "guards" {
-  source = ".."
+  source = "../.."
 
   guards = {
     csp_enabled = {

@@ -91,7 +91,7 @@ resource "azurerm_key_vault_access_policy" "databricks" {
 #tfsec:ignore:azure-keyvault-ensure-key-expiry
 resource "azurerm_key_vault_key" "managed_services" {
   #checkov:skip=CKV_AZURE_40:Databricks CMK keys must not have an expiry date. An expired key renders the workspace inaccessible and unrecoverable.
-  name         = "databricks-managed-services"
+  name         = var.managed_services_key_name
   key_vault_id = azurerm_key_vault.this.id
   key_type     = "RSA-HSM"
   key_size     = 2048
@@ -120,7 +120,7 @@ resource "azurerm_key_vault_key" "managed_services" {
 #tfsec:ignore:azure-keyvault-ensure-key-expiry
 resource "azurerm_key_vault_key" "workspace_storage" {
   #checkov:skip=CKV_AZURE_40:Databricks CMK keys must not have an expiry date. An expired key renders the workspace inaccessible and unrecoverable.
-  name         = "databricks-workspace-storage"
+  name         = var.workspace_storage_key_name
   key_vault_id = azurerm_key_vault.this.id
   key_type     = "RSA-HSM"
   key_size     = 2048
@@ -149,7 +149,7 @@ resource "azurerm_key_vault_key" "workspace_storage" {
 #tfsec:ignore:azure-keyvault-ensure-key-expiry
 resource "azurerm_key_vault_key" "managed_disk" {
   #checkov:skip=CKV_AZURE_40:Databricks CMK keys must not have an expiry date. An expired key renders the workspace inaccessible and unrecoverable.
-  name         = "databricks-managed-disk"
+  name         = var.managed_disk_key_name
   key_vault_id = azurerm_key_vault.this.id
   key_type     = "RSA-HSM"
   key_size     = 2048

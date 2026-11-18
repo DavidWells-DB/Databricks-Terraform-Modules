@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-11-18
+
+### Added
+- `managed_services_key_id` for the live-verified post-create managed-services CMK update. The input takes a Databricks key configuration ID and must remain null during the workspace's first apply.
+
 ## [0.5.0] - 2026-11-10
 
 ### Changed — single-owner consolidation (databricks_mws_ncc_binding)

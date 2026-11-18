@@ -1,4 +1,6 @@
 terraform {
+  required_version = ">= 1.7.0"
+
   required_providers {
     databricks = {
       source  = "databricks/databricks"
@@ -17,7 +19,7 @@ variable "databricks_account_id" { type = string }
 variable "region" { type = string }
 
 module "foundation" {
-  source = ".."
+  source = "../.."
 
   providers = { databricks.account = databricks.account }
 

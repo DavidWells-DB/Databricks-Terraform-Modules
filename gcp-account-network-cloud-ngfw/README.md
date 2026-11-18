@@ -46,15 +46,15 @@ The `google_network_security_firewall_endpoint` resource can take up to 60 minut
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 6.0 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 7.37.0 |
+| ---- | ------- |
+| <a name="provider_google"></a> [google](#provider\_google) | >= 6.0 |
 
 ## Modules
 
@@ -63,7 +63,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [google_network_security_firewall_endpoint.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/network_security_firewall_endpoint) | resource |
 | [google_network_security_firewall_endpoint_association.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/network_security_firewall_endpoint_association) | resource |
 | [google_network_security_security_profile.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/network_security_security_profile) | resource |
@@ -72,7 +72,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_network_self_link"></a> [network\_self\_link](#input\_network\_self\_link) | Self-link of the VPC network to associate with the firewall endpoint. Format: "https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}". | `string` | n/a | yes |
 | <a name="input_organization_id"></a> [organization\_id](#input\_organization\_id) | GCP organization ID. Used as the parent for the security profile, security profile group, and firewall endpoint. Format: numeric organization ID (e.g. "123456789"). | `string` | n/a | yes |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | GCP project ID. Used as the billing project for firewall endpoint charges and as the parent for the firewall endpoint association. | `string` | n/a | yes |
@@ -85,7 +85,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_firewall_endpoint_association_id"></a> [firewall\_endpoint\_association\_id](#output\_firewall\_endpoint\_association\_id) | Fully-qualified resource ID of the firewall endpoint association. Format: projects/{project}/locations/{zone}/firewallEndpointAssociations/{name}. |
 | <a name="output_firewall_endpoint_association_state"></a> [firewall\_endpoint\_association\_state](#output\_firewall\_endpoint\_association\_state) | Current state of the firewall endpoint association. Traffic steering is only active when this is ACTIVE. |
 | <a name="output_firewall_endpoint_id"></a> [firewall\_endpoint\_id](#output\_firewall\_endpoint\_id) | Fully-qualified resource ID of the Cloud NGFW firewall endpoint. Format: organizations/{org}/locations/{zone}/firewallEndpoints/{name}. |

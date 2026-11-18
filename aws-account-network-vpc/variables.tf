@@ -24,6 +24,36 @@ variable "resource_prefix" {
   }
 }
 
+variable "vpc_name" {
+  type        = string
+  description = "Optional VPC Name tag. Null uses resource_prefix."
+  default     = null
+}
+
+variable "security_group_name" {
+  type        = string
+  description = "Optional Databricks security-group name."
+  default     = null
+}
+
+variable "private_subnet_name_prefix" {
+  type        = string
+  description = "Optional private-subnet name prefix."
+  default     = null
+}
+
+variable "public_subnet_name_prefix" {
+  type        = string
+  description = "Optional public-subnet name prefix."
+  default     = null
+}
+
+variable "privatelink_subnet_name_prefix" {
+  type        = string
+  description = "Optional PrivateLink-subnet name prefix."
+  default     = null
+}
+
 variable "vpc_cidr" {
   type        = string
   description = "CIDR block for the VPC. Must be a valid IPv4 CIDR (e.g. \"10.0.0.0/16\"). Databricks requires a minimum /16 for the workspace VPC."

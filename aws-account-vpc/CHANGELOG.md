@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-18
+
+### Added
+- Optional VPC, security-group, and per-tier subnet creation names. Existing prefix-derived names remain the defaults.
+
 ## [0.1.0] - 2026-11-10
 
 ### Added

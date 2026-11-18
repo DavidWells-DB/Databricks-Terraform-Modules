@@ -197,3 +197,16 @@ run "network_connectivity_config_id_rejected" {
 
   expect_failures = [var.network_connectivity_config_id]
 }
+
+run "managed_services_key_id_reaches_workspace_update_field" {
+  command = plan
+
+  variables {
+    managed_services_key_id = "existing-key-configuration"
+  }
+
+  assert {
+    condition     = databricks_mws_workspaces.this.managed_services_customer_managed_key_id == "existing-key-configuration"
+    error_message = "The registered key configuration ID must reach the post-create workspace update field"
+  }
+}

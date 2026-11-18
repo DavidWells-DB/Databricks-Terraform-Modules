@@ -74,6 +74,8 @@ variable "workspace_storage_key_id" {
   default     = null
 }
 
+# Retained to reject the removed input with a useful migration error.
+# tflint-ignore: terraform_unused_declarations
 variable "network_connectivity_config_id" {
   type        = string
   description = "REMOVED in v0.3.0 (single-owner consolidation): NCC binding is owned solely by dbx-workspace-network-serverless (binding + private-endpoint rules together). Keep null; bind the NCC there instead, after this module returns the workspace_id."

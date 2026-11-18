@@ -55,6 +55,41 @@ variable "network_name" {
   }
 }
 
+variable "vpc_name" {
+  type        = string
+  description = "Optional VPC creation name. Null derives '<resource_prefix>-vpc'."
+  default     = null
+
+  validation {
+    condition     = var.vpc_name == null || can(regex("^[a-z][a-z0-9-]{0,61}[a-z0-9]$", var.vpc_name))
+    error_message = "vpc_name must be a valid GCP network name of at most 63 characters."
+  }
+}
+
+variable "subnetwork_name" {
+  type        = string
+  description = "Optional subnetwork creation name. Null derives '<resource_prefix>-subnet'."
+  default     = null
+}
+
+variable "pod_secondary_range_name" {
+  type        = string
+  description = "Optional pod secondary-range creation name. Null derives '<resource_prefix>-pods'."
+  default     = null
+}
+
+variable "service_secondary_range_name" {
+  type        = string
+  description = "Optional service secondary-range creation name. Null derives '<resource_prefix>-services'."
+  default     = null
+}
+
+variable "firewall_rule_name" {
+  type        = string
+  description = "Optional Databricks ingress firewall-rule name. Null derives 'db-<subnetwork_name>-ingress'."
+  default     = null
+}
+
 variable "network_cidr" {
   type        = string
   description = "Primary CIDR block for the VPC subnetwork. Databricks requires a subnet between /9 and /29 (e.g. \"10.0.0.0/16\")."

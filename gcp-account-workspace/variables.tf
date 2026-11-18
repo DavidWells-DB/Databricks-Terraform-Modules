@@ -42,9 +42,11 @@ variable "region" {
   }
 }
 
+# Retained for backward compatibility; GCP assigns deployment_name itself.
+# tflint-ignore: terraform_unused_declarations
 variable "resource_prefix" {
   type        = string
-  description = "Prefix used to derive the workspace deployment name. Must be 1-20 characters, lowercase letters, digits, or hyphens, starting with a letter."
+  description = "Deprecated compatibility input. GCP assigns the workspace deployment name; this value is not used."
   nullable    = false
   validation {
     # GCP resource names and Databricks deployment names: lowercase alphanumeric and hyphens, must start with a letter.

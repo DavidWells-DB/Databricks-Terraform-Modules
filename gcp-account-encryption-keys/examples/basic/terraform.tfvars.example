@@ -1,0 +1,4 @@
+project_id      = "my-gcp-project"
+location        = "us-central1"
+key_ring_name   = "acme-databricks"
+crypto_key_name = "acme-workspace"

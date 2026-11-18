@@ -231,3 +231,27 @@ run "billable_usage_delivery_path_prefix" {
     error_message = "BILLABLE_USAGE delivery_path_prefix should be 'billable-usage'"
   }
 }
+run "named_log_delivery_resources" {
+  command = plan
+
+  variables {
+    bucket_name                = "customer-log-bucket"
+    role_name                  = "customer-log-role"
+    credentials_name           = "customer-log-credentials"
+    storage_configuration_name = "customer-log-storage"
+    log_delivery_name_prefix   = "customer-logs"
+  }
+
+  assert {
+    condition     = aws_s3_bucket.this.bucket == "customer-log-bucket" && aws_iam_role.this.name == "customer-log-role"
+    error_message = "Explicit bucket and IAM role names must be used exactly"
+  }
+  assert {
+    condition     = databricks_mws_credentials.this.credentials_name == "customer-log-credentials" && databricks_mws_storage_configurations.this.storage_configuration_name == "customer-log-storage"
+    error_message = "Explicit Databricks registration names must be used exactly"
+  }
+  assert {
+    condition     = databricks_mws_log_delivery.this["AUDIT_LOGS"].config_name == "customer-logs-Audit Logs" && databricks_mws_log_delivery.this["BILLABLE_USAGE"].config_name == "customer-logs-Billable Usage"
+    error_message = "The explicit delivery-name prefix must reach both configurations"
+  }
+}

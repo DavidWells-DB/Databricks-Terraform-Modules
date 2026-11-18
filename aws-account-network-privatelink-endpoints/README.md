@@ -72,7 +72,7 @@ custom_service_attachment_uris = {
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
@@ -80,9 +80,9 @@ custom_service_attachment_uris = {
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.50.0 |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.117.0 |
+| ---- | ------- |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.0 |
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.50 |
 
 ## Modules
 
@@ -91,7 +91,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [aws_security_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_vpc_endpoint.relay](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [aws_vpc_endpoint.service_direct](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
@@ -104,7 +104,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. REQUIRED on databricks\_mws\_vpc\_endpoint: as of provider 1.122.0 the provider-level account\_id is NOT propagated into this resource's request path, producing POST /api/2.0/accounts//vpc-endpoints (empty id) and a misleading `400 Unable to load OAuth Config`. Setting it explicitly is the fix (verified by isolated repro). | `string` | n/a | yes |
 | <a name="input_private_access_settings_name"></a> [private\_access\_settings\_name](#input\_private\_access\_settings\_name) | Display name for the databricks\_mws\_private\_access\_settings object. Must be unique within the Databricks account. | `string` | n/a | yes |
 | <a name="input_privatelink_subnet_ids"></a> [privatelink\_subnet\_ids](#input\_privatelink\_subnet\_ids) | List of subnet IDs in which to place the PrivateLink interface endpoint ENIs. Must be in the same VPC as vpc\_id. At least one subnet is required; one per availability zone is recommended. | `list(string)` | n/a | yes |
@@ -126,7 +126,8 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
+| <a name="output_allowed_vpc_endpoint_ids"></a> [allowed\_vpc\_endpoint\_ids](#output\_allowed\_vpc\_endpoint\_ids) | The EFFECTIVE allowed VPC endpoint list on the Private Access Settings object (empty unless private\_access\_level = ENDPOINT). Readback oracle for the N4 allowlist pass-through. |
 | <a name="output_private_access_settings_id"></a> [private\_access\_settings\_id](#output\_private\_access\_settings\_id) | Databricks private\_access\_settings\_id. Pass to aws-account-workspace's private\_access\_settings\_id input when creating a workspace with PrivateLink. |
 | <a name="output_relay_aws_vpc_endpoint_id"></a> [relay\_aws\_vpc\_endpoint\_id](#output\_relay\_aws\_vpc\_endpoint\_id) | AWS-side ID of the SCC relay interface endpoint (e.g. vpce-xxxxxxxx). |
 | <a name="output_relay_service_name"></a> [relay\_service\_name](#output\_relay\_service\_name) | Resolved AWS endpoint service attachment URI for the SCC relay endpoint. |

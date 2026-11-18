@@ -28,14 +28,14 @@ resource "azurerm_private_dns_zone_virtual_network_link" "this" {
 # back_end → front_end → browser_auth serializes the updates. A depends_on on a
 # count=0 resource is a no-op, so every enabled combination is valid.
 resource "azurerm_private_endpoint" "back_end" {
-  name                = "${local.workspace_name}-be-pe"
+  name                = local.back_end_pe_name
   resource_group_name = var.resource_group_name
   location            = var.location
   subnet_id           = var.pe_subnet_id
   tags                = var.tags
 
   private_service_connection {
-    name                           = "${local.workspace_name}-be-pe"
+    name                           = local.back_end_pe_name
     private_connection_resource_id = var.workspace_resource_id
     subresource_names              = ["databricks_ui_api"]
     is_manual_connection           = false
@@ -52,14 +52,14 @@ resource "azurerm_private_endpoint" "back_end" {
 resource "azurerm_private_endpoint" "front_end" {
   count = var.enable_front_end_pe ? 1 : 0
 
-  name                = "${local.workspace_name}-fe-pe"
+  name                = local.front_end_pe_name
   resource_group_name = var.resource_group_name
   location            = var.location
   subnet_id           = var.pe_subnet_id
   tags                = var.tags
 
   private_service_connection {
-    name                           = "${local.workspace_name}-fe-pe"
+    name                           = local.front_end_pe_name
     private_connection_resource_id = var.workspace_resource_id
     subresource_names              = ["databricks_ui_api"]
     is_manual_connection           = false
@@ -76,14 +76,14 @@ resource "azurerm_private_endpoint" "front_end" {
 resource "azurerm_private_endpoint" "browser_auth" {
   count = var.enable_browser_auth_pe ? 1 : 0
 
-  name                = "${local.workspace_name}-browser-auth-pe"
+  name                = local.browser_auth_pe_name
   resource_group_name = var.resource_group_name
   location            = var.location
   subnet_id           = var.pe_subnet_id
   tags                = var.tags
 
   private_service_connection {
-    name                           = "${local.workspace_name}-browser-auth-pe"
+    name                           = local.browser_auth_pe_name
     private_connection_resource_id = var.workspace_resource_id
     subresource_names              = ["browser_authentication"]
     is_manual_connection           = false

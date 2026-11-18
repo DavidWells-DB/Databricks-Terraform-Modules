@@ -11,9 +11,9 @@
 #checkov:skip=CKV_AWS_145:SSE-S3 (AES-256) is sufficient for log delivery. CMK requires additional KMS inputs beyond module scope; callers needing CMK should configure aws_s3_bucket_server_side_encryption_configuration separately.
 #checkov:skip=CKV_AWS_21:Versioning is intentionally disabled for this append-only log delivery workload; lifecycle expiry handles retention instead.
 resource "aws_s3_bucket" "this" { #tfsec:ignore:aws-s3-enable-bucket-logging
-  bucket        = "${var.resource_prefix}-log-delivery"
+  bucket        = coalesce(var.bucket_name, "${var.resource_prefix}-log-delivery")
   force_destroy = var.force_destroy
-  tags          = merge(var.tags, { Name = "${var.resource_prefix}-log-delivery" })
+  tags          = merge(var.tags, { Name = coalesce(var.bucket_name, "${var.resource_prefix}-log-delivery") })
 }
 
 resource "aws_s3_bucket_public_access_block" "this" {
@@ -57,6 +57,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
     id     = "expire-logs"
     status = "Enabled"
 
+    filter {}
+
     expiration {
       days = var.log_retention_days
     }
@@ -77,10 +79,10 @@ data "databricks_aws_assume_role_policy" "this" {
 }
 
 resource "aws_iam_role" "this" {
-  name               = "${var.resource_prefix}-log-delivery"
+  name               = coalesce(var.role_name, "${var.resource_prefix}-log-delivery")
   description        = "Databricks log delivery role for account ${var.databricks_account_id}"
   assume_role_policy = data.databricks_aws_assume_role_policy.this.json
-  tags               = merge(var.tags, { Name = "${var.resource_prefix}-log-delivery" })
+  tags               = merge(var.tags, { Name = coalesce(var.role_name, "${var.resource_prefix}-log-delivery") })
 }
 
 # ---------------------------------------------------------------------------
@@ -120,7 +122,7 @@ resource "time_sleep" "iam_propagation" {
 
 resource "databricks_mws_credentials" "this" {
   provider         = databricks.account
-  credentials_name = "${var.resource_prefix}-log-delivery"
+  credentials_name = coalesce(var.credentials_name, "${var.resource_prefix}-log-delivery")
   role_arn         = aws_iam_role.this.arn
 
   depends_on = [time_sleep.iam_propagation]
@@ -133,7 +135,7 @@ resource "databricks_mws_credentials" "this" {
 resource "databricks_mws_storage_configurations" "this" {
   provider                   = databricks.account
   account_id                 = var.databricks_account_id
-  storage_configuration_name = "${var.resource_prefix}-log-delivery"
+  storage_configuration_name = coalesce(var.storage_configuration_name, "${var.resource_prefix}-log-delivery")
   bucket_name                = aws_s3_bucket.this.bucket
 }
 
@@ -152,5 +154,5 @@ resource "databricks_mws_log_delivery" "this" {
   # AUDIT_LOGS supports JSON; BILLABLE_USAGE supports only CSV (the API rejects JSON for it).
   output_format        = each.key == "BILLABLE_USAGE" ? "CSV" : "JSON"
   delivery_path_prefix = local.log_type_config[each.key].delivery_path_prefix
-  config_name          = "${var.resource_prefix}-${local.log_type_config[each.key].config_name}"
+  config_name          = "${coalesce(var.log_delivery_name_prefix, var.resource_prefix)}-${local.log_type_config[each.key].config_name}"
 }

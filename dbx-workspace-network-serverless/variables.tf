@@ -50,6 +50,8 @@ variable "private_endpoint_rules" {
   }
 }
 
+# Retained to reject the removed input with a useful migration error.
+# tflint-ignore: terraform_unused_declarations
 variable "network_policy_id" {
   type        = string
   description = "REMOVED in v0.3.0 (single-owner consolidation): databricks_workspace_network_option is owned solely by dbx-workspace-network-policy-binding. Keep null; pass the policy binding there instead."

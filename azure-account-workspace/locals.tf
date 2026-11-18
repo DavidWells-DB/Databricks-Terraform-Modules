@@ -13,7 +13,7 @@ locals {
   azapi_compliance_needed = var.compliance_security_profile_enabled && length(var.extended_compliance_standards) > 0
 
   # Root DBFS CMK post-creation resource is created only when a key is supplied.
-  root_dbfs_cmk_enabled = var.root_dbfs_cmk_key_vault_key_id != null
+  root_dbfs_cmk_enabled = coalesce(var.root_dbfs_cmk_enabled, var.root_dbfs_cmk_key_vault_key_id != null)
 
   # ESC block is sent when any of the three add-on flags is on (azurerm's
   # dynamic-block condition, carried over).

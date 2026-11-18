@@ -23,10 +23,10 @@ module "policy" {
 
   providers = { databricks.account = databricks.account }
 
-  databricks_account_id        = var.databricks_account_id
-  policy_name                 = var.policy_name
-  egress_mode                 = var.egress_mode
-  enforcement_mode            = var.enforcement_mode
+  databricks_account_id         = var.databricks_account_id
+  policy_name                   = var.policy_name
+  egress_mode                   = var.egress_mode
+  enforcement_mode              = var.enforcement_mode
   allowed_internet_destinations = var.allowed_internet_destinations
   allowed_storage_destinations  = var.allowed_storage_destinations
 }

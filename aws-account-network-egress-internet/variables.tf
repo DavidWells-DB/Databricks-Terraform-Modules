@@ -52,3 +52,21 @@ variable "tags" {
   description = "Tags applied to all AWS resources created by this module (Internet Gateway, Elastic IPs, NAT Gateways, and routes)."
   default     = {}
 }
+
+variable "internet_gateway_name" {
+  type        = string
+  description = "Optional Internet Gateway Name tag. Defaults to igw."
+  default     = "igw"
+}
+
+variable "nat_gateway_name_prefix" {
+  type        = string
+  description = "Optional NAT Gateway Name-tag prefix. Defaults to nat."
+  default     = "nat"
+}
+
+variable "nat_eip_name_prefix" {
+  type        = string
+  description = "Optional NAT Elastic-IP Name-tag prefix. Defaults to nat-eip."
+  default     = "nat-eip"
+}

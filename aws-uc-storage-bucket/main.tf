@@ -13,11 +13,14 @@
 # role), no versioning resource (UC managed storage has no versioning
 # requirement; add one in the root composition if your org mandates it).
 
-# tfsec:ignore:aws-s3-enable-bucket-logging
 # Access logging is a root-composition concern (e.g. an aws_s3_bucket_logging
 # resource pointing at a central log bucket); callers that require it wire it
 # in their root configuration.
-resource "aws_s3_bucket" "this" { #tfsec:ignore:aws-s3-enable-bucket-logging
+# UC managed storage has no versioning requirement; this intentionally lean
+# module leaves organization-specific versioning policy to the root composition.
+# tfsec:ignore:aws-s3-enable-bucket-logging
+# tfsec:ignore:aws-s3-enable-versioning
+resource "aws_s3_bucket" "this" {
   bucket        = var.bucket_name
   force_destroy = var.force_destroy
   tags          = var.tags

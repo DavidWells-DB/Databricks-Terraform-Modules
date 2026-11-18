@@ -43,6 +43,18 @@ variable "resource_prefix" {
   }
 }
 
+variable "router_name" {
+  type        = string
+  description = "Optional Cloud Router creation name. Null derives '<resource_prefix>-router'."
+  default     = null
+}
+
+variable "nat_name" {
+  type        = string
+  description = "Optional Cloud NAT creation name. Null derives '<resource_prefix>-nat'."
+  default     = null
+}
+
 variable "min_ports_per_vm" {
   type        = number
   description = "Minimum number of ports allocated per VM instance for NAT. Higher values reduce port exhaustion risk for workloads with many outbound connections. Defaults to 64."
