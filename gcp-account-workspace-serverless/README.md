@@ -38,7 +38,7 @@ The module includes a `time_sleep` resource (30s) after workspace creation. The 
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9 |
@@ -46,7 +46,7 @@ The module includes a `time_sleep` resource (30s) after workspace creation. The 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.50 |
 | <a name="provider_time"></a> [time](#provider\_time) | >= 0.9 |
 
@@ -57,14 +57,14 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_mws_workspaces.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_workspaces) | resource |
 | [time_sleep.dns_propagation](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. Used to scope the workspace within the account. | `string` | n/a | yes |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | GCP project ID in which the serverless workspace is created. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | GCP region for the workspace (e.g. "us-central1"). Serverless compute runs in Databricks-managed infrastructure in this region. | `string` | n/a | yes |
@@ -75,7 +75,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_compute_mode"></a> [compute\_mode](#output\_compute\_mode) | Deployed compute mode readback ("SERVERLESS") — lets consumers verify the deployed workspace type post-apply, the same detection pattern as the aws/azure serverless modules. |
 | <a name="output_deployment_name"></a> [deployment\_name](#output\_deployment\_name) | Deployment name portion of the workspace URL subdomain. Useful for constructing workspace-specific resource names. |
 | <a name="output_dns_propagation_complete"></a> [dns\_propagation\_complete](#output\_dns\_propagation\_complete) | Opaque value that becomes available only after the DNS propagation sleep completes. Use this output as an implicit depends\_on trigger in root compositions that configure workspace-scoped providers. |

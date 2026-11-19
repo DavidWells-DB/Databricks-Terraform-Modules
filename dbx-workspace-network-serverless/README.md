@@ -64,15 +64,15 @@ module "workspace_network_serverless" {
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.81.0 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.142.0 |
+|------|---------|
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.81.0 |
 
 ## Modules
 
@@ -81,14 +81,14 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_mws_ncc_binding.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_ncc_binding) | resource |
 | [databricks_mws_ncc_private_endpoint_rule.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_ncc_private_endpoint_rule) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_network_connectivity_config_id"></a> [network\_connectivity\_config\_id](#input\_network\_connectivity\_config\_id) | Canonical unique identifier of the Network Connectivity Config (NCC) in the Databricks account. The NCC and workspace must be in the same region. | `string` | n/a | yes |
 | <a name="input_workspace_id"></a> [workspace\_id](#input\_workspace\_id) | Databricks workspace ID to bind to the NCC. A workspace can be bound to only one NCC at a time; binding a different NCC overwrites the previous binding. | `number` | n/a | yes |
 | <a name="input_network_policy_id"></a> [network\_policy\_id](#input\_network\_policy\_id) | REMOVED in v0.3.0 (single-owner consolidation): databricks\_workspace\_network\_option is owned solely by dbx-workspace-network-policy-binding. Keep null; pass the policy binding there instead. | `string` | `null` | no |
@@ -97,7 +97,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_ncc_binding_id"></a> [ncc\_binding\_id](#output\_ncc\_binding\_id) | Composite identifier of the NCC binding in the format <network\_connectivity\_config\_id>\|<workspace\_id>. Useful for referencing the binding in downstream resources. |
 | <a name="output_network_connectivity_config_id"></a> [network\_connectivity\_config\_id](#output\_network\_connectivity\_config\_id) | Network Connectivity Config ID that is bound to the workspace. Echoed for convenience when building downstream configurations. |
 | <a name="output_private_endpoint_rule_ids"></a> [private\_endpoint\_rule\_ids](#output\_private\_endpoint\_rule\_ids) | Map of private endpoint rule IDs keyed by the rule key input. Empty map when no rules are configured. |

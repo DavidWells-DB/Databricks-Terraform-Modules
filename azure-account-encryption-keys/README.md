@@ -48,15 +48,15 @@ The `databricks_service_principal_object_id` is the object ID of the `AzureDatab
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.75, < 5.0 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.81.0 |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.75, < 5.0 |
 
 ## Modules
 
@@ -65,7 +65,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_key_vault.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault) | resource |
 | [azurerm_key_vault_access_policy.databricks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.terraform](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
@@ -79,7 +79,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_azure_client_object_id"></a> [azure\_client\_object\_id](#input\_azure\_client\_object\_id) | Object ID of the Azure service principal or user running Terraform. Granted full key management permissions so that Terraform can create and manage keys. | `string` | n/a | yes |
 | <a name="input_databricks_service_principal_object_id"></a> [databricks\_service\_principal\_object\_id](#input\_databricks\_service\_principal\_object\_id) | Object ID of the AzureDatabricks enterprise application in your Azure AD tenant. Used in the Key Vault access policy granting Databricks permission to wrap/unwrap keys. | `string` | n/a | yes |
 | <a name="input_key_vault_name"></a> [key\_vault\_name](#input\_key\_vault\_name) | Name of the Azure Key Vault. Must be globally unique, 3-24 characters, alphanumeric and hyphens only, start with a letter. | `string` | n/a | yes |
@@ -97,7 +97,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_key_vault_id"></a> [key\_vault\_id](#output\_key\_vault\_id) | Resource ID of the Azure Key Vault. Pass to azurerm\_databricks\_workspace as managed\_services\_cmk\_key\_vault\_id and managed\_disk\_cmk\_key\_vault\_id. |
 | <a name="output_key_vault_name"></a> [key\_vault\_name](#output\_key\_vault\_name) | Name of the Azure Key Vault. |
 | <a name="output_key_vault_uri"></a> [key\_vault\_uri](#output\_key\_vault\_uri) | URI of the Azure Key Vault (e.g. https://<name>.vault.azure.net/). Used to construct key version URLs. |

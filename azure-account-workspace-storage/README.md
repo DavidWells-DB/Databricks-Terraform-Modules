@@ -49,15 +49,15 @@ The storage account name is constructed as `${resource_prefix}stor`. Azure stora
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.50 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 5.13.0 |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.50 |
 
 ## Modules
 
@@ -66,14 +66,14 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_storage_account.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account) | resource |
 | [azurerm_storage_container.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_location"></a> [location](#input\_location) | Azure region (e.g. "eastus", "westeurope") for all resources. | `string` | n/a | yes |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of the Azure resource group in which to create storage resources. | `string` | n/a | yes |
 | <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | Prefix applied to all resource names. Must be 1-16 characters, lowercase alphanumeric only. Combined with fixed suffixes to form the storage account name (max 24 chars total). | `string` | n/a | yes |
@@ -87,7 +87,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_container_name"></a> [container\_name](#output\_container\_name) | Name of the ADLS Gen2 container (filesystem) created inside the storage account. |
 | <a name="output_dfs_endpoint"></a> [dfs\_endpoint](#output\_dfs\_endpoint) | Primary DFS (Data Lake Storage Gen2) endpoint URL for the storage account. Used as the external location path in Unity Catalog. |
 | <a name="output_primary_blob_endpoint"></a> [primary\_blob\_endpoint](#output\_primary\_blob\_endpoint) | Primary blob endpoint URL for the storage account. Useful for constructing abfss:// paths. |

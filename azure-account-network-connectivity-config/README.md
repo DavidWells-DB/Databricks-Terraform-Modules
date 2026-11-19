@@ -40,15 +40,15 @@ When `allowed_internet_destinations` is set, the module creates a `databricks_ac
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.142.0 |
+|------|---------|
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.50 |
 
 ## Modules
 
@@ -57,13 +57,13 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_mws_network_connectivity_config.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_network_connectivity_config) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. Required by the account-level provider. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name for the Network Connectivity Config. Must be 3-30 characters and contain only alphanumeric characters, hyphens, or underscores. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | Azure region where the NCC will be created. Must match the region of the workspaces that will use it (e.g., "eastus", "westeurope"). NCCs can only be associated with workspaces in the same region. | `string` | n/a | yes |
@@ -73,7 +73,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_ncc_name"></a> [ncc\_name](#output\_ncc\_name) | Name of the Network Connectivity Config as registered in Databricks. |
 | <a name="output_network_connectivity_config_id"></a> [network\_connectivity\_config\_id](#output\_network\_connectivity\_config\_id) | Databricks Network Connectivity Config ID. Pass to databricks\_mws\_ncc\_binding to attach this NCC to a workspace, or to databricks\_mws\_workspaces for direct association. |
 | <a name="output_region"></a> [region](#output\_region) | Azure region of the Network Connectivity Config. |

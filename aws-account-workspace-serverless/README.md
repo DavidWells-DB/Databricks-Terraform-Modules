@@ -55,15 +55,15 @@ No AWS provider is required — serverless workspaces do not create any AWS-side
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.142.0 |
+|------|---------|
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.50 |
 
 ## Modules
 
@@ -72,13 +72,13 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_mws_workspaces.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_workspaces) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. Must match the account\_id used by the databricks.account provider. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS region in which to create the serverless workspace (e.g. "us-east-1", "us-gov-west-1"). | `string` | n/a | yes |
 | <a name="input_workspace_name"></a> [workspace\_name](#input\_workspace\_name) | Display name for the workspace in the Databricks UI. Must be unique within the Databricks account. | `string` | n/a | yes |
@@ -91,7 +91,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_compute_mode"></a> [compute\_mode](#output\_compute\_mode) | The deployed workspace compute mode ("SERVERLESS"), refreshed from the account API on every plan/apply. Lets consumers assert the deployed workspace type — a value other than SERVERLESS here would mean the workspace is not what this module promises. |
 | <a name="output_databricks_account_host"></a> [databricks\_account\_host](#output\_databricks\_account\_host) | Databricks account console host URL computed from databricks\_gov\_shard. Useful for configuring the account provider in the root composition. |
 | <a name="output_managed_services_key_id"></a> [managed\_services\_key\_id](#output\_managed\_services\_key\_id) | Managed-services key configuration ID applied by post-create update, or null. |

@@ -49,7 +49,7 @@ The module includes a `time_sleep` resource (30s) between IAM role creation and 
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
@@ -58,7 +58,7 @@ The module includes a `time_sleep` resource (30s) between IAM role creation and 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.0 |
 | <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.50 |
 | <a name="provider_time"></a> [time](#provider\_time) | >= 0.9 |
@@ -70,7 +70,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [aws_iam_role.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [databricks_mws_credentials.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_credentials) | resource |
@@ -81,7 +81,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_aws_partition"></a> [aws\_partition](#input\_aws\_partition) | AWS partition for ARN construction. Use "aws" for commercial; "aws-us-gov" for GovCloud (both civilian and DoD shards). | `string` | n/a | yes |
 | <a name="input_credentials_name"></a> [credentials\_name](#input\_credentials\_name) | Name for the databricks\_mws\_credentials registration. Should be descriptive and unique within the Databricks account. | `string` | n/a | yes |
 | <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. Used as the external ID in the AWS IAM role's assume-role policy. | `string` | n/a | yes |
@@ -92,7 +92,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_credentials_id"></a> [credentials\_id](#output\_credentials\_id) | Databricks credentials object ID. Pass to workspace creation modules as the credentials\_id input. |
 | <a name="output_databricks_aws_account_id"></a> [databricks\_aws\_account\_id](#output\_databricks\_aws\_account\_id) | Databricks control plane AWS account ID used in the role's trust policy. Computed from databricks\_gov\_shard. Useful for verification and downstream policy construction. |
 | <a name="output_role_arn"></a> [role\_arn](#output\_role\_arn) | ARN of the AWS IAM cross-account role. |

@@ -38,15 +38,15 @@ This module requires only the `azurerm` provider. The caller must configure it w
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.0 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 5.13.0 |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.0 |
 
 ## Modules
 
@@ -55,14 +55,14 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_virtual_network_peering.local_to_remote](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network_peering) | resource |
 | [azurerm_virtual_network_peering.remote_to_local](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network_peering) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_local_resource_group_name"></a> [local\_resource\_group\_name](#input\_local\_resource\_group\_name) | Name of the resource group containing the local virtual network. | `string` | n/a | yes |
 | <a name="input_local_vnet_id"></a> [local\_vnet\_id](#input\_local\_vnet\_id) | Full Azure resource ID of the local virtual network. | `string` | n/a | yes |
 | <a name="input_local_vnet_name"></a> [local\_vnet\_name](#input\_local\_vnet\_name) | Name of the local (initiating) virtual network. | `string` | n/a | yes |
@@ -77,7 +77,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_local_peering_id"></a> [local\_peering\_id](#output\_local\_peering\_id) | Azure resource ID of the local-to-remote VNet peering object. |
 | <a name="output_local_peering_name"></a> [local\_peering\_name](#output\_local\_peering\_name) | Name of the local-to-remote VNet peering object (e.g. <local-vnet>-to-<remote-vnet>). |
 | <a name="output_remote_peering_id"></a> [remote\_peering\_id](#output\_remote\_peering\_id) | Azure resource ID of the remote-to-local VNet peering object. |

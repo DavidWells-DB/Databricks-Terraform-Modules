@@ -1,3 +1,4 @@
+databricks_account_id         = "00000000-0000-0000-0000-000000000000"
 network_connectivity_config_id = "00000000-0000-0000-0000-000000000000"
 private_endpoint_rules = [{
   key              = "artifacts"

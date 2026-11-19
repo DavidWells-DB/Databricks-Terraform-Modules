@@ -42,14 +42,14 @@ To add static routes (e.g., a default route to an inspection VPC or an on-premis
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.0 |
 
 ## Modules
@@ -59,7 +59,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [aws_ec2_transit_gateway.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway) | resource |
 | [aws_ec2_transit_gateway_route_table.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route_table) | resource |
 | [aws_ec2_transit_gateway_route_table_association.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route_table_association) | resource |
@@ -69,7 +69,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | Prefix applied to all resource names created by this module (Transit Gateway, route tables). Use a short, consistent identifier such as your team or environment name. | `string` | n/a | yes |
 | <a name="input_tgw_asn"></a> [tgw\_asn](#input\_tgw\_asn) | Private Autonomous System Number (ASN) for the Transit Gateway's BGP sessions. Must be in the private ASN range: 64512-65534 (16-bit) or 4200000000-4294967294 (32-bit). | `number` | n/a | yes |
 | <a name="input_vpc_attachments"></a> [vpc\_attachments](#input\_vpc\_attachments) | Map of attachment name to VPC attachment configuration. Each entry creates one Transit Gateway VPC attachment. The key becomes the attachment's Name tag. subnet\_ids must each be in a different Availability Zone within the VPC. | <pre>map(object({<br/>    vpc_id     = string<br/>    subnet_ids = list(string)<br/>  }))</pre> | n/a | yes |
@@ -82,7 +82,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_attachment_ids"></a> [attachment\_ids](#output\_attachment\_ids) | Map of attachment name to Transit Gateway VPC attachment ID. Keys match the keys in var.vpc\_attachments. |
 | <a name="output_route_table_id"></a> [route\_table\_id](#output\_route\_table\_id) | ID of the Transit Gateway route table shared by all VPC attachments. Use this when adding static routes from the root composition. |
 | <a name="output_route_table_ids"></a> [route\_table\_ids](#output\_route\_table\_ids) | Map containing the single route table ID keyed by "shared". Provided for compatibility with callers that expect a map. For most callers, route\_table\_id is sufficient. |

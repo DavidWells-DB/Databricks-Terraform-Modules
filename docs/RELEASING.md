@@ -123,7 +123,7 @@ git push origin main
 2. Document the issue in the new CHANGELOG entry.
 3. Do NOT run `git tag -f` or `git push --force origin <tag>`.
 
-The CI check (`scripts/check-release-tag.sh`) will fail if a tag's version does not match a CHANGELOG entry. GitHub branch-protection rules should be set to deny force-push to tag refs.
+The CI check (`scripts/check-release-tag.sh`) will fail if a tag's version does not match a CHANGELOG entry. An active GitHub tag ruleset must restrict updates and deletions for all tags; this is the preventive control. The release workflow also rejects non-create push events as a secondary audit, but a post-push workflow cannot prevent a ref from moving.
 
 ---
 

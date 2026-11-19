@@ -63,7 +63,7 @@ The module includes a `time_sleep` resource (30s) after workspace creation for D
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9 |
@@ -71,9 +71,9 @@ The module includes a `time_sleep` resource (30s) after workspace creation for D
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.142.0 |
-| <a name="provider_time"></a> [time](#provider\_time) | 0.14.2 |
+|------|---------|
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.50 |
+| <a name="provider_time"></a> [time](#provider\_time) | >= 0.9 |
 
 ## Modules
 
@@ -82,14 +82,14 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_mws_workspaces.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_workspaces) | resource |
 | [time_sleep.dns_propagation](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_credentials_id"></a> [credentials\_id](#input\_credentials\_id) | Databricks credentials object ID produced by the aws-account-workspace-credentials module. Grants the control plane permission to manage compute in the customer AWS account. | `string` | n/a | yes |
 | <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. Used to scope the workspace within the account. | `string` | n/a | yes |
 | <a name="input_databricks_network_id"></a> [databricks\_network\_id](#input\_databricks\_network\_id) | Databricks network configuration ID produced by the aws-account-network module. Identifies the VPC and subnets in which workspace compute runs. | `string` | n/a | yes |
@@ -106,7 +106,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_databricks_host"></a> [databricks\_host](#output\_databricks\_host) | Databricks account host URL computed from databricks\_gov\_shard. Useful for verification and for configuring downstream provider instances. |
 | <a name="output_deployment_name"></a> [deployment\_name](#output\_deployment\_name) | Deployment name portion of the workspace URL subdomain. Useful for constructing workspace-specific resource names. |
 | <a name="output_dns_propagation_complete"></a> [dns\_propagation\_complete](#output\_dns\_propagation\_complete) | Opaque value that becomes available only after the DNS propagation sleep completes. Use this output as an implicit depends\_on trigger in root compositions that configure workspace-scoped providers. |

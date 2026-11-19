@@ -79,14 +79,14 @@ The module infers principal type from the format:
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="provider_databricks.workspace"></a> [databricks.workspace](#provider\_databricks.workspace) | >= 1.50 |
 
 ## Modules
@@ -96,14 +96,14 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_permissions.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/permissions) | resource |
 | [databricks_sql_endpoint.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/sql_endpoint) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_cluster_size"></a> [cluster\_size](#input\_cluster\_size) | Size of the warehouse cluster. Valid values: 2X-Small, X-Small, Small, Medium, Large, X-Large, 2X-Large, 3X-Large, 4X-Large. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name of the SQL warehouse. Must be unique within the workspace. | `string` | n/a | yes |
 | <a name="input_spot_instance_policy"></a> [spot\_instance\_policy](#input\_spot\_instance\_policy) | Spot instance policy. COST\_OPTIMIZED uses spot instances (lower cost, preemptible). RELIABILITY\_OPTIMIZED uses on-demand instances (higher cost, no preemption). POLICY\_UNSPECIFIED defers to account default. | `string` | n/a | yes |
@@ -120,7 +120,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_data_source_id"></a> [data\_source\_id](#output\_data\_source\_id) | The data source ID for the warehouse. Use this ID when creating SQL queries, dashboards, or alerts via the Databricks SQL API. |
 | <a name="output_jdbc_url"></a> [jdbc\_url](#output\_jdbc\_url) | JDBC connection URL for the SQL warehouse. Use this to connect external tools via JDBC. |
 | <a name="output_odbc_params"></a> [odbc\_params](#output\_odbc\_params) | ODBC connection parameters as a structured object. Contains host, path, protocol, and port for ODBC connections. |

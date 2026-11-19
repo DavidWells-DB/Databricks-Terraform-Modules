@@ -64,15 +64,15 @@ storage_credential = {
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | 1.142.0 |
+|------|---------|
+| <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.50 |
 
 ## Modules
 
@@ -81,14 +81,14 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_metastore.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/metastore) | resource |
 | [databricks_metastore_data_access.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/metastore_data_access) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_metastore_name"></a> [metastore\_name](#input\_metastore\_name) | Display name for the Unity Catalog metastore. Must be unique within the Databricks account. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | Cloud region where the metastore is created. Must match the region of any workspaces you intend to assign. One metastore per account per region. | `string` | n/a | yes |
 | <a name="input_data_access_name"></a> [data\_access\_name](#input\_data\_access\_name) | Name for the default data access configuration (databricks\_metastore\_data\_access). Required when storage\_credential is set; leave null for a storageless metastore. | `string` | `null` | no |
@@ -100,7 +100,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_data_access_id"></a> [data\_access\_id](#output\_data\_access\_id) | ID of the databricks\_metastore\_data\_access resource in format <metastore\_id>\|<name>, or null for a storageless metastore. Useful for verification and downstream references. |
 | <a name="output_metastore_id"></a> [metastore\_id](#output\_metastore\_id) | The globally unique ID of the Unity Catalog metastore. Pass to workspace assignment modules as the metastore\_id input. |
 | <a name="output_metastore_name"></a> [metastore\_name](#output\_metastore\_name) | Display name of the Unity Catalog metastore. |

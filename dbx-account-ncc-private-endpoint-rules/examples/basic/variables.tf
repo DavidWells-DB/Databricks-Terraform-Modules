@@ -1,3 +1,4 @@
+variable "databricks_account_id" { type = string }
 variable "network_connectivity_config_id" { type = string }
 variable "private_endpoint_rules" {
   type = list(object({

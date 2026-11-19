@@ -32,15 +32,15 @@ This module uses only the `google` provider. No Databricks provider is required 
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 5.0 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_google"></a> [google](#provider\_google) | 7.46.2 |
+|------|---------|
+| <a name="provider_google"></a> [google](#provider\_google) | >= 5.0 |
 
 ## Modules
 
@@ -49,14 +49,14 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [google_compute_router.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_router) | resource |
 | [google_compute_router_nat.this](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_router_nat) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_network_self_link"></a> [network\_self\_link](#input\_network\_self\_link) | Self-link URI of the VPC network to attach the Cloud Router to (format: https://www.googleapis.com/compute/v1/projects/<project>/global/networks/<name>). | `string` | n/a | yes |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | GCP project ID in which the Cloud Router and Cloud NAT will be created. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | GCP region for the Cloud Router and Cloud NAT (e.g. "us-central1"). Must match the region of the subnets that need egress. | `string` | n/a | yes |
@@ -71,7 +71,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_nat_id"></a> [nat\_id](#output\_nat\_id) | Fully-qualified resource ID of the Cloud NAT (projects/<project>/regions/<region>/routers/<router>/nats/<name>). Useful for referencing the NAT configuration in monitoring or policy resources. |
 | <a name="output_nat_name"></a> [nat\_name](#output\_nat\_name) | Name of the Cloud NAT resource. |
 | <a name="output_router_id"></a> [router\_id](#output\_router\_id) | Fully-qualified resource ID of the Cloud Router (projects/<project>/regions/<region>/routers/<name>). Useful for referencing the router in other GCP resources such as BGP or VPN attachments. |

@@ -57,15 +57,15 @@ When using a hub-and-spoke topology, pass hub VNet resource IDs to `hub_vnet_ids
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.63, < 5.0 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.81.0 |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.63, < 5.0 |
 
 ## Modules
 
@@ -74,7 +74,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_private_dns_zone.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_private_endpoint.back_end](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
@@ -84,7 +84,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_location"></a> [location](#input\_location) | Azure region for private endpoint resources (e.g., "eastus", "westeurope"). Must match the region of the Databricks workspace. | `string` | n/a | yes |
 | <a name="input_pe_subnet_id"></a> [pe\_subnet\_id](#input\_pe\_subnet\_id) | Azure resource ID of the subnet in which to place private endpoint network interfaces. Private endpoint network policies must be disabled on this subnet. | `string` | n/a | yes |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of the Azure resource group in which to create private endpoint and DNS resources. | `string` | n/a | yes |
@@ -102,7 +102,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_back_end_pe_id"></a> [back\_end\_pe\_id](#output\_back\_end\_pe\_id) | Azure resource ID of the back-end private endpoint (databricks\_ui\_api sub-resource). Always created. |
 | <a name="output_back_end_pe_private_ip"></a> [back\_end\_pe\_private\_ip](#output\_back\_end\_pe\_private\_ip) | Private IP address allocated to the back-end private endpoint NIC. Useful for custom DNS or network ACL rules. |
 | <a name="output_browser_auth_pe_id"></a> [browser\_auth\_pe\_id](#output\_browser\_auth\_pe\_id) | Azure resource ID of the browser\_authentication private endpoint. null when enable\_browser\_auth\_pe is false. |

@@ -64,7 +64,7 @@ To restrict egress, use `aws-account-network-firewall` instead of this module's 
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
@@ -76,7 +76,7 @@ No providers.
 ## Modules
 
 | Name | Source | Version |
-| ---- | ------ | ------- |
+|------|--------|---------|
 | <a name="module_registration"></a> [registration](#module\_registration) | ../dbx-account-mws-networks | n/a |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | ../aws-account-vpc | n/a |
 
@@ -87,7 +87,7 @@ No resources.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_azs"></a> [azs](#input\_azs) | List of availability zone names (e.g. ["us-east-1a", "us-east-1b"]). Must have the same length as private\_subnet\_cidrs. Also used for public and PrivateLink subnets when those lists are non-empty. | `list(string)` | n/a | yes |
 | <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. Used to register the network configuration with the Databricks account API. | `string` | n/a | yes |
 | <a name="input_network_name"></a> [network\_name](#input\_network\_name) | Base name for the databricks\_mws\_networks registration(s). Should be descriptive and unique within the Databricks account. When PrivateLink is enabled a second registration named "<network\_name>-privatelink" is created alongside it, so this is capped to leave room for that 12-char suffix. | `string` | n/a | yes |
@@ -109,7 +109,7 @@ No resources.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_databricks_account_host"></a> [databricks\_account\_host](#output\_databricks\_account\_host) | Databricks account host URL derived from databricks\_gov\_shard. Useful for root composition validation that the databricks.account provider is configured against the correct host. |
 | <a name="output_databricks_network_id"></a> [databricks\_network\_id](#output\_databricks\_network\_id) | Databricks network configuration ID the workspace should use: the PrivateLink registration when vpc\_endpoint\_ids are set, otherwise the base registration. Pass to workspace creation modules as their network\_id input. |
 | <a name="output_network_ids"></a> [network\_ids](#output\_network\_ids) | Map of network config role (base / privatelink) to Databricks network ID. When PrivateLink is enabled both exist; the 'base' entry is the retained, now-detached config left behind by the in-place cutover. It is harmless (metadata-only, no documented account limit); delete it deliberately later if you want to tidy up — safe once no workspace references it. |

@@ -47,7 +47,7 @@ The module creates a single private DNS managed zone for `gcp.databricks.com.` w
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.50 |
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 5.0 |
@@ -55,7 +55,7 @@ The module creates a single private DNS managed zone for `gcp.databricks.com.` w
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="provider_databricks.account"></a> [databricks.account](#provider\_databricks.account) | >= 1.50 |
 | <a name="provider_google"></a> [google](#provider\_google) | >= 5.0 |
 
@@ -66,7 +66,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [databricks_mws_private_access_settings.this](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_private_access_settings) | resource |
 | [databricks_mws_vpc_endpoint.relay](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_vpc_endpoint) | resource |
 | [databricks_mws_vpc_endpoint.workspace](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_vpc_endpoint) | resource |
@@ -82,7 +82,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_databricks_account_id"></a> [databricks\_account\_id](#input\_databricks\_account\_id) | Databricks account ID. Used to register PSC endpoints via the account API. | `string` | n/a | yes |
 | <a name="input_network_self_link"></a> [network\_self\_link](#input\_network\_self\_link) | Self-link of the GCP VPC network in which the PSC forwarding rules are created. Example: projects/my-project/global/networks/my-vpc. | `string` | n/a | yes |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | Google Cloud project ID in which the PSC compute addresses and forwarding rules are created. | `string` | n/a | yes |
@@ -99,7 +99,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_allowed_vpc_endpoint_ids"></a> [allowed\_vpc\_endpoint\_ids](#output\_allowed\_vpc\_endpoint\_ids) | The EFFECTIVE allowed VPC endpoint list on the Private Access Settings object (empty unless private\_access\_level = ENDPOINT). Readback oracle for the N4 allowlist pass-through. |
 | <a name="output_dns_zone_name"></a> [dns\_zone\_name](#output\_dns\_zone\_name) | GCP name of the private DNS managed zone created for gcp.databricks.com. |
 | <a name="output_private_access_settings_id"></a> [private\_access\_settings\_id](#output\_private\_access\_settings\_id) | Databricks Private Access Settings ID. Pass to workspace creation modules as private\_access\_settings\_id. |

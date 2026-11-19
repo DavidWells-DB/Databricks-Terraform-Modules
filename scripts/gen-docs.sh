@@ -8,7 +8,8 @@
 #
 # IMPORTANT: the CI gate pins terraform-docs v0.20.0 — render locally with the SAME
 # binary (the release-asset download; terraform-docs.io/dl/ serves HTML) or the table
-# separators differ and every README drifts.
+# separators differ and every README drifts. The config disables lockfile reads so
+# local terraform init state cannot replace provider constraints with installed versions.
 #
 # Usage:
 #   scripts/gen-docs.sh            # regenerate all module README fences

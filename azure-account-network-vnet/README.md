@@ -42,15 +42,15 @@ The Databricks control plane injects NSG rules into the shared NSG after workspa
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.75 |
 
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 5.13.0 |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.75 |
 
 ## Modules
 
@@ -59,7 +59,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_network_security_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) | resource |
 | [azurerm_subnet.container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
 | [azurerm_subnet.host](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
@@ -71,7 +71,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_container_subnet_cidr"></a> [container\_subnet\_cidr](#input\_container\_subnet\_cidr) | CIDR block for the Databricks container subnet (e.g. "10.0.2.0/24"). Must be a subset of vnet\_cidr and at least /26. | `string` | n/a | yes |
 | <a name="input_container_subnet_name"></a> [container\_subnet\_name](#input\_container\_subnet\_name) | Name for the Databricks container subnet. | `string` | n/a | yes |
 | <a name="input_host_subnet_cidr"></a> [host\_subnet\_cidr](#input\_host\_subnet\_cidr) | CIDR block for the Databricks host subnet (e.g. "10.0.1.0/24"). Must be a subset of vnet\_cidr and at least /26. | `string` | n/a | yes |
@@ -88,7 +88,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_container_subnet_id"></a> [container\_subnet\_id](#output\_container\_subnet\_id) | Resource ID of the Databricks container subnet. Pass to the workspace creation module's custom\_parameters as the private\_subnet\_network\_security\_group\_association\_id. |
 | <a name="output_container_subnet_name"></a> [container\_subnet\_name](#output\_container\_subnet\_name) | Name of the Databricks container subnet. Required by azurerm\_databricks\_workspace custom\_parameters. |
 | <a name="output_container_subnet_nsg_association_id"></a> [container\_subnet\_nsg\_association\_id](#output\_container\_subnet\_nsg\_association\_id) | Resource ID of the NSG association for the container (private) subnet. Required by azure-account-workspace as private\_subnet\_network\_security\_group\_association\_id when VNet injection is used. |
